@@ -1,0 +1,20 @@
+version: '3'
+services:
+
+  product-postgresql:
+    image: postgres:12.1
+    environment:
+      - POSTGRES_DB=db_product
+      - POSTGRES_USER=product
+      - POSTGRES_PASSWORD=secret
+    ports:
+      - 5432:5432
+    volumes:
+      - "./postgresql:/docker-entrypoint-initdb.d"
+
+  product-myadmin:
+    image: dockage/phppgadmin:latest
+    environment:
+      - PHP_PG_ADMIN_SERVER_HOST=product-postgresql
+    ports:
+      - "8080:80"
