@@ -1,120 +1,67 @@
 plugins {
-	id 'java'
-	id 'eclipse-wtp'
-	id 'org.springframework.boot' version '2.3.1.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'checkstyle'
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-  mavenLocal()
-  mavenCentral()
+  id 'java'
+  id 'eclipse-wtp'
 }
 
 group 'it.francescofiora'
-version '1.0-SNAPSHOT'
+version = '1.0-SNAPSHOT'
 
-def commons_collections_version = property('commons-collections.version')
-def commons_lang_version = property('commons-lang3.version')
-def springdoc_openapi_version = property('springdoc-openapi.version')
-def mapstruct_version = property('mapstruct.version')
-def logback_version = property('logback.version')
-
-dependencies {
-
-  implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-  implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-devtools'
-
-	implementation "ch.qos.logback:logback-classic:${logback_version}"
-
-  implementation "org.apache.commons:commons-lang3:${commons_lang_version}"
-  implementation "org.apache.commons:commons-collections4:${commons_collections_version}"
-	
-	implementation "org.springdoc:springdoc-openapi-ui:${springdoc_openapi_version}"
-	implementation "org.springdoc:springdoc-openapi-data-rest:${springdoc_openapi_version}"
-	
-  implementation "org.mapstruct:mapstruct:${mapstruct_version}"
-
-	implementation "org.postgresql:postgresql"
-
-  annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
-  
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.springframework.security:spring-security-test'
-  testImplementation 'org.hsqldb:hsqldb'
+allprojects {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+  }
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
 }
 
-tasks.withType(JavaCompile) {
-  options.compilerArgs = [
-     '-Amapstruct.defaultComponentModel=spring'
-  ]
-}
+subprojects {
+  apply plugin: 'java'
+  apply plugin: 'eclipse-wtp'
+  apply plugin: 'checkstyle'
+  apply plugin: 'jacoco'
 
-task cleanResources(type: Delete) {
-  delete "build/resources"
-}
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
 
-defaultTasks "bootRun"
+  group = rootProject.group
+  version = rootProject.version
 
-springBoot {
-  mainClassName = "it.francescofiora.product.Application"
-}
+  tasks.withType(JavaCompile) {
+    options.compilerArgs = [
+       '-Amapstruct.defaultComponentModel=spring'
+    ]
+  }
 
-
-sourceSets {
-  main {
-    java {
-      srcDirs 'java'
-    }
-    resources {
-      srcDirs 'resources'
+  checkstyle {
+    toolVersion property('checkstyle.version')
+    configFile  rootProject.file("config/checkstyle/checkstyle.xml")
+    configProperties = [
+         'checkstyle.cache.file': "${buildDir}/checkstyle.cache",
+    ]
+  }
+  tasks.withType(Checkstyle) {
+    reports {
+      xml.enabled = false
+      html.enabled = true
     }
   }
+  checkstyleMain {
+    source ='src/main/java'
+  }
+
   test {
-    java {
-      srcDirs 'java'
-    }
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
   }
-}
 
-eclipse {
-  sourceSets {
-    main {
-      java {
-        srcDirs += ["build/generated/sources/annotationProcessor/java/main"]
-      }
-    }
+  jacocoTestReport {
+    dependsOn test
   }
-  wtp {
-    component {
-      contextPath = 'product'
-    }
-  }
-}
 
-checkstyle {
-  toolVersion property('checkstyle.version')
-  configFile  file("config/checkstyle/checkstyle.xml")
-  checkstyleTest.enabled = false
-}
-tasks.withType(Checkstyle) {
-  reports {
-    xml.enabled = false
-    html.enabled = true
+  task cleanResources(type: Delete) {
+    delete "build/resources"
   }
-}
-checkstyleMain {
-  source ='src/main/java'
-}
-
-test {
-  useJUnitPlatform()
 }
 
 wrapper {
