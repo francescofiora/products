@@ -6,37 +6,25 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * A Dto for update an {@link it.francescofiora.product.domain.Product} entity.
- */
+@Getter
+@Setter
 public class UpdatebleProductDto extends BaseProductDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  @Schema(description = "Unique Product identifier", example = "1", required = true)
+  @JsonProperty("id")
+  @NotNull
   private Long id;
 
   @Schema(required = true)
   @JsonProperty("category")
-  private RefCategoryDto category;
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   @NotNull
   @Valid
-  public RefCategoryDto getCategory() {
-    return category;
-  }
-
-  public void setCategory(RefCategoryDto category) {
-    this.category = category;
-  }
+  private RefCategoryDto category;
 
   @Override
   public boolean equals(Object o) {

@@ -16,13 +16,16 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "PRODUCT", schema = "STORE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Getter
+@Setter
 public class Product implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -59,29 +62,9 @@ public class Product implements Serializable {
   @JsonIgnoreProperties("products")
   private Category category;
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
   public Product name(String name) {
     this.name = name;
     return this;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getDescription() {
-    return description;
   }
 
   public Product description(String description) {
@@ -89,25 +72,9 @@ public class Product implements Serializable {
     return this;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public BigDecimal getPrice() {
-    return price;
-  }
-
   public Product price(BigDecimal price) {
     this.price = price;
     return this;
-  }
-
-  public void setPrice(BigDecimal price) {
-    this.price = price;
-  }
-
-  public Size getSize() {
-    return size;
   }
 
   public Product size(Size size) {
@@ -115,25 +82,9 @@ public class Product implements Serializable {
     return this;
   }
 
-  public void setSize(Size size) {
-    this.size = size;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
   public Product image(String image) {
     this.image = image;
     return this;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
-  }
-
-  public String getImageContentType() {
-    return imageContentType;
   }
 
   public Product imageContentType(String imageContentType) {
@@ -141,21 +92,9 @@ public class Product implements Serializable {
     return this;
   }
 
-  public void setImageContentType(String imageContentType) {
-    this.imageContentType = imageContentType;
-  }
-
-  public Category getCategory() {
-    return category;
-  }
-
   public Product category(Category category) {
     this.category = category;
     return this;
-  }
-
-  public void setCategory(Category category) {
-    this.category = category;
   }
 
   @Override

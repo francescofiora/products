@@ -5,36 +5,24 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * A Dto for a new {@link it.francescofiora.product.domain.Product} entity.
- */
+@Getter
+@Setter
 public class ProductDto extends BaseProductDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  @Schema(description = "Unique identifier", example = "1", required = true)
+  @JsonProperty("id")
+  @NotNull
   private Long id;
 
   @Schema(required = true)
   @JsonProperty("category")
-  private CategoryDto category;
-  
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   @NotNull
-  public CategoryDto getCategory() {
-    return category;
-  }
-
-  public void setCategory(CategoryDto category) {
-    this.category = category;
-  }
+  private CategoryDto category;
 
   @Override
   public boolean equals(Object o) {

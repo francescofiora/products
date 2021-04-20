@@ -8,67 +8,36 @@ import java.util.Objects;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * A Dto for the {@link it.francescofiora.product.domain.OrderItem} entity.
- */
+@Getter
+@Setter
 public class OrderItemDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   @Schema(description = "Unique identifier", example = "1", required = true)
   @JsonProperty("id")
+  @NotNull
   private Long id;
 
   @Schema(description = "quantity", example = "10", required = true)
   @JsonProperty("quantity")
+  @NotNull
+  @Positive
   private Integer quantity;
 
   @Schema(description = "total Price", example = "10", required = true)
   @JsonProperty("totalPrice")
+  @NotNull
+  @DecimalMin(value = "0")
   private BigDecimal totalPrice;
 
   @Schema(required = true)
   @JsonProperty("product")
+  @NotNull
   private ProductDto product;
-
-  @NotNull
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  @NotNull
-  @Positive
-  public Integer getQuantity() {
-    return quantity;
-  }
-
-  public void setQuantity(Integer quantity) {
-    this.quantity = quantity;
-  }
-
-  @NotNull
-  @DecimalMin(value = "0")
-  public BigDecimal getTotalPrice() {
-    return totalPrice;
-  }
-
-  public void setTotalPrice(BigDecimal totalPrice) {
-    this.totalPrice = totalPrice;
-  }
-
-  @NotNull
-  public ProductDto getProduct() {
-    return product;
-  }
-
-  public void setProduct(ProductDto product) {
-    this.product = product;
-  }
 
   @Override
   public boolean equals(Object o) {

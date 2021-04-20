@@ -5,26 +5,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * A Dto for the {@link it.francescofiora.product.domain.Order} entity.
- */
+@Getter
+@Setter
 public class UpdatebleOrderDto extends BaseOrderDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   @Schema(description = "Unique Order identifier", example = "1", required = true)
   @JsonProperty("id")
-  private Long id;
-
   @NotNull
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
+  private Long id;
 
   @Override
   public boolean equals(Object o) {

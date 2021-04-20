@@ -7,14 +7,16 @@ import java.math.BigDecimal;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * A base Dto for the {@link it.francescofiora.product.domain.Product} entity.
- */
+@Getter
+@Setter
 public abstract class BaseProductDto {
 
   @Schema(description = "name", example = "SHIRTM01", required = true)
   @JsonProperty("name")
+  @NotBlank
   private String name;
 
   @Schema(description = "description of the product", example = "Shirt for Men")
@@ -23,10 +25,13 @@ public abstract class BaseProductDto {
 
   @Schema(description = "price", example = "10", required = true)
   @JsonProperty("price")
+  @NotNull
+  @DecimalMin(value = "0")
   private BigDecimal price;
 
   @Schema(description = "size", example = "L", required = true)
   @JsonProperty("size")
+  @NotNull
   private Size size;
 
   @Schema(description = "image", example = "image_001.jpg")
@@ -36,58 +41,6 @@ public abstract class BaseProductDto {
   @Schema(description = "image content type", example = "jpg")
   @JsonProperty("imageContentType")
   private String imageContentType;
-
-  @NotBlank
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  @NotNull
-  @DecimalMin(value = "0")
-  public BigDecimal getPrice() {
-    return price;
-  }
-
-  public void setPrice(BigDecimal price) {
-    this.price = price;
-  }
-
-  @NotNull
-  public Size getSize() {
-    return size;
-  }
-
-  public void setSize(Size size) {
-    this.size = size;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
-  }
-
-  public String getImageContentType() {
-    return imageContentType;
-  }
-
-  public void setImageContentType(String imageContentType) {
-    this.imageContentType = imageContentType;
-  }
 
   @Override
   public boolean equals(Object o) {

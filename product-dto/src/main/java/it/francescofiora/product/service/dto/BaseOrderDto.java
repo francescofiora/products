@@ -6,50 +6,27 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * A base Dto for the {@link it.francescofiora.product.domain.Order} entity.
- */
+@Getter
+@Setter
 public abstract class BaseOrderDto {
 
   @Schema(description = "placed Date", example = "", required = true)
   @JsonProperty("placedDate")
+  @NotNull
   private Instant placedDate;
 
   @Schema(description = "order code", example = "ORD_1", required = true)
   @JsonProperty("code")
+  @NotBlank
   private String code;
 
   @Schema(description = "customer", example = "Some Company Ltd", required = true)
   @JsonProperty("customer")
+  @NotBlank
   private String customer;
-
-  @NotNull
-  public Instant getPlacedDate() {
-    return placedDate;
-  }
-
-  public void setPlacedDate(Instant placedDate) {
-    this.placedDate = placedDate;
-  }
-
-  @NotBlank
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  @NotBlank
-  public String getCustomer() {
-    return customer;
-  }
-
-  public void setCustomer(String customer) {
-    this.customer = customer;
-  }
 
   @Override
   public boolean equals(Object o) {

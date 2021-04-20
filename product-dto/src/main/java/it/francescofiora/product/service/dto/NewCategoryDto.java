@@ -1,43 +1,26 @@
 package it.francescofiora.product.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * A Dto for a new {@link it.francescofiora.product.domain.Category} entity.
- */
+@Getter
+@Setter
 public class NewCategoryDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   @Schema(description = "name", example = "Shirt", required = true)
   @JsonProperty("name")
+  @NotBlank
   private String name;
 
   @Schema(description = "description of the category", example = "Shirt")
   @JsonProperty("description")
   private String description;
-
-  @NotBlank
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
 
   @Override
   public boolean equals(Object o) {

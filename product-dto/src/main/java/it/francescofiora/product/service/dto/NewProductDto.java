@@ -5,27 +5,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * A Dto for the {@link it.francescofiora.product.domain.Product} entity.
- */
+@Getter
+@Setter
 public class NewProductDto extends BaseProductDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   @Schema(required = true)
   @JsonProperty("category")
-  private RefCategoryDto category;
-
   @NotNull
   @Valid
-  public RefCategoryDto getCategory() {
-    return category;
-  }
-
-  public void setCategory(RefCategoryDto category) {
-    this.category = category;
-  }
+  private RefCategoryDto category;
 
   @Override
   public boolean equals(Object o) {

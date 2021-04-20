@@ -4,21 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public abstract class RefDto {
 
   @Schema(description = "Unique identifier", example = "1", required = true)
   @JsonProperty("id")
-  private Long id;
-
   @NotNull
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
+  private Long id;
 
   @Override
   public boolean equals(Object o) {

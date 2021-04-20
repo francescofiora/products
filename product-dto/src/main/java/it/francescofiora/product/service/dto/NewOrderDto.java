@@ -7,27 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * A Dto for a new {@link it.francescofiora.product.domain.Order} entity.
- */
+@Getter
+@Setter
 public class NewOrderDto extends BaseOrderDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   @Schema(required = true)
   @JsonProperty("items")
-  private List<NewOrderItemDto> items = new ArrayList<>();
-
   @NotEmpty
   @Valid
-  public List<NewOrderItemDto> getItems() {
-    return items;
-  }
-
-  public void setItems(List<NewOrderItemDto> items) {
-    this.items = items;
-  }
+  private List<NewOrderItemDto> items = new ArrayList<>();
 
   @Override
   public String toString() {

@@ -3,7 +3,6 @@ package it.francescofiora.product.domain;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,13 +12,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "CATEGORY", schema = "STORE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Getter
+@Setter
 public class Category implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -41,42 +43,14 @@ public class Category implements Serializable {
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   private Set<Product> products = new HashSet<>();
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
   public Category name(String name) {
     this.name = name;
     return this;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
   public Category description(String description) {
     this.description = description;
     return this;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public Set<Product> getProducts() {
-    return products;
   }
 
   public Category products(Set<Product> products) {
@@ -104,10 +78,6 @@ public class Category implements Serializable {
     this.products.remove(product);
     product.setCategory(null);
     return this;
-  }
-
-  public void setProducts(Set<Product> products) {
-    this.products = products;
   }
 
   @Override

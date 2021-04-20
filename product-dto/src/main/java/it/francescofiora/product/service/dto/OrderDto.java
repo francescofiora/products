@@ -9,65 +9,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * A Dto for the {@link it.francescofiora.product.domain.Order} entity.
- */
+@Getter
+@Setter
 public class OrderDto extends BaseOrderDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   @Schema(description = "Unique Order identifier", example = "1", required = true)
   @JsonProperty("id")
+  @NotNull
   private Long id;
 
   @Schema(description = "total Price", example = "10", required = true)
   @JsonProperty("totalPrice")
+  @NotNull
   private BigDecimal totalPrice;
   
   @Schema(description = "status", example = "", required = true)
   @JsonProperty("status")
+  @NotNull
   private OrderStatus status;
 
   @Schema(required = true)
   @JsonProperty("items")
+  @NotNull
   private List<OrderItemDto> items = new ArrayList<>();
-
-  @NotNull
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  @NotNull
-  public BigDecimal getTotalPrice() {
-    return totalPrice;
-  }
-
-  public void setTotalPrice(BigDecimal totalPrice) {
-    this.totalPrice = totalPrice;
-  }
-
-  @NotNull
-  public OrderStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(OrderStatus status) {
-    this.status = status;
-  }
-
-  @NotNull
-  public List<OrderItemDto> getItems() {
-    return items;
-  }
-
-  public void setItems(List<OrderItemDto> items) {
-    this.items = items;
-  }
 
   @Override
   public boolean equals(Object o) {
