@@ -3,6 +3,7 @@ package it.francescofiora.product.service.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -28,41 +29,22 @@ public class NewOrderItemDto implements Serializable {
   private RefProductDto product;
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
 
-    NewOrderItemDto other = (NewOrderItemDto) o;
-    if (quantity == null) {
-      if (other.quantity != null) {
-        return false;
-      }
-    } else if (!quantity.equals(other.quantity)) {
-      return false;
-    }
-
-    if (product == null) {
-      if (other.product != null) {
-        return false;
-      }
-    } else if (!product.equals(other.product)) {
-      return false;
-    }
-
-    return true;
+    NewOrderItemDto other = (NewOrderItemDto) obj;
+    return Objects.equals(getQuantity(), other.getQuantity())
+        && Objects.equals(getProduct(), other.getProduct());
   }
 
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
-    result = prime * result + ((product == null) ? 0 : product.hashCode());
-    return result;
+    return Objects.hash(getQuantity(), getProduct());
   }
 
   @Override

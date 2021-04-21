@@ -2,6 +2,7 @@ package it.francescofiora.product.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import it.francescofiora.product.service.util.DtoUtils;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OrderItemDto implements Serializable {
+public class OrderItemDto implements DtoIdentifier, Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -40,19 +41,8 @@ public class OrderItemDto implements Serializable {
   private ProductDto product;
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    OrderItemDto orderItemDto = (OrderItemDto) o;
-    if (orderItemDto.getId() == null || getId() == null) {
-      return false;
-    }
-    return Objects.equals(getId(), orderItemDto.getId());
+  public boolean equals(Object obj) {
+    return DtoUtils.equals(this, obj);
   }
 
   @Override

@@ -2,6 +2,7 @@ package it.francescofiora.product.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import it.francescofiora.product.service.util.DtoUtils;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
@@ -11,7 +12,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdatebleProductDto extends BaseProductDto implements Serializable {
+public class UpdatebleProductDto extends BaseProductDto implements DtoIdentifier, Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -27,19 +28,8 @@ public class UpdatebleProductDto extends BaseProductDto implements Serializable 
   private RefCategoryDto category;
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    UpdatebleProductDto productDto = (UpdatebleProductDto) o;
-    if (productDto.getId() == null || getId() == null) {
-      return false;
-    }
-    return Objects.equals(getId(), productDto.getId());
+  public boolean equals(Object obj) {
+    return DtoUtils.equals(this, obj);
   }
 
   @Override
