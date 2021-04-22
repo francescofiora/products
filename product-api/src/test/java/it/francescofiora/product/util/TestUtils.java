@@ -2,10 +2,54 @@ package it.francescofiora.product.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import it.francescofiora.product.domain.Category;
+import it.francescofiora.product.domain.Order;
+import it.francescofiora.product.domain.Product;
+
 /**
  * Utility class for testing REST controllers.
  */
 public final class TestUtils {
+
+  /**
+   * Create an example of Category.
+   *
+   * @param id
+   * @return Category
+   */
+  public static Category createCategory(Long id) {
+    Category category = new Category();
+    category.setId(id);
+    category.setName("Name");
+    category.setDescription("Description");
+    return category;
+  }
+
+  /**
+   * Create an example of Order.
+   *
+   * @param id
+   * @return Order
+   */
+  public static Order createOrder(Long id) {
+    Order order = new Order();
+    order.setCode("CODE");
+    order.setCustomer("Customer");
+    return order;
+  }
+
+  /**
+   * Create an example of Product.
+   *
+   * @param id
+   * @return Product
+   */
+  public static Product createProduct(Long id) {
+    Product product = new Product();
+    product.setName("Name");
+    product.setDescription("Description");
+    return product;
+  }
 
   /**
    * Verifies the equals/hashcode contract on the domain object.

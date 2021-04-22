@@ -12,7 +12,6 @@ import org.mapstruct.Mapping;
 public interface RefCategoryMapper extends DtoToEntityMapper<RefCategoryDto, Category> {
 
   @Mapping(target = "products", ignore = true)
-  @Mapping(target = "removeProduct", ignore = true)
   @Mapping(target = "name", ignore = true)
   @Mapping(target = "description", ignore = true)
   Category toEntity(RefCategoryDto categoryDto);

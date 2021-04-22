@@ -16,10 +16,10 @@ public class OrderItemRepositoryTest extends AbstractTestRepository {
   public void testCrud() throws Exception {
     OrderItem expected = new OrderItem();
     expected = orderItemRepository.save(expected);
-    
+
     Optional<OrderItem> opt = orderItemRepository.findById(expected.getId());
     assertThat(opt).isPresent().get().isEqualTo(expected);
-    
+
     orderItemRepository.delete(expected);
     opt = orderItemRepository.findById(expected.getId());
     assertThat(opt).isNotPresent();

@@ -15,6 +15,5 @@ public interface UpdatebleOrderMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "status", ignore = true)
   @Mapping(target = "orderItems", ignore = true)
-  @Mapping(target = "removeOrderItem", ignore = true)
   void updateEntityFromDto(UpdatebleOrderDto orderDto, @MappingTarget Order order);
 }

@@ -13,7 +13,7 @@ import org.mapstruct.Named;
  * Mapper for the entity {@link Order} and its Dto {@link OrderDto}.
  */
 @Mapper(componentModel = "spring", uses = {OrderItemMapper.class})
-public interface OrderMapper extends EntityToDtoMapper<OrderDto, Order> {
+public interface OrderMapper {
 
   @Mapping(source = "orderItems", target = "items")
   @Mapping(source = "orderItems", target = "totalPrice", qualifiedByName = "getTotalPrice")
@@ -21,6 +21,7 @@ public interface OrderMapper extends EntityToDtoMapper<OrderDto, Order> {
 
   /**
    * get TotalPrice.
+   *
    * @param orderItems Set
    * @return BigDecimal
    */

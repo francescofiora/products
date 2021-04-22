@@ -26,7 +26,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Getter
 @Setter
-public class Order implements Serializable {
+public class Order extends AbstractDomain implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -55,69 +55,6 @@ public class Order implements Serializable {
   @OneToMany(mappedBy = "order")
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   private Set<OrderItem> orderItems = new HashSet<>();
-
-  public Order placedDate(Instant placedDate) {
-    this.placedDate = placedDate;
-    return this;
-  }
-
-  public Order status(OrderStatus status) {
-    this.status = status;
-    return this;
-  }
-
-  public Order code(String code) {
-    this.code = code;
-    return this;
-  }
-
-  public Order customer(String customer) {
-    this.customer = customer;
-    return this;
-  }
-
-  public Order orderItems(Set<OrderItem> orderItems) {
-    this.orderItems = orderItems;
-    return this;
-  }
-
-  /**
-   * add Item.
-   * @param orderItem OrderItem
-   * @return Order
-   */
-  public Order addOrderItem(OrderItem orderItem) {
-    this.orderItems.add(orderItem);
-    orderItem.setOrder(this);
-    return this;
-  }
-
-  /**
-   * remove Item.
-   * @param orderItem OrderItem
-   * @return Order
-   */
-  public Order removeOrderItem(OrderItem orderItem) {
-    this.orderItems.remove(orderItem);
-    orderItem.setOrder(null);
-    return this;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof Order)) {
-      return false;
-    }
-    return id != null && id.equals(((Order) o).id);
-  }
-
-  @Override
-  public int hashCode() {
-    return 31;
-  }
 
   @Override
   public String toString() {

@@ -26,7 +26,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Getter
 @Setter
-public class Product implements Serializable {
+public class Product extends AbstractDomain implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -61,57 +61,6 @@ public class Product implements Serializable {
   @ManyToOne
   @JsonIgnoreProperties("products")
   private Category category;
-
-  public Product name(String name) {
-    this.name = name;
-    return this;
-  }
-
-  public Product description(String description) {
-    this.description = description;
-    return this;
-  }
-
-  public Product price(BigDecimal price) {
-    this.price = price;
-    return this;
-  }
-
-  public Product size(Size size) {
-    this.size = size;
-    return this;
-  }
-
-  public Product image(String image) {
-    this.image = image;
-    return this;
-  }
-
-  public Product imageContentType(String imageContentType) {
-    this.imageContentType = imageContentType;
-    return this;
-  }
-
-  public Product category(Category category) {
-    this.category = category;
-    return this;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof Product)) {
-      return false;
-    }
-    return id != null && id.equals(((Product) o).id);
-  }
-
-  @Override
-  public int hashCode() {
-    return 31;
-  }
 
   @Override
   public String toString() {

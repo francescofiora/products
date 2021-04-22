@@ -10,11 +10,10 @@ import org.mapstruct.Mapping;
  * Mapper for the entity {@link Order} and its Dto {@link NewOrderDto}.
  */
 @Mapper(componentModel = "spring", uses = {NewOrderItemMapper.class})
-public interface NewOrderMapper extends DtoToEntityMapper<NewOrderDto, Order> {
+public interface NewOrderMapper {
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "status", ignore = true)
-  @Mapping(target = "removeOrderItem", ignore = true)
   @Mapping(source = "items", target = "orderItems")
   Order toEntity(NewOrderDto orderDto);
 }
