@@ -7,25 +7,16 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import it.francescofiora.product.service.CategoryService;
 import it.francescofiora.product.service.dto.CategoryDto;
 import it.francescofiora.product.service.dto.NewCategoryDto;
 import it.francescofiora.product.web.errors.BadRequestAlertException;
-import it.francescofiora.product.web.util.HeaderUtil;
-import it.francescofiora.product.web.util.ResponseUtil;
-
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,22 +26,22 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * REST controller for managing {@link it.francescofiora.product.domain.Category}.
  */
 @RestController
 @RequestMapping("/api")
-public class CategoryApi {
+public class CategoryApi extends AbstractApi {
 
   private final Logger log = LoggerFactory.getLogger(CategoryApi.class);
 
-  private static final String ENTITY_NAME = "Category";
+  private static final String ENTITY_NAME = "CategoryDto";
 
   private final CategoryService categoryService;
 
   public CategoryApi(CategoryService categoryService) {
+    super(ENTITY_NAME);
     this.categoryService = categoryService;
   }
 
@@ -63,48 +54,46 @@ public class CategoryApi {
    *         ID.
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
-  @Operation(summary = "add new Category", description = "add a new Category to the system",
+  @Operation(summary = "Add new Category", description = "Add a new Category to the system",
       tags = {"category"})
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Category created"),
-      @ApiResponse(responseCode = "400", description = "invalid input, object invalid"),
-      @ApiResponse(responseCode = "409", description = "an existing Category already exists")})
+      @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
+      @ApiResponse(responseCode = "409", description = "An existing Category already exists")})
   @PostMapping("/categories")
   public ResponseEntity<Void> createCategory(
-      @Parameter(description = "add new Category") @Valid @RequestBody NewCategoryDto categoryDto)
+      @Parameter(description = "Add new Category") @Valid @RequestBody NewCategoryDto categoryDto)
       throws URISyntaxException {
     log.debug("REST request to create a new Category : {}", categoryDto);
     CategoryDto result = categoryService.create(categoryDto);
-    return ResponseEntity.created(new URI("/api/categories/" + result.getId()))
-        .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-        .build();
+    return postResponse("/api/categories/" + result.getId(), result.getId());
   }
 
   /**
    * {@code PUT  /categories} : Updates an existing category.
    *
    * @param categoryDto the categoryDto to update.
+   * @param id the id of the category to update
    * @return the {@link ResponseEntity} with status {@code 200 (OK)}, or with status
    *         {@code 400 (Bad Request)} if the categoryDto is not valid, or with status
    *         {@code 500 (Internal Server Error)} if the categoryDto couldn't be updated.
-   * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
-  @Operation(summary = "update Category", description = "update an Category to the system",
+  @Operation(summary = "Update Category", description = "Update an Category to the system",
       tags = {"category"})
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Category updated"),
-      @ApiResponse(responseCode = "400", description = "invalid input, object invalid"),
-      @ApiResponse(responseCode = "404", description = "not found")})
-  @PutMapping("/categories")
+      @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
+      @ApiResponse(responseCode = "404", description = "Not found")})
+  @PutMapping("/categories/{id}")
   public ResponseEntity<Void> updateCategory(
-      @Parameter(description = "Category to update") @Valid @RequestBody CategoryDto categoryDto)
-      throws URISyntaxException {
+      @Parameter(description = "Category to update") @Valid @RequestBody CategoryDto categoryDto,
+      @Parameter(description = "The id of the category to update", required = true,
+          example = "1") @PathVariable("id") Long id) {
     log.debug("REST request to update Category : {}", categoryDto);
-    if (categoryDto.getId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+    if (!id.equals(categoryDto.getId())) {
+      throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(categoryDto.getId()),
+          "Invalid id");
     }
     categoryService.update(categoryDto);
-    return ResponseEntity.ok()
-        .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, categoryDto.getId().toString()))
-        .build();
+    return putResponse(id);
   }
 
   /**
@@ -113,22 +102,19 @@ public class CategoryApi {
    * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of
    *         productCategories in body.
    */
-  @Operation(summary = "searches Categories",
+  @Operation(summary = "Searches Categories",
       description = "By passing in the appropriate options, "
           + "you can search for available categories in the system",
       tags = {"category"})
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "search results matching criteria",
+      @ApiResponse(responseCode = "200", description = "Search results matching criteria",
           content = @Content(
               array = @ArraySchema(schema = @Schema(implementation = CategoryDto.class)))),
-      @ApiResponse(responseCode = "400", description = "bad input parameter")})
+      @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/categories")
   public ResponseEntity<List<CategoryDto>> getAllProductCategories(Pageable pageable) {
     log.debug("REST request to get all ProductCategories");
-    Page<CategoryDto> page = categoryService.findAll(pageable);
-    HttpHeaders headers = it.francescofiora.product.web.util.PaginationUtil
-        .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-    return ResponseEntity.ok().headers(headers).body(page.getContent());
+    return getResponse(categoryService.findAll(pageable));
   }
 
   /**
@@ -138,20 +124,19 @@ public class CategoryApi {
    * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the categoryDto,
    *         or with status {@code 404 (Not Found)}.
    */
-  @Operation(summary = "searches Category by 'id'", description = "searches Category by 'id'",
+  @Operation(summary = "Searches Category by 'id'", description = "Searches Category by 'id'",
       tags = {"category"})
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "search results matching criteria",
+      @ApiResponse(responseCode = "200", description = "Search results matching criteria",
           content = @Content(schema = @Schema(implementation = CategoryDto.class))),
-      @ApiResponse(responseCode = "400", description = "bad input parameter"),
-      @ApiResponse(responseCode = "404", description = "not found")})
+      @ApiResponse(responseCode = "400", description = "Bad input parameter"),
+      @ApiResponse(responseCode = "404", description = "Not found")})
   @GetMapping("/categories/{id}")
   public ResponseEntity<CategoryDto> getCategory(
-      @Parameter(description = "id of the Category to get", required = true,
+      @Parameter(description = "Id of the Category to get", required = true,
           example = "1") @PathVariable Long id) {
     log.debug("REST request to get Category : {}", id);
-    Optional<CategoryDto> categoryDto = categoryService.findOne(id);
-    return ResponseUtil.wrapOrNotFound(ENTITY_NAME, categoryDto);
+    return getResponse(categoryService.findOne(id), id);
   }
 
   /**
@@ -160,18 +145,17 @@ public class CategoryApi {
    * @param id the id of the categoryDto to delete.
    * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
    */
-  @Operation(summary = "delete Category", description = "delete an Category to the system",
+  @Operation(summary = "Delete Category", description = "Delete an Category to the system",
       tags = {"category"})
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Category deleted"),
-      @ApiResponse(responseCode = "400", description = "invalid input, object invalid"),
-      @ApiResponse(responseCode = "404", description = "not found")})
+      @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
+      @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/categories/{id}")
   public ResponseEntity<Void> deleteCategory(
-      @Parameter(description = "id of the Category to delete", required = true,
+      @Parameter(description = "Id of the Category to delete", required = true,
           example = "1") @PathVariable Long id) {
     log.debug("REST request to delete Category : {}", id);
     categoryService.delete(id);
-    return ResponseEntity.noContent()
-        .headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    return deleteResponse(id);
   }
 }

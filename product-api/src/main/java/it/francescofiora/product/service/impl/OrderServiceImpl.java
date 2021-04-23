@@ -13,16 +13,12 @@ import it.francescofiora.product.service.dto.OrderDto;
 import it.francescofiora.product.service.dto.OrderItemDto;
 import it.francescofiora.product.service.dto.UpdatebleOrderDto;
 import it.francescofiora.product.service.dto.enumeration.OrderStatus;
-import it.francescofiora.product.service.mapper.NewOrderItemMapper;
-import it.francescofiora.product.service.mapper.NewOrderMapper;
 import it.francescofiora.product.service.mapper.OrderItemMapper;
 import it.francescofiora.product.service.mapper.OrderMapper;
-import it.francescofiora.product.service.mapper.UpdatebleOrderMapper;
 import it.francescofiora.product.web.errors.BadRequestAlertException;
 import it.francescofiora.product.web.errors.NotFoundAlertException;
 import java.math.BigDecimal;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -37,7 +33,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
-  private static final String ENTITY_NAME = "order";
+  private static final String ENTITY_NAME = "OrderDto";
+  private static final String ORDER_NOT_UPDATEBLE = "Order not updatable";
+  private static final String PRODUCT_NOT_FOUND = "Product not found";
+  private static final String ORDER_NOT_FOUND = "Order not found";
 
   private final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -51,12 +50,6 @@ public class OrderServiceImpl implements OrderService {
 
   private final OrderItemMapper orderItemMapper;
 
-  private final NewOrderItemMapper newOrderItemMapper;
-
-  private final NewOrderMapper newOrderMapper;
-
-  private final UpdatebleOrderMapper updatebleOrderMapper;
-
   /**
    * constructor.
    * 
@@ -64,29 +57,22 @@ public class OrderServiceImpl implements OrderService {
    * @param productRepository ProductRepository
    * @param orderItemRepository OrderItemRepository
    * @param orderMapper OrderMapper
-   * @param newOrderMapper NewOrderMapper
    * @param orderItemMapper OrderItemMapper
-   * @param newOrderItemMapper NewOrderItemMapper
-   * @param updatebleOrderMapper UpdatebleOrderMapper
    */
   public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository,
       OrderItemRepository orderItemRepository, OrderMapper orderMapper,
-      NewOrderMapper newOrderMapper, OrderItemMapper orderItemMapper,
-      NewOrderItemMapper newOrderItemMapper, UpdatebleOrderMapper updatebleOrderMapper) {
+      OrderItemMapper orderItemMapper) {
     this.orderRepository = orderRepository;
     this.orderMapper = orderMapper;
-    this.newOrderMapper = newOrderMapper;
     this.productRepository = productRepository;
     this.orderItemRepository = orderItemRepository;
-    this.updatebleOrderMapper = updatebleOrderMapper;
     this.orderItemMapper = orderItemMapper;
-    this.newOrderItemMapper = newOrderItemMapper;
   }
 
   @Override
   public OrderDto create(NewOrderDto orderDto) {
     log.debug("Request to create a new Order : {}", orderDto);
-    Order order = newOrderMapper.toEntity(orderDto);
+    Order order = orderMapper.toEntity(orderDto);
     order.setStatus(OrderStatus.PENDING);
     order = orderRepository.save(order);
     for (OrderItem item : order.getOrderItems()) {
@@ -100,8 +86,8 @@ public class OrderServiceImpl implements OrderService {
   private void setTotalPrice(OrderItem item) {
     Optional<Product> productOpt = productRepository.findById(item.getProduct().getId());
     if (!productOpt.isPresent()) {
-      throw new NotFoundAlertException(ProductServiceImpl.ENTITY_NAME,
-          String.valueOf(item.getProduct().getId()));
+      String id = String.valueOf(item.getProduct().getId());
+      throw new NotFoundAlertException(ProductServiceImpl.ENTITY_NAME, id, PRODUCT_NOT_FOUND);
     }
     item.setProduct(productOpt.get());
     item.setTotalPrice(item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity())));
@@ -112,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
     log.debug("Request to create a new item {} to the Order {}", orderItemDto, orderId);
     Order order = findOrderById(orderId);
     checkOrderUpdateble(order);
-    OrderItem orderItem = newOrderItemMapper.toEntity(orderItemDto);
+    OrderItem orderItem = orderItemMapper.toEntity(orderItemDto);
     orderItem.setOrder(order);
     setTotalPrice(orderItem);
     orderItem = orderItemRepository.save(orderItem);
@@ -124,7 +110,7 @@ public class OrderServiceImpl implements OrderService {
     log.debug("Request to patch Order : {}", orderDto);
     Order order = findOrderById(orderDto.getId());
     checkOrderUpdateble(order);
-    updatebleOrderMapper.updateEntityFromDto(orderDto, order);
+    orderMapper.updateEntityFromDto(orderDto, order);
     orderRepository.save(order);
   }
 
@@ -157,14 +143,15 @@ public class OrderServiceImpl implements OrderService {
 
   private void checkOrderUpdateble(Order order) {
     if (!OrderStatus.PENDING.equals(order.getStatus())) {
-      throw new BadRequestAlertException(ENTITY_NAME, "ORDER_NOT_UPDATEBLE");
+      Long id = order.getId();
+      throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(id), ORDER_NOT_UPDATEBLE);
     }
   }
 
   private Order findOrderById(Long id) {
     Optional<Order> optOrder = orderRepository.findById(id);
     if (!optOrder.isPresent()) {
-      throw new NotFoundAlertException(ENTITY_NAME);
+      throw new NotFoundAlertException(ENTITY_NAME, String.valueOf(id), ORDER_NOT_FOUND);
     }
     return optOrder.get();
   }

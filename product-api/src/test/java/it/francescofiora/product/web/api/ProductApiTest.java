@@ -107,41 +107,41 @@ public class ProductApiTest extends AbstractApiTest {
     // id
     UpdatebleProductDto productDto = updateProductDto();
     productDto.setId(null);
-    mvc.perform(put(new URI(PRODUCTS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(PRODUCTS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(productDto))).andExpect(status().isBadRequest());
 
     // Name
     productDto = updateProductDto();
     productDto.setName(null);
-    mvc.perform(put(new URI(PRODUCTS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(PRODUCTS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(productDto))).andExpect(status().isBadRequest());
 
     productDto = updateProductDto();
     productDto.setName("");
-    mvc.perform(put(new URI(PRODUCTS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(PRODUCTS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(productDto))).andExpect(status().isBadRequest());
 
     productDto = updateProductDto();
     productDto.setName("  ");
-    mvc.perform(put(new URI(PRODUCTS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(PRODUCTS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(productDto))).andExpect(status().isBadRequest());
 
     // Category
     productDto = updateProductDto();
     productDto.setCategory(null);
-    mvc.perform(put(new URI(PRODUCTS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(PRODUCTS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(productDto))).andExpect(status().isBadRequest());
 
     productDto = updateProductDto();
     productDto.getCategory().setId(null);
-    mvc.perform(put(new URI(PRODUCTS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(PRODUCTS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(productDto))).andExpect(status().isBadRequest());
   }
 
   @Test
   public void testUpdateProduct() throws Exception {
     UpdatebleProductDto productDto = updateProductDto();
-    mvc.perform(put(new URI(PRODUCTS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(PRODUCTS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(productDto))).andExpect(status().isOk());
   }
 

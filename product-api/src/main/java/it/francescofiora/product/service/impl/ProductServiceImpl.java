@@ -6,15 +6,11 @@ import it.francescofiora.product.service.ProductService;
 import it.francescofiora.product.service.dto.NewProductDto;
 import it.francescofiora.product.service.dto.ProductDto;
 import it.francescofiora.product.service.dto.UpdatebleProductDto;
-import it.francescofiora.product.service.mapper.NewProductMapper;
 import it.francescofiora.product.service.mapper.ProductMapper;
-import it.francescofiora.product.service.mapper.UpdatebleProductMapper;
 import it.francescofiora.product.web.errors.NotFoundAlertException;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,35 +25,29 @@ public class ProductServiceImpl implements ProductService {
 
   private final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 
-  public static final String ENTITY_NAME = "Product";
-  
-  private final ProductRepository productRepository;
-  
-  private final ProductMapper productMapper;
+  public static final String ENTITY_NAME = "ProductDto";
 
-  private final UpdatebleProductMapper updatebleProductMapper;
-  
-  private final NewProductMapper newProductMapper;
+  private static final String PRODUCT_NOT_FOUND = "Product not found";
+
+  private final ProductRepository productRepository;
+
+  private final ProductMapper productMapper;
 
   /**
    * constructor.
+   * 
    * @param productRepository ProductRepository
    * @param productMapper ProductMapper
-   * @param updatebleProductMapper UpdatebleProductMapper
-   * @param newProductMapper NewProductMapper
    */
-  public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper,
-      UpdatebleProductMapper updatebleProductMapper, NewProductMapper newProductMapper) {
+  public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
     this.productRepository = productRepository;
     this.productMapper = productMapper;
-    this.updatebleProductMapper = updatebleProductMapper;
-    this.newProductMapper = newProductMapper;
   }
 
   @Override
   public ProductDto create(NewProductDto productDto) {
     log.debug("Request to create Product : {}", productDto);
-    Product product = newProductMapper.toEntity(productDto);
+    Product product = productMapper.toEntity(productDto);
     product = productRepository.save(product);
     return productMapper.toDto(product);
   }
@@ -67,10 +57,11 @@ public class ProductServiceImpl implements ProductService {
     log.debug("Request to save Product : {}", productDto);
     Optional<Product> productOpt = productRepository.findById(productDto.getId());
     if (!productOpt.isPresent()) {
-      throw new NotFoundAlertException(ENTITY_NAME);
+      String id = String.valueOf(productDto.getId());
+      throw new NotFoundAlertException(ENTITY_NAME, id, PRODUCT_NOT_FOUND);
     }
     Product product = productOpt.get();
-    updatebleProductMapper.updateEntityFromDto(productDto, product);
+    productMapper.updateEntityFromDto(productDto, product);
     productRepository.save(product);
   }
 

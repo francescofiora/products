@@ -2,16 +2,16 @@ package it.francescofiora.product.service.mapper;
 
 import it.francescofiora.product.domain.Order;
 import it.francescofiora.product.domain.OrderItem;
+import it.francescofiora.product.service.dto.NewOrderDto;
 import it.francescofiora.product.service.dto.OrderDto;
+import it.francescofiora.product.service.dto.UpdatebleOrderDto;
 import java.math.BigDecimal;
 import java.util.Set;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
-/**
- * Mapper for the entity {@link Order} and its Dto {@link OrderDto}.
- */
 @Mapper(componentModel = "spring", uses = {OrderItemMapper.class})
 public interface OrderMapper {
 
@@ -33,4 +33,14 @@ public interface OrderMapper {
     }
     return result;
   }
+
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "status", ignore = true)
+  @Mapping(source = "items", target = "orderItems")
+  Order toEntity(NewOrderDto orderDto);
+
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "status", ignore = true)
+  @Mapping(target = "orderItems", ignore = true)
+  void updateEntityFromDto(UpdatebleOrderDto orderDto, @MappingTarget Order order);
 }

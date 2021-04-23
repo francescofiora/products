@@ -87,30 +87,30 @@ public class CategoryApiTest extends AbstractApiTest {
     // id
     CategoryDto categoryDto = updateCategoryDto();
     categoryDto.setId(null);
-    mvc.perform(put(new URI(CATEGORIES_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(CATEGORIES_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(categoryDto))).andExpect(status().isBadRequest());
 
     // Name
     categoryDto = updateCategoryDto();
     categoryDto.setName(null);
-    mvc.perform(put(new URI(CATEGORIES_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(CATEGORIES_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(categoryDto))).andExpect(status().isBadRequest());
 
     categoryDto = updateCategoryDto();
     categoryDto.setName("");
-    mvc.perform(put(new URI(CATEGORIES_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(CATEGORIES_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(categoryDto))).andExpect(status().isBadRequest());
 
     categoryDto = updateCategoryDto();
     categoryDto.setName("  ");
-    mvc.perform(put(new URI(CATEGORIES_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(CATEGORIES_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(categoryDto))).andExpect(status().isBadRequest());
   }
 
   @Test
   public void testUpdateCategory() throws Exception {
     CategoryDto categoryDto = updateCategoryDto();
-    mvc.perform(put(new URI(CATEGORIES_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(put(CATEGORIES_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(categoryDto))).andExpect(status().isOk());
   }
 

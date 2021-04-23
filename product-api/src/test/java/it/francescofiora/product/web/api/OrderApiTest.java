@@ -155,52 +155,52 @@ public class OrderApiTest extends AbstractApiTest {
     // id
     UpdatebleOrderDto orderDto = updateOrderDto();
     orderDto.setId(null);
-    mvc.perform(patch(new URI(ORDERS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(patch(ORDERS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(orderDto))).andExpect(status().isBadRequest());
 
     // code
     orderDto = updateOrderDto();
     orderDto.setCode(null);
-    mvc.perform(patch(new URI(ORDERS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(patch(ORDERS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(orderDto))).andExpect(status().isBadRequest());
 
     orderDto = updateOrderDto();
     orderDto.setCode("");
-    mvc.perform(patch(new URI(ORDERS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(patch(ORDERS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(orderDto))).andExpect(status().isBadRequest());
 
     orderDto = updateOrderDto();
     orderDto.setCode("  ");
-    mvc.perform(patch(new URI(ORDERS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(patch(ORDERS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(orderDto))).andExpect(status().isBadRequest());
 
     // Customer
     orderDto = updateOrderDto();
     orderDto.setCustomer(null);
-    mvc.perform(patch(new URI(ORDERS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(patch(ORDERS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(orderDto))).andExpect(status().isBadRequest());
 
     orderDto = updateOrderDto();
     orderDto.setCustomer("");
-    mvc.perform(patch(new URI(ORDERS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(patch(ORDERS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(orderDto))).andExpect(status().isBadRequest());
 
     orderDto = updateOrderDto();
     orderDto.setCustomer("  ");
-    mvc.perform(patch(new URI(ORDERS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(patch(ORDERS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(orderDto))).andExpect(status().isBadRequest());
 
     // PlacedDate
     orderDto = updateOrderDto();
     orderDto.setPlacedDate(null);
-    mvc.perform(patch(new URI(ORDERS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(patch(ORDERS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(orderDto))).andExpect(status().isBadRequest());
   }
 
   @Test
   public void testUpdateOrder() throws Exception {
     UpdatebleOrderDto orderDto = updateOrderDto();
-    mvc.perform(patch(new URI(ORDERS_URI)).contentType(APPLICATION_JSON)
+    mvc.perform(patch(ORDERS_ID_URI, ID).contentType(APPLICATION_JSON)
         .content(writeValueAsString(orderDto))).andExpect(status().isOk());
   }
 

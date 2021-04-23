@@ -6,7 +6,6 @@ import it.francescofiora.product.service.CategoryService;
 import it.francescofiora.product.service.dto.CategoryDto;
 import it.francescofiora.product.service.dto.NewCategoryDto;
 import it.francescofiora.product.service.mapper.CategoryMapper;
-import it.francescofiora.product.service.mapper.NewCategoryMapper;
 import it.francescofiora.product.web.errors.NotFoundAlertException;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -31,25 +30,21 @@ public class CategoryServiceImpl implements CategoryService {
 
   private final CategoryMapper categoryMapper;
 
-  private final NewCategoryMapper newCategoryMapper;
-
   /**
-   * constructor.
+   * Constructor.
+   * 
    * @param categoryRepository CategoryRepository
    * @param categoryMapper CategoryMapper
-   * @param newCategoryMapper NewCategoryMapper
    */
-  public CategoryServiceImpl(CategoryRepository categoryRepository,
-      CategoryMapper categoryMapper, NewCategoryMapper newCategoryMapper) {
+  public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
     this.categoryRepository = categoryRepository;
     this.categoryMapper = categoryMapper;
-    this.newCategoryMapper = newCategoryMapper;
   }
 
   @Override
   public CategoryDto create(NewCategoryDto categoryDto) {
     log.debug("Request to create a new Category : {}", categoryDto);
-    Category category = newCategoryMapper.toEntity(categoryDto);
+    Category category = categoryMapper.toEntity(categoryDto);
     category = categoryRepository.save(category);
     return categoryMapper.toDto(category);
   }
@@ -59,7 +54,8 @@ public class CategoryServiceImpl implements CategoryService {
     log.debug("Request to save Category : {}", categoryDto);
     Optional<Category> categoryOpt = categoryRepository.findById(categoryDto.getId());
     if (!categoryOpt.isPresent()) {
-      throw new NotFoundAlertException(ENTITY_NAME);
+      String id = String.valueOf(categoryDto.getId());
+      throw new NotFoundAlertException(ENTITY_NAME, id, ENTITY_NAME + " not found with id " + id);
     }
     Category category = categoryOpt.get();
     categoryMapper.updateEntityFromDto(categoryDto, category);
