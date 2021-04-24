@@ -22,6 +22,7 @@ import it.francescofiora.product.service.dto.enumeration.OrderStatus;
 import it.francescofiora.product.service.impl.OrderServiceImpl;
 import it.francescofiora.product.service.mapper.OrderItemMapper;
 import it.francescofiora.product.service.mapper.OrderMapper;
+import it.francescofiora.product.util.TestUtils;
 import it.francescofiora.product.web.errors.BadRequestAlertException;
 import it.francescofiora.product.web.errors.NotFoundAlertException;
 import java.math.BigDecimal;
@@ -37,7 +38,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-public class OrderServiceTest {
+class OrderServiceTest {
 
   private static final Long ID = 1L;
 
@@ -70,7 +71,7 @@ public class OrderServiceTest {
   }
 
   @Test
-  public void testCreate() throws Exception {
+  void testCreate() throws Exception {
     Order order = new Order();
     when(orderMapper.toEntity(any(NewOrderDto.class))).thenReturn(order);
 
@@ -87,14 +88,14 @@ public class OrderServiceTest {
   }
 
   @Test
-  public void testPatchNotFound() throws Exception {
+  void testPatchNotFound() throws Exception {
     UpdatebleOrderDto orderDto = new UpdatebleOrderDto();
     orderDto.setId(ID);
     assertThrows(NotFoundAlertException.class, () -> orderService.patch(orderDto));
   }
 
   @Test
-  public void testPatchNotUpdateble() throws Exception {
+  void testPatchNotUpdateble() throws Exception {
     Order order = new Order();
     order.setId(ID);
     order.setStatus(OrderStatus.COMPLETED);
@@ -106,8 +107,8 @@ public class OrderServiceTest {
   }
 
   @Test
-  public void testPatch() throws Exception {
-    Order order = getPendingOrder();
+  void testPatch() throws Exception {
+    Order order = TestUtils.createPendingOrder(ID);
     when(orderRepository.findById(eq(ID))).thenReturn(Optional.of(order));
 
     UpdatebleOrderDto orderDto = new UpdatebleOrderDto();
@@ -116,7 +117,7 @@ public class OrderServiceTest {
   }
 
   @Test
-  public void testFindAll() throws Exception {
+  void testFindAll() throws Exception {
     Order order = new Order();
     order.setId(ID);
     when(orderRepository.findAll(any(Pageable.class)))
@@ -130,13 +131,13 @@ public class OrderServiceTest {
   }
 
   @Test
-  public void testFindOneNotFound() throws Exception {
+  void testFindOneNotFound() throws Exception {
     Optional<OrderDto> orderOpt = orderService.findOne(ID);
     assertThat(orderOpt).isNotPresent();
   }
 
   @Test
-  public void testFindOne() throws Exception {
+  void testFindOne() throws Exception {
     Order order = new Order();
     order.setId(ID);
     when(orderRepository.findById(eq(order.getId()))).thenReturn(Optional.of(order));
@@ -151,13 +152,13 @@ public class OrderServiceTest {
   }
 
   @Test
-  public void testDelete() throws Exception {
+  void testDelete() throws Exception {
     orderService.delete(ID);
   }
 
   @Test
-  public void testAddOrderItem() throws Exception {
-    Order order = getPendingOrder();
+  void testAddOrderItem() throws Exception {
+    Order order = TestUtils.createPendingOrder(ID);
     when(orderRepository.findById(eq(ID))).thenReturn(Optional.of(order));
 
     OrderItem orderItem = new OrderItem();
@@ -184,16 +185,9 @@ public class OrderServiceTest {
   }
 
   @Test
-  public void testDeleteOrderItem() throws Exception {
-    Order order = getPendingOrder();
-    when(orderRepository.findById(eq(order.getId()))).thenReturn(Optional.of(order));
+  void testDeleteOrderItem() throws Exception {
+    Order order = TestUtils.createPendingOrder(ID);
+    when(orderRepository.findById(eq(ID))).thenReturn(Optional.of(order));
     orderService.deleteOrderItem(ID, ITEM_ID);
-  }
-
-  private Order getPendingOrder() {
-    Order order = new Order();
-    order.setId(ID);
-    order.setStatus(OrderStatus.PENDING);
-    return order;
   }
 }

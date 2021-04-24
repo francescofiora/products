@@ -27,7 +27,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-public class ProductServiceTest {
+class ProductServiceTest {
 
   private static final Long ID = 1L;
 
@@ -45,7 +45,7 @@ public class ProductServiceTest {
   }
 
   @Test
-  public void testCreate() throws Exception {
+  void testCreate() throws Exception {
     Product product = new Product();
     when(productMapper.toEntity(any(NewProductDto.class))).thenReturn(product);
     when(productRepository.save(any(Product.class))).thenReturn(product);
@@ -59,13 +59,13 @@ public class ProductServiceTest {
   }
 
   @Test
-  public void testUpdateNotFound() throws Exception {
+  void testUpdateNotFound() throws Exception {
     UpdatebleProductDto productDto = new UpdatebleProductDto();
     assertThrows(NotFoundAlertException.class, () -> productService.update(productDto));
   }
 
   @Test
-  public void testUpdate() throws Exception {
+  void testUpdate() throws Exception {
     Product product = new Product();
     when(productRepository.findById(eq(ID))).thenReturn(Optional.of(product));
 
@@ -75,7 +75,7 @@ public class ProductServiceTest {
   }
 
   @Test
-  public void testFindAll() throws Exception {
+  void testFindAll() throws Exception {
     Product product = new Product();
     when(productRepository.findAll(any(Pageable.class)))
         .thenReturn(new PageImpl<Product>(singletonList(product)));
@@ -87,13 +87,13 @@ public class ProductServiceTest {
   }
 
   @Test
-  public void testFindOneNotFound() throws Exception {
+  void testFindOneNotFound() throws Exception {
     Optional<ProductDto> productOpt = productService.findOne(ID);
     assertThat(productOpt).isNotPresent();
   }
 
   @Test
-  public void testFindOne() throws Exception {
+  void testFindOne() throws Exception {
     Product product = new Product();
     product.setId(ID);
     when(productRepository.findById(eq(product.getId())))
@@ -108,7 +108,7 @@ public class ProductServiceTest {
   }
 
   @Test
-  public void testDelete() throws Exception {
+  void testDelete() throws Exception {
     productService.delete(ID);
   }
 

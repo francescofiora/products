@@ -8,13 +8,13 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ProductRepositoryTest extends AbstractTestRepository {
+class ProductRepositoryTest extends AbstractTestRepository {
 
   @Autowired
   private ProductRepository productRepository;
 
   @Test
-  public void testCrud() throws Exception {
+  void testCrud() throws Exception {
     Product expected = TestUtils.createProduct(null);
     expected = productRepository.save(expected);
 

@@ -26,7 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-public class CategoryServiceTest {
+class CategoryServiceTest {
 
   private static final Long ID = 1L;
 
@@ -44,7 +44,7 @@ public class CategoryServiceTest {
   }
 
   @Test
-  public void testCreate() throws Exception {
+  void testCreate() throws Exception {
     Category category = new Category();
     when(categoryMapper.toEntity(any(NewCategoryDto.class))).thenReturn(category);
 
@@ -61,13 +61,13 @@ public class CategoryServiceTest {
   }
 
   @Test
-  public void testUpdateNotFound() throws Exception {
+  void testUpdateNotFound() throws Exception {
     CategoryDto categoryDto = new CategoryDto();
     assertThrows(NotFoundAlertException.class, () -> categoryService.update(categoryDto));
   }
 
   @Test
-  public void testUpdate() throws Exception {
+  void testUpdate() throws Exception {
     Category category = new Category();
     when(categoryRepository.findById(eq(ID))).thenReturn(Optional.of(category));
 
@@ -77,7 +77,7 @@ public class CategoryServiceTest {
   }
 
   @Test
-  public void testFindAll() throws Exception {
+  void testFindAll() throws Exception {
     Category category = new Category();
     when(categoryRepository.findAll(any(Pageable.class)))
         .thenReturn(new PageImpl<Category>(singletonList(category)));
@@ -90,13 +90,13 @@ public class CategoryServiceTest {
   }
 
   @Test
-  public void testFindOneNotFound() throws Exception {
+  void testFindOneNotFound() throws Exception {
     Optional<CategoryDto> categoryOpt = categoryService.findOne(ID);
     assertThat(categoryOpt).isNotPresent();
   }
 
   @Test
-  public void testFindOne() throws Exception {
+  void testFindOne() throws Exception {
     Category category = new Category();
     category.setId(ID);
     when(categoryRepository.findById(eq(category.getId()))).thenReturn(Optional.of(category));
@@ -110,7 +110,7 @@ public class CategoryServiceTest {
   }
 
   @Test
-  public void testDelete() throws Exception {
+  void testDelete() throws Exception {
     categoryService.delete(ID);
   }
 

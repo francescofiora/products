@@ -7,13 +7,13 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class OrderItemRepositoryTest extends AbstractTestRepository {
+class OrderItemRepositoryTest extends AbstractTestRepository {
 
   @Autowired
   private OrderItemRepository orderItemRepository;
 
   @Test
-  public void testCrud() throws Exception {
+  void testCrud() throws Exception {
     OrderItem expected = new OrderItem();
     expected = orderItemRepository.save(expected);
 
