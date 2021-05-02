@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +61,7 @@ public class CategoryApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "409", description = "An existing Category already exists")})
   @PostMapping("/categories")
+  @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> createCategory(
       @Parameter(description = "Add new Category") @Valid @RequestBody NewCategoryDto categoryDto)
       throws URISyntaxException {
@@ -83,6 +85,7 @@ public class CategoryApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @PutMapping("/categories/{id}")
+  @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> updateCategory(
       @Parameter(description = "Category to update") @Valid @RequestBody CategoryDto categoryDto,
       @Parameter(description = "The id of the category to update", required = true,
@@ -112,6 +115,7 @@ public class CategoryApi extends AbstractApi {
               array = @ArraySchema(schema = @Schema(implementation = CategoryDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/categories")
+  @PreAuthorize(AUTHORIZE_ALL)
   public ResponseEntity<List<CategoryDto>> getAllProductCategories(Pageable pageable) {
     log.debug("REST request to get all ProductCategories");
     return getResponse(categoryService.findAll(pageable));
@@ -132,6 +136,7 @@ public class CategoryApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @GetMapping("/categories/{id}")
+  @PreAuthorize(AUTHORIZE_ALL)
   public ResponseEntity<CategoryDto> getCategory(
       @Parameter(description = "Id of the Category to get", required = true,
           example = "1") @PathVariable Long id) {
@@ -151,6 +156,7 @@ public class CategoryApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/categories/{id}")
+  @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> deleteCategory(
       @Parameter(description = "Id of the Category to delete", required = true,
           example = "1") @PathVariable Long id) {

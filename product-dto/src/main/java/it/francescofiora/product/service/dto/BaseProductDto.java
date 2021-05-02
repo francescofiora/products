@@ -21,6 +21,7 @@ public abstract class BaseProductDto {
 
   @Schema(description = "description of the product", example = "Shirt for Men")
   @JsonProperty("description")
+  @NotBlank
   private String description;
 
   @Schema(description = "price", example = "10", required = true)

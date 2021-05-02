@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
   private final OrderItemMapper orderItemMapper;
 
   /**
-   * constructor.
+   * Constructor.
    * 
    * @param orderRepository OrderRepository
    * @param productRepository ProductRepository
@@ -76,6 +76,10 @@ public class OrderServiceImpl implements OrderService {
     order.setStatus(OrderStatus.PENDING);
     order = orderRepository.save(order);
     for (OrderItem item : order.getOrderItems()) {
+      if (item == null) {
+        throw new BadRequestAlertException("NewOrderItemDto",
+            "newOrderDto.items.item - NotNull", "an item can not be null");
+      }
       item.setOrder(order);
       setTotalPrice(item);
       orderItemRepository.save(item);
@@ -131,6 +135,9 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public void delete(Long id) {
     log.debug("Request to delete Order : {}", id);
+    Order order = findOrderById(id);
+    checkOrderUpdateble(order);
+    order.getOrderItems().forEach(item -> orderItemRepository.delete(item));
     orderRepository.deleteById(id);
   }
 

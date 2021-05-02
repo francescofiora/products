@@ -24,8 +24,6 @@ public class CategoryServiceImpl implements CategoryService {
 
   private final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
-  private static final String ENTITY_NAME = "Category";
-
   private final CategoryRepository categoryRepository;
 
   private final CategoryMapper categoryMapper;

@@ -7,13 +7,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
+import it.francescofiora.product.domain.Category;
 import it.francescofiora.product.domain.Product;
+import it.francescofiora.product.repository.CategoryRepository;
 import it.francescofiora.product.repository.ProductRepository;
 import it.francescofiora.product.service.dto.NewProductDto;
 import it.francescofiora.product.service.dto.ProductDto;
 import it.francescofiora.product.service.dto.UpdatebleProductDto;
 import it.francescofiora.product.service.impl.ProductServiceImpl;
 import it.francescofiora.product.service.mapper.ProductMapper;
+import it.francescofiora.product.util.TestUtils;
 import it.francescofiora.product.web.errors.NotFoundAlertException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,9 +42,12 @@ class ProductServiceTest {
   @MockBean
   private ProductRepository productRepository;
 
+  @MockBean
+  private CategoryRepository categoryRepository;
+
   @BeforeEach
   public void setUp() {
-    productService = new ProductServiceImpl(productRepository, productMapper);
+    productService = new ProductServiceImpl(productRepository, productMapper, categoryRepository);
   }
 
   @Test
@@ -52,7 +58,10 @@ class ProductServiceTest {
     ProductDto expected = new ProductDto();
     expected.setId(ID);
     when(productMapper.toDto(any(Product.class))).thenReturn(expected);
-    NewProductDto productDto = new NewProductDto();
+    NewProductDto productDto = TestUtils.createNewProductDto();
+    when(categoryRepository.findById(eq(productDto.getCategory().getId())))
+        .thenReturn(Optional.of(new Category()));
+
     ProductDto actual = productService.create(productDto);
 
     assertThat(actual).isEqualTo(expected);
@@ -96,8 +105,7 @@ class ProductServiceTest {
   void testFindOne() throws Exception {
     Product product = new Product();
     product.setId(ID);
-    when(productRepository.findById(eq(product.getId())))
-        .thenReturn(Optional.of(product));
+    when(productRepository.findById(eq(product.getId()))).thenReturn(Optional.of(product));
     ProductDto expected = new ProductDto();
     when(productMapper.toDto(any(Product.class))).thenReturn(expected);
 

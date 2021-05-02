@@ -32,7 +32,7 @@ public class UpdatebleOrderDto extends BaseOrderDto implements DtoIdentifier, Se
 
   @Override
   public String toString() {
-    return "OrderDTO{" + "id=" + getId() + ", placedDate='" + getPlacedDate() + "'" + ", code='"
-        + getCode() + ", customer='" + getCustomer() + "'" + "}";
+    return "UpdatebleOrderDto{" + "id=" + getId() + ", placedDate='" + getPlacedDate() + "'"
+        + ", code='" + getCode() + ", customer='" + getCustomer() + "'" + "}";
   }
 }

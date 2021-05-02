@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import it.francescofiora.product.domain.Category;
 import it.francescofiora.product.domain.Order;
 import it.francescofiora.product.domain.Product;
+import it.francescofiora.product.domain.User;
 import it.francescofiora.product.service.dto.CategoryDto;
 import it.francescofiora.product.service.dto.NewCategoryDto;
 import it.francescofiora.product.service.dto.NewOrderDto;
@@ -18,11 +19,32 @@ import it.francescofiora.product.service.dto.enumeration.OrderStatus;
 import it.francescofiora.product.service.dto.enumeration.Size;
 import java.math.BigDecimal;
 import java.time.Instant;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Utility class for testing REST controllers.
  */
 public final class TestUtils {
+
+  /**
+   * Create User.
+   *
+   * @param username the username
+   * @param role the role
+   * @return the User
+   */
+  public static User createUser(String username, String password, String role) {
+    User user = new User();
+    user.setPassword(new BCryptPasswordEncoder().encode(password));
+    user.setAccountNonExpired(true);
+    user.setAccountNonLocked(true);
+    user.setCredentialsNonExpired(true);
+    user.setEnabled(true);
+    user.setRole(role);
+    user.setUsername(username);
+    return user;
+  }
+
 
   /**
    * Create an example of Category.
@@ -48,6 +70,7 @@ public final class TestUtils {
     Order order = new Order();
     order.setCode("CODE");
     order.setCustomer("Customer");
+    order.setStatus(OrderStatus.PENDING);
     return order;
   }
 
@@ -105,15 +128,26 @@ public final class TestUtils {
   /**
    * Create an example of NewOrderItemDto.
    *
+   * @param id the id of the product
    * @return NewOrderItemDto
    */
-  public static NewOrderItemDto createNewOrderItemDto() {
+  public static NewOrderItemDto createNewOrderItemDto(Long id) {
     NewOrderItemDto item = new NewOrderItemDto();
     RefProductDto product = new RefProductDto();
-    product.setId(1L);
+    product.setId(id);
     item.setProduct(product);
     item.setQuantity(10);
     return item;
+  }
+
+
+  /**
+   * Create an example of NewOrderItemDto.
+   *
+   * @return NewOrderItemDto
+   */
+  public static NewOrderItemDto createNewOrderItemDto() {
+    return createNewOrderItemDto(1L);
   }
 
   /**
@@ -131,6 +165,19 @@ public final class TestUtils {
   }
 
   /**
+   * Create an simle example of NewOrderDto.
+   *
+   * @return NewOrderDto
+   */
+  public static NewOrderDto createNewSimpleOrderDto() {
+    NewOrderDto order = new NewOrderDto();
+    order.setCode("New CODE");
+    order.setCustomer("New Customer");
+    order.setPlacedDate(Instant.now());
+    return order;
+  }
+
+  /**
    * Create an example of NewProductDto.
    *
    * @return NewProductDto
@@ -143,10 +190,20 @@ public final class TestUtils {
     product.setName("New Name");
     product.setPrice(BigDecimal.TEN);
     product.setSize(Size.L);
-    RefCategoryDto category = new RefCategoryDto();
-    category.setId(3L);
-    product.setCategory(category);
+    product.setCategory(createRefCategoryDto(3L));
     return product;
+  }
+
+  /**
+   * Create RefCategoryDto.
+   *
+   * @param id the id of the Category
+   * @return RefCategoryDto
+   */
+  public static RefCategoryDto createRefCategoryDto(Long id) {
+    RefCategoryDto category = new RefCategoryDto();
+    category.setId(id);
+    return category;
   }
 
   /**
@@ -164,12 +221,10 @@ public final class TestUtils {
     product.setName("Name updated");
     product.setPrice(BigDecimal.valueOf(5L));
     product.setSize(Size.M);
-    RefCategoryDto category = new RefCategoryDto();
-    category.setId(5L);
-    product.setCategory(category);
+    product.setCategory(createRefCategoryDto(5L));
     return product;
   }
-  
+
   /**
    * Create an example of UpdatebleOrderDto.
    *

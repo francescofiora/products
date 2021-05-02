@@ -19,8 +19,9 @@ public class NewCategoryDto implements Serializable {
   @NotBlank
   private String name;
 
-  @Schema(description = "description of the category", example = "Shirt")
+  @Schema(description = "description of the category", example = "Shirt", required = true)
   @JsonProperty("description")
+  @NotBlank
   private String description;
 
   @Override

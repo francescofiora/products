@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
+@PreAuthorize(AbstractApi.AUTHORIZE_ALL)
 public class OrderApi extends AbstractApi {
 
   private final Logger log = LoggerFactory.getLogger(OrderApi.class);
@@ -82,7 +84,8 @@ public class OrderApi extends AbstractApi {
    *         {@code 500 (Internal Server Error)} if the orderDto couldn't be patched.
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
-  @Operation(summary = "Path Order", description = "Patch an Order to the system", tags = {"order"})
+  @Operation(summary = "Patch Order", description = "Patch an Order to the system",
+      tags = {"order"})
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Order patched"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})

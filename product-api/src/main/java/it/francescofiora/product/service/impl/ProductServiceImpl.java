@@ -1,7 +1,9 @@
 package it.francescofiora.product.service.impl;
 
 import it.francescofiora.product.domain.Product;
+import it.francescofiora.product.repository.CategoryRepository;
 import it.francescofiora.product.repository.ProductRepository;
+import it.francescofiora.product.service.CategoryService;
 import it.francescofiora.product.service.ProductService;
 import it.francescofiora.product.service.dto.NewProductDto;
 import it.francescofiora.product.service.dto.ProductDto;
@@ -25,28 +27,35 @@ public class ProductServiceImpl implements ProductService {
 
   private final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 
-  public static final String ENTITY_NAME = "ProductDto";
-
-  private static final String PRODUCT_NOT_FOUND = "Product not found";
-
   private final ProductRepository productRepository;
 
   private final ProductMapper productMapper;
 
+  private final CategoryRepository categoryRepository;
+
   /**
-   * constructor.
+   * Constructor.
    * 
    * @param productRepository ProductRepository
    * @param productMapper ProductMapper
+   * @param categoryRepository CategoryRepository
    */
-  public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
+  public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper,
+      CategoryRepository categoryRepository) {
     this.productRepository = productRepository;
     this.productMapper = productMapper;
+    this.categoryRepository = categoryRepository;
   }
 
   @Override
   public ProductDto create(NewProductDto productDto) {
     log.debug("Request to create Product : {}", productDto);
+
+    if (!categoryRepository.findById(productDto.getCategory().getId()).isPresent()) {
+      String id = String.valueOf(productDto.getCategory().getId());
+      throw new NotFoundAlertException(CategoryService.ENTITY_NAME, id, "Category Not Found");
+    }
+
     Product product = productMapper.toEntity(productDto);
     product = productRepository.save(product);
     return productMapper.toDto(product);
@@ -54,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public void update(UpdatebleProductDto productDto) {
-    log.debug("Request to save Product : {}", productDto);
+    log.debug("Request to update Product : {}", productDto);
     Optional<Product> productOpt = productRepository.findById(productDto.getId());
     if (!productOpt.isPresent()) {
       String id = String.valueOf(productDto.getId());

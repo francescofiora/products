@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
 
+  String ENTITY_NAME = "CategoryDto";
+
   /**
    * Create a new category.
    *
@@ -26,6 +28,7 @@ public interface CategoryService {
 
   /**
    * Get all the categories.
+   *
    * @param pageable Pageable
    * @return the list of entities.
    */

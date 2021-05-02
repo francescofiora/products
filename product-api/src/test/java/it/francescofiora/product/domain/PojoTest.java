@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 
 class PojoTest {
   // Configured for expectation, so we know when a class gets added or removed.
-  private static final int EXPECTED_CLASS_COUNT = 4;
+  private static final int EXPECTED_CLASS_COUNT = 5;
 
   // The package to test
   private static final String POJO_PACKAGE = "it.francescofiora.product.domain";

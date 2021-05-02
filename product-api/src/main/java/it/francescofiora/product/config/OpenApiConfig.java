@@ -19,7 +19,7 @@ public class OpenApiConfig {
    */
   @Bean
   public OpenAPI customOpenApi() {
-    return new OpenAPI().components(new Components()).info(new Info().title("Books Demo App")
+    return new OpenAPI().components(new Components()).info(new Info().title("Product Demo App")
         .description("This is a sample Spring Boot RESTful service"));
 
   }

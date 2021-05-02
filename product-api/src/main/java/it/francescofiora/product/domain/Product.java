@@ -39,7 +39,8 @@ public class Product extends AbstractDomain implements Serializable {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "description")
+  @NotNull
+  @Column(name = "description", nullable = false)
   private String description;
 
   @NotNull

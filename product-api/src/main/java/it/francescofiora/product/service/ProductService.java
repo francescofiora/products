@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
  */
 public interface ProductService {
 
+  String ENTITY_NAME = "ProductDto";
+  String PRODUCT_NOT_FOUND = "Product not found";
+
   /**
    * Create a product.
    *

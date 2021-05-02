@@ -153,6 +153,9 @@ class OrderServiceTest {
 
   @Test
   void testDelete() throws Exception {
+    Order order = TestUtils.createOrder(ID);
+
+    when(orderRepository.findById(eq(ID))).thenReturn(Optional.of(order));
     orderService.delete(ID);
   }
 
