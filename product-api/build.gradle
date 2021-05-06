@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.4.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id 'info.solidsoft.pitest' version '1.5.1'
 }
 
 def springdoc_openapi_version = parent.property('springdoc-openapi.version')
@@ -37,7 +38,7 @@ dependencies {
 }
 
 springBoot {
-    mainClassName = "it.francescofiora.batch.api.Application"
+    mainClassName = "it.francescofiora.product.Application"
 }
 
 eclipse {
@@ -48,6 +49,11 @@ eclipse {
          }
      }
   }
+}
+
+pitest {
+  timestampedReports = false
+  junit5PluginVersion = '0.12'
 }
 
 bootBuildImage {
