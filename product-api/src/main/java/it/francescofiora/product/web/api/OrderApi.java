@@ -139,8 +139,8 @@ public class OrderApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @GetMapping("/orders/{id}")
-  public ResponseEntity<OrderDto> getOrder(
-      @Parameter(description = "Id of the Order to get") @PathVariable Long id) {
+  public ResponseEntity<OrderDto> getOrder(@Parameter(description = "Id of the Order to get",
+      required = true, example = "1") @PathVariable Long id) {
     log.debug("REST request to get Order : {}", id);
     return getResponse(orderService.findOne(id), id);
   }
@@ -157,8 +157,8 @@ public class OrderApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/orders/{id}")
-  public ResponseEntity<Void> deleteOrder(
-      @Parameter(description = "The id of the Order to delete") @PathVariable Long id) {
+  public ResponseEntity<Void> deleteOrder(@Parameter(description = "The id of the Order to delete",
+      required = true, example = "1") @PathVariable Long id) {
     log.debug("REST request to delete Order : {}", id);
     orderService.delete(id);
     return deleteResponse(id);
@@ -180,7 +180,7 @@ public class OrderApi extends AbstractApi {
       @ApiResponse(responseCode = "404", description = "Not found")})
   @PutMapping("/orders/{id}/items")
   public ResponseEntity<Void> addOrderItem(
-      @Parameter(description = "Order id") @PathVariable Long id,
+      @Parameter(description = "Order id", required = true, example = "1") @PathVariable Long id,
       @Parameter(description = "Item to add") @Valid @RequestBody NewOrderItemDto orderItemDto)
       throws URISyntaxException {
     log.debug("REST request to add a new Item {} to the order {}", orderItemDto, id);
@@ -203,9 +203,10 @@ public class OrderApi extends AbstractApi {
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/orders/{order_id}/items/{order_item_id}")
   public ResponseEntity<Void> deleteOrderItem(
-      @Parameter(description = "Id of the Order") @PathVariable(name = "order_id") Long orderId,
-      @Parameter(description = "Id of the Item to delete") @PathVariable(
-          name = "order_item_id") Long orderItemId) {
+      @Parameter(description = "Id of the Order", required = true,
+          example = "1") @PathVariable(name = "order_id") Long orderId,
+      @Parameter(description = "Id of the Item to delete", required = true,
+          example = "1") @PathVariable(name = "order_item_id") Long orderItemId) {
     log.debug("REST request to delete the Item {} to the order {}", orderItemId, orderId);
     orderService.deleteOrderItem(orderId, orderItemId);
     return deleteResponse(ENTITY_ORDER_ITEM, orderItemId);

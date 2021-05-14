@@ -59,6 +59,7 @@ public class ProductApi extends AbstractApi {
       tags = {"product"})
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Product created"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
+      @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "409", description = "An existing Product already exists")})
   @PostMapping("/products")
   @PreAuthorize(AUTHORIZE_ADMIN)
@@ -82,6 +83,7 @@ public class ProductApi extends AbstractApi {
       tags = {"product"})
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Product updated"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
+      @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @PutMapping("/products/{id}")
   @PreAuthorize(AUTHORIZE_ADMIN)
@@ -154,6 +156,7 @@ public class ProductApi extends AbstractApi {
       tags = {"product"})
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Product deleted"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
+      @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/products/{id}")
   @PreAuthorize(AUTHORIZE_ADMIN)

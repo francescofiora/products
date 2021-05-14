@@ -14,7 +14,8 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfig {
 
   /**
-   * custom OpenAPI component.
+   * Custom OpenAPI component.
+   *
    * @return OpenAPI Bean
    */
   @Bean

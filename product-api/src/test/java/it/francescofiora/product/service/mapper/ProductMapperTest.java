@@ -7,7 +7,7 @@ import it.francescofiora.product.service.dto.NewProductDto;
 import it.francescofiora.product.service.dto.RefProductDto;
 import org.junit.jupiter.api.Test;
 
-public class ProductMapperTest {
+class ProductMapperTest {
 
   private ProductMapper productMapper = new ProductMapperImpl();
 

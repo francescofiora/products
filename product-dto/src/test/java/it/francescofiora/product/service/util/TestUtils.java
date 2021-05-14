@@ -13,18 +13,18 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
- * Utility class for testing REST controllers.
+ * Utility for testing.
  */
-public final class TestUtils {
+public interface TestUtils {
 
-  private static final Instant NOW =  Instant.now();
+  static final Instant NOW =  Instant.now();
   
   /**
    * Create an example of NewCategoryDto.
    *
    * @return NewCategoryDto
    */
-  public static NewCategoryDto createNewCategoryDto() {
+  static NewCategoryDto createNewCategoryDto() {
     NewCategoryDto categoryDto = new NewCategoryDto();
     categoryDto.setName("Name");
     categoryDto.setDescription("Description");
@@ -36,7 +36,7 @@ public final class TestUtils {
    *
    * @return NewOrderDto
    */
-  public static NewOrderDto createNewOrderDto() {
+  static NewOrderDto createNewOrderDto() {
     NewOrderDto orderDto = new NewOrderDto();
     orderDto.setCode("Code");
     orderDto.setCustomer("Customer");
@@ -50,7 +50,7 @@ public final class TestUtils {
    *
    * @return NewOrderItemDto
    */
-  public static NewOrderItemDto createNewOrderItemDto() {
+  static NewOrderItemDto createNewOrderItemDto() {
     NewOrderItemDto orderItemDto = new NewOrderItemDto();
     RefProductDto productDto = new RefProductDto();
     productDto.setId(1L);
@@ -64,7 +64,7 @@ public final class TestUtils {
    *
    * @return NewProductDto
    */
-  public static NewProductDto createNewProductDto() {
+  static NewProductDto createNewProductDto() {
     NewProductDto productDto = new NewProductDto();
     RefCategoryDto categoryDto = new RefCategoryDto();
     categoryDto.setId(1L);
@@ -81,7 +81,7 @@ public final class TestUtils {
   /**
    * Verifies the equals/hashcode contract on the domain object.
    */
-  public static <T> void equalsVerifier(Class<T> clazz) throws Exception {
+  static <T> void equalsVerifier(Class<T> clazz) throws Exception {
     T domainObject1 = clazz.getConstructor().newInstance();
     assertThat(domainObject1.toString()).isNotNull();
     assertThat(domainObject1).isEqualTo(domainObject1);
@@ -103,7 +103,7 @@ public final class TestUtils {
    * @param obj1 the Object to compare
    * @param obj2 the Object to compare
    */
-  public static void checkEqualHashAndToString(final Object obj1, final Object obj2) {
+  static void checkEqualHashAndToString(final Object obj1, final Object obj2) {
     assertThat(obj1.equals(obj2)).isTrue();
     assertThat(obj1.hashCode()).isEqualTo(obj2.hashCode());
     assertThat(obj1.toString()).isEqualTo(obj2.toString());
@@ -115,12 +115,9 @@ public final class TestUtils {
    * @param obj1 the Object to compare
    * @param obj2 the Object to compare
    */
-  public static void checkNotEqualHashAndToString(final Object obj1, final Object obj2) {
+  static void checkNotEqualHashAndToString(final Object obj1, final Object obj2) {
     assertThat(obj1.equals(obj2)).isFalse();
     assertThat(obj1.hashCode()).isNotEqualTo(obj2.hashCode());
     assertThat(obj1.toString()).isNotEqualTo(obj2.toString());
   }
-
-  private TestUtils() {}
-
 }

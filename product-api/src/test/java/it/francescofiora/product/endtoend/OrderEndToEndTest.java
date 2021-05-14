@@ -19,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = {"classpath:application_test.properties"})
-public class OrderEndToEndTest extends AbstractTestEndToEnd {
+class OrderEndToEndTest extends AbstractTestEndToEnd {
 
 
   private static final String CATEGORIES_URI = "/api/categories";

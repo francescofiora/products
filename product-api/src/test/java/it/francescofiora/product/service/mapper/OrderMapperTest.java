@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.jupiter.api.Test;
 
-public class OrderMapperTest {
+class OrderMapperTest {
 
   private OrderMapper orderMapper = new OrderMapperImpl();
 

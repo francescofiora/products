@@ -59,7 +59,9 @@ public class CategoryApi extends AbstractApi {
       tags = {"category"})
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Category created"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
-      @ApiResponse(responseCode = "409", description = "An existing Category already exists")})
+      @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
+      @ApiResponse(responseCode = "409", description = "An existing Category already exists")
+  })
   @PostMapping("/categories")
   @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> createCategory(
@@ -83,6 +85,7 @@ public class CategoryApi extends AbstractApi {
       tags = {"category"})
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Category updated"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
+      @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @PutMapping("/categories/{id}")
   @PreAuthorize(AUTHORIZE_ADMIN)
@@ -154,6 +157,7 @@ public class CategoryApi extends AbstractApi {
       tags = {"category"})
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Category deleted"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
+      @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/categories/{id}")
   @PreAuthorize(AUTHORIZE_ADMIN)

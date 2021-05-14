@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.MvcResult;
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = ProductApi.class)
 @Import(MethodSecurityConfig.class)
-public class ProductApiTest extends AbstractApiTest {
+class ProductApiTest extends AbstractApiTest {
 
   private static final Long ID = 1L;
   private static final String PRODUCTS_URI = "/api/products";
@@ -42,7 +42,7 @@ public class ProductApiTest extends AbstractApiTest {
   private ProductService productService;
 
   @Test
-  public void testCreate() throws Exception {
+  void testCreate() throws Exception {
     NewProductDto newProductDto = TestUtils.createNewProductDto();
 
     ProductDto productDto = new ProductDto();
@@ -69,7 +69,7 @@ public class ProductApiTest extends AbstractApiTest {
   }
 
   @Test
-  public void testCreateBadRequest() throws Exception {
+  void testCreateBadRequest() throws Exception {
     // Name
     NewProductDto productDto = TestUtils.createNewProductDto();
     productDto.setName(null);
@@ -94,7 +94,7 @@ public class ProductApiTest extends AbstractApiTest {
   }
 
   @Test
-  public void testUpdateBadRequest() throws Exception {
+  void testUpdateBadRequest() throws Exception {
     // id
     UpdatebleProductDto productDto = TestUtils.createUpdatebleProductDto(null);
     performPut(ADMIN, PRODUCTS_ID_URI, ID, productDto).andExpect(status().isBadRequest());
@@ -123,7 +123,7 @@ public class ProductApiTest extends AbstractApiTest {
   }
 
   @Test
-  public void testUpdateProduct() throws Exception {
+  void testUpdateProduct() throws Exception {
     UpdatebleProductDto productDto = TestUtils.createUpdatebleProductDto(ID);
     performPut(ADMIN, PRODUCTS_ID_URI, ID, productDto).andExpect(status().isOk());
   }
@@ -142,7 +142,7 @@ public class ProductApiTest extends AbstractApiTest {
   }
 
   @Test
-  public void testGetAllProducts() throws Exception {
+  void testGetAllProducts() throws Exception {
     Pageable pageable = PageRequest.of(1, 1);
     ProductDto expected = new ProductDto();
     expected.setId(ID);
@@ -166,7 +166,7 @@ public class ProductApiTest extends AbstractApiTest {
   }
 
   @Test
-  public void testGetProduct() throws Exception {
+  void testGetProduct() throws Exception {
     ProductDto expected = new ProductDto();
     expected.setId(ID);
     given(productService.findOne(eq(ID))).willReturn(Optional.of(expected));
@@ -183,7 +183,7 @@ public class ProductApiTest extends AbstractApiTest {
   }
 
   @Test
-  public void testDeleteProduct() throws Exception {
+  void testDeleteProduct() throws Exception {
     performDelete(ADMIN, PRODUCTS_ID_URI, ID).andExpect(status().isNoContent()).andReturn();
   }
 
@@ -197,7 +197,7 @@ public class ProductApiTest extends AbstractApiTest {
   }
 
   @Test
-  public void testWrongUri() throws Exception {
+  void testWrongUri() throws Exception {
     performGet(USER, WRONG_URI).andExpect(status().isNotFound()).andReturn();
   }
 }

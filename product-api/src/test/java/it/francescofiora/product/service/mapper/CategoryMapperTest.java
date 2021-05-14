@@ -7,7 +7,7 @@ import it.francescofiora.product.service.dto.NewCategoryDto;
 import it.francescofiora.product.service.dto.RefCategoryDto;
 import org.junit.jupiter.api.Test;
 
-public class CategoryMapperTest {
+class CategoryMapperTest {
 
   private CategoryMapper categoryMapper = new CategoryMapperImpl();
 

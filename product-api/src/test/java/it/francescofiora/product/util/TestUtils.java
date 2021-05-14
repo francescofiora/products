@@ -22,9 +22,9 @@ import java.time.Instant;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- * Utility class for testing REST controllers.
+ * Utility for testing.
  */
-public final class TestUtils {
+public interface TestUtils {
 
   /**
    * Create User.
@@ -33,7 +33,7 @@ public final class TestUtils {
    * @param role the role
    * @return the User
    */
-  public static User createUser(String username, String password, String role) {
+  static User createUser(String username, String password, String role) {
     User user = new User();
     user.setPassword(new BCryptPasswordEncoder().encode(password));
     user.setAccountNonExpired(true);
@@ -52,7 +52,7 @@ public final class TestUtils {
    * @param id the id
    * @return Category
    */
-  public static Category createCategory(Long id) {
+  static Category createCategory(Long id) {
     Category category = new Category();
     category.setId(id);
     category.setName("Name");
@@ -66,7 +66,7 @@ public final class TestUtils {
    * @param id the id
    * @return Order
    */
-  public static Order createOrder(Long id) {
+  static Order createOrder(Long id) {
     Order order = new Order();
     order.setCode("CODE");
     order.setCustomer("Customer");
@@ -80,7 +80,7 @@ public final class TestUtils {
    * @param id the id
    * @return Order
    */
-  public static Order createPendingOrder(Long id) {
+  static Order createPendingOrder(Long id) {
     Order order = createOrder(id);
     order.setStatus(OrderStatus.PENDING);
     return order;
@@ -92,7 +92,7 @@ public final class TestUtils {
    * @param id the id
    * @return Product
    */
-  public static Product createProduct(Long id) {
+  static Product createProduct(Long id) {
     Product product = new Product();
     product.setName("Name");
     product.setDescription("Description");
@@ -104,7 +104,7 @@ public final class TestUtils {
    *
    * @return NewCategoryDto
    */
-  public static NewCategoryDto createNewCategoryDto() {
+  static NewCategoryDto createNewCategoryDto() {
     NewCategoryDto category = new NewCategoryDto();
     category.setName("New Name");
     category.setDescription("New Description");
@@ -117,7 +117,7 @@ public final class TestUtils {
    * @param id the id
    * @return CategoryDto
    */
-  public static CategoryDto createCategoryDto(Long id) {
+  static CategoryDto createCategoryDto(Long id) {
     CategoryDto category = new CategoryDto();
     category.setId(id);
     category.setName("Name");
@@ -131,7 +131,7 @@ public final class TestUtils {
    * @param id the id of the product
    * @return NewOrderItemDto
    */
-  public static NewOrderItemDto createNewOrderItemDto(Long id) {
+  static NewOrderItemDto createNewOrderItemDto(Long id) {
     NewOrderItemDto item = new NewOrderItemDto();
     RefProductDto product = new RefProductDto();
     product.setId(id);
@@ -146,7 +146,7 @@ public final class TestUtils {
    *
    * @return NewOrderItemDto
    */
-  public static NewOrderItemDto createNewOrderItemDto() {
+  static NewOrderItemDto createNewOrderItemDto() {
     return createNewOrderItemDto(1L);
   }
 
@@ -155,7 +155,7 @@ public final class TestUtils {
    *
    * @return NewOrderDto
    */
-  public static NewOrderDto createNewOrderDto() {
+  static NewOrderDto createNewOrderDto() {
     NewOrderDto order = new NewOrderDto();
     order.setCode("New CODE");
     order.setCustomer("New Customer");
@@ -169,7 +169,7 @@ public final class TestUtils {
    *
    * @return NewOrderDto
    */
-  public static NewOrderDto createNewSimpleOrderDto() {
+  static NewOrderDto createNewSimpleOrderDto() {
     NewOrderDto order = new NewOrderDto();
     order.setCode("New CODE");
     order.setCustomer("New Customer");
@@ -182,7 +182,7 @@ public final class TestUtils {
    *
    * @return NewProductDto
    */
-  public static NewProductDto createNewProductDto() {
+  static NewProductDto createNewProductDto() {
     NewProductDto product = new NewProductDto();
     product.setDescription("New Description");
     product.setImage("New Image");
@@ -200,7 +200,7 @@ public final class TestUtils {
    * @param id the id of the Category
    * @return RefCategoryDto
    */
-  public static RefCategoryDto createRefCategoryDto(Long id) {
+  static RefCategoryDto createRefCategoryDto(Long id) {
     RefCategoryDto category = new RefCategoryDto();
     category.setId(id);
     return category;
@@ -212,7 +212,7 @@ public final class TestUtils {
    * @param id the id
    * @return UpdatebleProductDto
    */
-  public static UpdatebleProductDto createUpdatebleProductDto(Long id) {
+  static UpdatebleProductDto createUpdatebleProductDto(Long id) {
     UpdatebleProductDto product = new UpdatebleProductDto();
     product.setId(id);
     product.setDescription("Description updated");
@@ -231,7 +231,7 @@ public final class TestUtils {
    * @param id the id
    * @return UpdatebleOrderDto
    */
-  public static UpdatebleOrderDto createUpdatebleOrderDto(Long id) {
+  static UpdatebleOrderDto createUpdatebleOrderDto(Long id) {
     UpdatebleOrderDto order = new UpdatebleOrderDto();
     order.setId(id);
     order.setCode("CODE updated");
@@ -243,7 +243,7 @@ public final class TestUtils {
   /**
    * Verifies the equals/hashcode contract on the domain object.
    */
-  public static <T> void equalsVerifier(Class<T> clazz) throws Exception {
+  static <T> void equalsVerifier(Class<T> clazz) throws Exception {
     T domainObject1 = clazz.getConstructor().newInstance();
     assertThat(domainObject1.toString()).isNotNull();
     assertThat(domainObject1).isEqualTo(domainObject1);
@@ -265,7 +265,7 @@ public final class TestUtils {
    * @param obj1 the Object to compare
    * @param obj2 the Object to compare
    */
-  public static void checkEqualHashAndToString(final Object obj1, final Object obj2) {
+  static void checkEqualHashAndToString(final Object obj1, final Object obj2) {
     assertThat(obj1.equals(obj2)).isTrue();
     assertThat(obj1.hashCode()).isEqualTo(obj2.hashCode());
     assertThat(obj1.toString()).isEqualTo(obj2.toString());
@@ -277,11 +277,9 @@ public final class TestUtils {
    * @param obj1 the Object to compare
    * @param obj2 the Object to compare
    */
-  public static void checkNotEqualHashAndToString(final Object obj1, final Object obj2) {
+  static void checkNotEqualHashAndToString(final Object obj1, final Object obj2) {
     assertThat(obj1.equals(obj2)).isFalse();
     assertThat(obj1.hashCode()).isNotEqualTo(obj2.hashCode());
     assertThat(obj1.toString()).isNotEqualTo(obj2.toString());
   }
-
-  private TestUtils() {}
 }
