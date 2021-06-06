@@ -14,12 +14,12 @@ public class NewCategoryDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  @Schema(description = "name", example = "Shirt", required = true)
+  @Schema(description = "Name", example = "Shirt", required = true)
   @JsonProperty("name")
   @NotBlank
   private String name;
 
-  @Schema(description = "description of the category", example = "Shirt", required = true)
+  @Schema(description = "Description of the category", example = "Shirt", required = true)
   @JsonProperty("description")
   @NotBlank
   private String description;

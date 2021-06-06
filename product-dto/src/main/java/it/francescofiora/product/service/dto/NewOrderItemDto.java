@@ -16,7 +16,7 @@ public class NewOrderItemDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  @Schema(description = "quantity", example = "10", required = true)
+  @Schema(description = "Quantity", example = "10", required = true)
   @JsonProperty("quantity")
   @NotNull
   @Positive

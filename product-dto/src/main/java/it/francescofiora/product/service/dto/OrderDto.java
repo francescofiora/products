@@ -24,12 +24,12 @@ public class OrderDto extends BaseOrderDto implements DtoIdentifier, Serializabl
   @NotNull
   private Long id;
 
-  @Schema(description = "total Price", example = "10", required = true)
+  @Schema(description = "Total Price", example = "10", required = true)
   @JsonProperty("totalPrice")
   @NotNull
   private BigDecimal totalPrice;
   
-  @Schema(description = "status", example = "", required = true)
+  @Schema(description = "Status", example = "", required = true)
   @JsonProperty("status")
   @NotNull
   private OrderStatus status;

@@ -23,13 +23,13 @@ public class OrderItemDto implements DtoIdentifier, Serializable {
   @NotNull
   private Long id;
 
-  @Schema(description = "quantity", example = "10", required = true)
+  @Schema(description = "Quantity", example = "10", required = true)
   @JsonProperty("quantity")
   @NotNull
   @Positive
   private Integer quantity;
 
-  @Schema(description = "total Price", example = "10", required = true)
+  @Schema(description = "Total Price", example = "10", required = true)
   @JsonProperty("totalPrice")
   @NotNull
   @DecimalMin(value = "0")

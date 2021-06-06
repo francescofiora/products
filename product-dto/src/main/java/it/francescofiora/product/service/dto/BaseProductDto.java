@@ -14,32 +14,32 @@ import lombok.Setter;
 @Setter
 public abstract class BaseProductDto {
 
-  @Schema(description = "name", example = "SHIRTM01", required = true)
+  @Schema(description = "Name", example = "SHIRTM01", required = true)
   @JsonProperty("name")
   @NotBlank
   private String name;
 
-  @Schema(description = "description of the product", example = "Shirt for Men")
+  @Schema(description = "Description of the product", example = "Shirt for Men")
   @JsonProperty("description")
   @NotBlank
   private String description;
 
-  @Schema(description = "price", example = "10", required = true)
+  @Schema(description = "Price", example = "10", required = true)
   @JsonProperty("price")
   @NotNull
   @DecimalMin(value = "0")
   private BigDecimal price;
 
-  @Schema(description = "size", example = "L", required = true)
+  @Schema(description = "Size", example = "L", required = true)
   @JsonProperty("size")
   @NotNull
   private Size size;
 
-  @Schema(description = "image", example = "image_001.jpg")
+  @Schema(description = "Image", example = "image_001.jpg")
   @JsonProperty("image")
   private String image;
 
-  @Schema(description = "image content type", example = "jpg")
+  @Schema(description = "Image content type", example = "jpg")
   @JsonProperty("imageContentType")
   private String imageContentType;
 

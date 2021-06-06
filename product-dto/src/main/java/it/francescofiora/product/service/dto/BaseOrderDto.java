@@ -13,17 +13,17 @@ import lombok.Setter;
 @Setter
 public abstract class BaseOrderDto {
 
-  @Schema(description = "placed Date", example = "", required = true)
+  @Schema(description = "Placed Date", example = "", required = true)
   @JsonProperty("placedDate")
   @NotNull
   private Instant placedDate;
 
-  @Schema(description = "order code", example = "ORD_1", required = true)
+  @Schema(description = "Order code", example = "ORD_1", required = true)
   @JsonProperty("code")
   @NotBlank
   private String code;
 
-  @Schema(description = "customer", example = "Some Company Ltd", required = true)
+  @Schema(description = "Customer", example = "Some Company Ltd", required = true)
   @JsonProperty("customer")
   @NotBlank
   private String customer;
