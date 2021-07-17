@@ -34,7 +34,7 @@ public interface TestUtils {
    * @return the User
    */
   static User createUser(String username, String password, String role) {
-    User user = new User();
+    var user = new User();
     user.setPassword(new BCryptPasswordEncoder().encode(password));
     user.setAccountNonExpired(true);
     user.setAccountNonLocked(true);
@@ -53,7 +53,7 @@ public interface TestUtils {
    * @return Category
    */
   static Category createCategory(Long id) {
-    Category category = new Category();
+    var category = new Category();
     category.setId(id);
     category.setName("Name");
     category.setDescription("Description");
@@ -67,7 +67,7 @@ public interface TestUtils {
    * @return Order
    */
   static Order createOrder(Long id) {
-    Order order = new Order();
+    var order = new Order();
     order.setCode("CODE");
     order.setCustomer("Customer");
     order.setStatus(OrderStatus.PENDING);
@@ -81,7 +81,7 @@ public interface TestUtils {
    * @return Order
    */
   static Order createPendingOrder(Long id) {
-    Order order = createOrder(id);
+    var order = createOrder(id);
     order.setStatus(OrderStatus.PENDING);
     return order;
   }
@@ -93,7 +93,7 @@ public interface TestUtils {
    * @return Product
    */
   static Product createProduct(Long id) {
-    Product product = new Product();
+    var product = new Product();
     product.setName("Name");
     product.setDescription("Description");
     return product;
@@ -105,7 +105,7 @@ public interface TestUtils {
    * @return NewCategoryDto
    */
   static NewCategoryDto createNewCategoryDto() {
-    NewCategoryDto category = new NewCategoryDto();
+    var category = new NewCategoryDto();
     category.setName("New Name");
     category.setDescription("New Description");
     return category;
@@ -118,7 +118,7 @@ public interface TestUtils {
    * @return CategoryDto
    */
   static CategoryDto createCategoryDto(Long id) {
-    CategoryDto category = new CategoryDto();
+    var category = new CategoryDto();
     category.setId(id);
     category.setName("Name");
     category.setDescription("Description");
@@ -132,8 +132,8 @@ public interface TestUtils {
    * @return NewOrderItemDto
    */
   static NewOrderItemDto createNewOrderItemDto(Long id) {
-    NewOrderItemDto item = new NewOrderItemDto();
-    RefProductDto product = new RefProductDto();
+    var item = new NewOrderItemDto();
+    var product = new RefProductDto();
     product.setId(id);
     item.setProduct(product);
     item.setQuantity(10);
@@ -156,7 +156,7 @@ public interface TestUtils {
    * @return NewOrderDto
    */
   static NewOrderDto createNewOrderDto() {
-    NewOrderDto order = new NewOrderDto();
+    var order = new NewOrderDto();
     order.setCode("New CODE");
     order.setCustomer("New Customer");
     order.setPlacedDate(Instant.now());
@@ -170,7 +170,7 @@ public interface TestUtils {
    * @return NewOrderDto
    */
   static NewOrderDto createNewSimpleOrderDto() {
-    NewOrderDto order = new NewOrderDto();
+    var order = new NewOrderDto();
     order.setCode("New CODE");
     order.setCustomer("New Customer");
     order.setPlacedDate(Instant.now());
@@ -183,7 +183,7 @@ public interface TestUtils {
    * @return NewProductDto
    */
   static NewProductDto createNewProductDto() {
-    NewProductDto product = new NewProductDto();
+    var product = new NewProductDto();
     product.setDescription("New Description");
     product.setImage("New Image");
     product.setImageContentType("JPG");
@@ -201,7 +201,7 @@ public interface TestUtils {
    * @return RefCategoryDto
    */
   static RefCategoryDto createRefCategoryDto(Long id) {
-    RefCategoryDto category = new RefCategoryDto();
+    var category = new RefCategoryDto();
     category.setId(id);
     return category;
   }
@@ -213,7 +213,7 @@ public interface TestUtils {
    * @return UpdatebleProductDto
    */
   static UpdatebleProductDto createUpdatebleProductDto(Long id) {
-    UpdatebleProductDto product = new UpdatebleProductDto();
+    var product = new UpdatebleProductDto();
     product.setId(id);
     product.setDescription("Description updated");
     product.setImage("Image updated");
@@ -232,7 +232,7 @@ public interface TestUtils {
    * @return UpdatebleOrderDto
    */
   static UpdatebleOrderDto createUpdatebleOrderDto(Long id) {
-    UpdatebleOrderDto order = new UpdatebleOrderDto();
+    var order = new UpdatebleOrderDto();
     order.setId(id);
     order.setCode("CODE updated");
     order.setCustomer("Customer updated");
@@ -244,16 +244,16 @@ public interface TestUtils {
    * Verifies the equals/hashcode contract on the domain object.
    */
   static <T> void equalsVerifier(Class<T> clazz) throws Exception {
-    T domainObject1 = clazz.getConstructor().newInstance();
+    var domainObject1 = clazz.getConstructor().newInstance();
     assertThat(domainObject1.toString()).isNotNull();
     assertThat(domainObject1).isEqualTo(domainObject1);
     assertThat(domainObject1.hashCode()).isEqualTo(domainObject1.hashCode());
     // Test with an instance of another class
-    Object testOtherObject = new Object();
+    var testOtherObject = new Object();
     assertThat(domainObject1).isNotEqualTo(testOtherObject);
     assertThat(domainObject1).isNotEqualTo(null);
     // Test with an instance of the same class
-    T domainObject2 = clazz.getConstructor().newInstance();
+    var domainObject2 = clazz.getConstructor().newInstance();
     assertThat(domainObject1).isNotEqualTo(domainObject2);
     // HashCodes are equals because the objects are not persisted yet
     assertThat(domainObject1.hashCode()).isEqualTo(domainObject2.hashCode());

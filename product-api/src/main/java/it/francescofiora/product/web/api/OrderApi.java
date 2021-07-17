@@ -11,7 +11,6 @@ import it.francescofiora.product.service.OrderService;
 import it.francescofiora.product.service.dto.NewOrderDto;
 import it.francescofiora.product.service.dto.NewOrderItemDto;
 import it.francescofiora.product.service.dto.OrderDto;
-import it.francescofiora.product.service.dto.OrderItemDto;
 import it.francescofiora.product.service.dto.UpdatebleOrderDto;
 import it.francescofiora.product.web.errors.BadRequestAlertException;
 import java.net.URISyntaxException;
@@ -71,7 +70,7 @@ public class OrderApi extends AbstractApi {
       @Parameter(description = "Add new Order") @Valid @RequestBody NewOrderDto orderDto)
       throws URISyntaxException {
     log.debug("REST request to create a new Order : {}", orderDto);
-    OrderDto result = orderService.create(orderDto);
+    var result = orderService.create(orderDto);
     return postResponse("/api/orders/" + result.getId(), result.getId());
   }
 
@@ -184,7 +183,7 @@ public class OrderApi extends AbstractApi {
       @Parameter(description = "Item to add") @Valid @RequestBody NewOrderItemDto orderItemDto)
       throws URISyntaxException {
     log.debug("REST request to add a new Item {} to the order {}", orderItemDto, id);
-    OrderItemDto result = orderService.addOrderItem(id, orderItemDto);
+    var result = orderService.addOrderItem(id, orderItemDto);
     return postResponse(ENTITY_ORDER_ITEM, "/api/orders/" + id + "/items/" + result.getId(),
         result.getId());
   }

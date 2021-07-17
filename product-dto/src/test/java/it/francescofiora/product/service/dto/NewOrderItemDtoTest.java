@@ -9,14 +9,14 @@ public class NewOrderItemDtoTest {
 
   @Test
   void dtoEqualsVerifier() throws Exception {
-    NewOrderItemDto itemDto1 = TestUtils.createNewOrderItemDto();
-    NewOrderItemDto itemDto2 = new NewOrderItemDto();
+    var itemDto1 = TestUtils.createNewOrderItemDto();
+    var itemDto2 = new NewOrderItemDto();
     assertThat(itemDto1).isNotEqualTo(itemDto2);
 
     itemDto2 = TestUtils.createNewOrderItemDto();
     TestUtils.checkEqualHashAndToString(itemDto1, itemDto2);
 
-    RefProductDto productDto = new RefProductDto();
+    var productDto = new RefProductDto();
     productDto.setId(2L);
     itemDto2.setProduct(productDto);
     TestUtils.checkNotEqualHashAndToString(itemDto1, itemDto2);

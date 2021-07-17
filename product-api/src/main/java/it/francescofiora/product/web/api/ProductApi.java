@@ -67,7 +67,7 @@ public class ProductApi extends AbstractApi {
       @Parameter(description = "Add new Product") @Valid @RequestBody NewProductDto productDto)
       throws URISyntaxException {
     log.debug("REST request to create Product : {}", productDto);
-    ProductDto result = productService.create(productDto);
+    var result = productService.create(productDto);
     return postResponse("/api/products/" + result.getId(), result.getId());
   }
 

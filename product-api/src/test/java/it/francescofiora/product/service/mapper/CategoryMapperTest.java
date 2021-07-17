@@ -13,7 +13,7 @@ class CategoryMapperTest {
 
   @Test
   void testEntityFromId() {
-    Long id = 1L;
+    var id = 1L;
     assertThat(categoryMapper.fromId(id).getId()).isEqualTo(id);
     assertThat(categoryMapper.fromId(null)).isNull();
   }
@@ -22,10 +22,10 @@ class CategoryMapperTest {
   void testNullObject() {
     assertThat(categoryMapper.toDto(null)).isNull();
 
-    NewCategoryDto categoryDto = null;
+    var categoryDto = (NewCategoryDto)null;
     assertThat(categoryMapper.toEntity(categoryDto)).isNull();
 
-    RefCategoryDto dto = null;
+    var dto = (RefCategoryDto)null;
     assertThat(categoryMapper.toEntity(dto)).isNull();
 
     assertDoesNotThrow(() -> categoryMapper.updateEntityFromDto(null, null));

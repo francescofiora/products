@@ -1,9 +1,7 @@
 package it.francescofiora.product.service.impl;
 
-import it.francescofiora.product.domain.User;
 import it.francescofiora.product.repository.UserRepository;
 import it.francescofiora.product.web.errors.NotFoundAlertException;
-import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Optional<User> option = userRepository.findByUsername(username);
+    var option = userRepository.findByUsername(username);
     if (!option.isPresent()) {
       throw new NotFoundAlertException(ENTITY_NAME, username, "'username' not found");
     }

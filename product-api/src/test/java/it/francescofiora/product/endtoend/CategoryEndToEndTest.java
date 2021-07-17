@@ -3,9 +3,7 @@ package it.francescofiora.product.endtoend;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import it.francescofiora.product.service.dto.CategoryDto;
-import it.francescofiora.product.service.dto.NewCategoryDto;
 import it.francescofiora.product.util.TestUtils;
-import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,24 +38,24 @@ class CategoryEndToEndTest extends AbstractTestEndToEnd {
 
   @Test
   void testCreate() throws Exception {
-    NewCategoryDto newCategoryDto = TestUtils.createNewCategoryDto();
-    Long categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, newCategoryDto, ALERT_CREATED);
+    var newCategoryDto = TestUtils.createNewCategoryDto();
+    var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, newCategoryDto, ALERT_CREATED);
 
-    final String categoryIdUri = String.format(CATEGORIES_ID_URI, categoryId);
+    final var categoryIdUri = String.format(CATEGORIES_ID_URI, categoryId);
 
-    CategoryDto categoryDto = TestUtils.createCategoryDto(categoryId);
+    var categoryDto = TestUtils.createCategoryDto(categoryId);
     update(ADMIN, categoryIdUri, categoryDto, ALERT_UPDATED, String.valueOf(categoryId));
 
-    CategoryDto actual =
+    var actual =
         get(ADMIN, categoryIdUri, CategoryDto.class, ALERT_GET, String.valueOf(categoryId));
     assertThat(actual).isEqualTo(categoryDto);
     assertThat(actual.getName()).isEqualTo(categoryDto.getName());
     assertThat(actual.getDescription()).isEqualTo(categoryDto.getDescription());
 
-    CategoryDto[] categories = get(ADMIN, CATEGORIES_URI, PageRequest.of(1, 1), CategoryDto[].class,
+    var categories = get(ADMIN, CATEGORIES_URI, PageRequest.of(1, 1), CategoryDto[].class,
         ALERT_GET, PARAM_PAGE_20);
     assertThat(categories).isNotEmpty();
-    Optional<CategoryDto> option =
+    var option =
         Stream.of(categories).filter(category -> category.getId().equals(categoryId)).findAny();
     assertThat(option).isPresent();
     assertThat(option.get()).isEqualTo(categoryDto);
@@ -93,7 +91,7 @@ class CategoryEndToEndTest extends AbstractTestEndToEnd {
     assertUpdateBadRequest(ADMIN, String.format(CATEGORIES_ID_URI, 1L),
         TestUtils.createCategoryDto(null), ALERT_BAD_REQUEST, PARAM_ID_NOT_NULL);
 
-    Long id =
+    var id =
         createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(), ALERT_CREATED);
 
     assertUpdateBadRequest(ADMIN, String.format(CATEGORIES_ID_URI, (id + 1)),
@@ -102,7 +100,7 @@ class CategoryEndToEndTest extends AbstractTestEndToEnd {
     final String path = String.format(CATEGORIES_ID_URI, id);
 
     // Name
-    CategoryDto categoryDto = TestUtils.createCategoryDto(id);
+    var categoryDto = TestUtils.createCategoryDto(id);
     categoryDto.setName(null);
     assertUpdateBadRequest(ADMIN, path, categoryDto, ALERT_BAD_REQUEST, PARAM_NAME_NOT_BLANK);
 

@@ -11,9 +11,7 @@ import it.francescofiora.product.config.MethodSecurityConfig;
 import it.francescofiora.product.service.ProductService;
 import it.francescofiora.product.service.dto.NewProductDto;
 import it.francescofiora.product.service.dto.ProductDto;
-import it.francescofiora.product.service.dto.UpdatebleProductDto;
 import it.francescofiora.product.util.TestUtils;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -26,7 +24,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MvcResult;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = ProductApi.class)
@@ -43,13 +40,13 @@ class ProductApiTest extends AbstractApiTest {
 
   @Test
   void testCreate() throws Exception {
-    NewProductDto newProductDto = TestUtils.createNewProductDto();
+    var newProductDto = TestUtils.createNewProductDto();
 
-    ProductDto productDto = new ProductDto();
+    var productDto = new ProductDto();
     productDto.setId(ID);
     given(productService.create(any(NewProductDto.class))).willReturn(productDto);
 
-    MvcResult result =
+    var result =
         performPost(ADMIN, PRODUCTS_URI, newProductDto).andExpect(status().isCreated()).andReturn();
 
     assertThat(result.getResponse().getHeaderValue(HttpHeaders.LOCATION))
@@ -58,7 +55,7 @@ class ProductApiTest extends AbstractApiTest {
 
   @Test
   void testCreateForbidden() throws Exception {
-    NewProductDto newProductDto = TestUtils.createNewProductDto();
+    var newProductDto = TestUtils.createNewProductDto();
 
     performPost(USER, PRODUCTS_URI, newProductDto).andExpect(status().isForbidden());
 
@@ -71,7 +68,7 @@ class ProductApiTest extends AbstractApiTest {
   @Test
   void testCreateBadRequest() throws Exception {
     // Name
-    NewProductDto productDto = TestUtils.createNewProductDto();
+    var productDto = TestUtils.createNewProductDto();
     productDto.setName(null);
     performPost(ADMIN, PRODUCTS_URI, productDto).andExpect(status().isBadRequest());
 
@@ -96,7 +93,7 @@ class ProductApiTest extends AbstractApiTest {
   @Test
   void testUpdateBadRequest() throws Exception {
     // id
-    UpdatebleProductDto productDto = TestUtils.createUpdatebleProductDto(null);
+    var productDto = TestUtils.createUpdatebleProductDto(null);
     performPut(ADMIN, PRODUCTS_ID_URI, ID, productDto).andExpect(status().isBadRequest());
 
     // Name
@@ -124,13 +121,13 @@ class ProductApiTest extends AbstractApiTest {
 
   @Test
   void testUpdateProduct() throws Exception {
-    UpdatebleProductDto productDto = TestUtils.createUpdatebleProductDto(ID);
+    var productDto = TestUtils.createUpdatebleProductDto(ID);
     performPut(ADMIN, PRODUCTS_ID_URI, ID, productDto).andExpect(status().isOk());
   }
 
   @Test
   void testUpdateForbidden() throws Exception {
-    UpdatebleProductDto productDto = TestUtils.createUpdatebleProductDto(ID);
+    var productDto = TestUtils.createUpdatebleProductDto(ID);
 
     performPut(USER, PRODUCTS_ID_URI, ID, productDto).andExpect(status().isForbidden());
 
@@ -143,22 +140,21 @@ class ProductApiTest extends AbstractApiTest {
 
   @Test
   void testGetAllProducts() throws Exception {
-    Pageable pageable = PageRequest.of(1, 1);
-    ProductDto expected = new ProductDto();
+    var pageable = PageRequest.of(1, 1);
+    var expected = new ProductDto();
     expected.setId(ID);
     given(productService.findAll(any(Pageable.class)))
-        .willReturn(new PageImpl<ProductDto>(Collections.singletonList(expected)));
+        .willReturn(new PageImpl<ProductDto>(List.of(expected)));
 
-    MvcResult result =
-        performGet(USER, PRODUCTS_URI, pageable).andExpect(status().isOk()).andReturn();
-    List<ProductDto> list = readValue(result, new TypeReference<List<ProductDto>>() {});
+    var result = performGet(USER, PRODUCTS_URI, pageable).andExpect(status().isOk()).andReturn();
+    var list = readValue(result, new TypeReference<List<ProductDto>>() {});
     assertThat(list).isNotNull().isNotEmpty();
     assertThat(list.get(0)).isEqualTo(expected);
   }
 
   @Test
   void testGetAllForbidden() throws Exception {
-    Pageable pageable = PageRequest.of(1, 1);
+    var pageable = PageRequest.of(1, 1);
 
     performGet(USER_NOT_EXIST, PRODUCTS_URI, pageable).andExpect(status().isUnauthorized());
 
@@ -167,11 +163,11 @@ class ProductApiTest extends AbstractApiTest {
 
   @Test
   void testGetProduct() throws Exception {
-    ProductDto expected = new ProductDto();
+    var expected = new ProductDto();
     expected.setId(ID);
     given(productService.findOne(eq(ID))).willReturn(Optional.of(expected));
-    MvcResult result = performGet(USER, PRODUCTS_ID_URI, ID).andExpect(status().isOk()).andReturn();
-    ProductDto actual = readValue(result, new TypeReference<ProductDto>() {});
+    var result = performGet(USER, PRODUCTS_ID_URI, ID).andExpect(status().isOk()).andReturn();
+    var actual = readValue(result, new TypeReference<ProductDto>() {});
     assertThat(actual).isNotNull().isEqualTo(expected);
   }
 

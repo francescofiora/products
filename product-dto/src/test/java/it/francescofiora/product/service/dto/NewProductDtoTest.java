@@ -11,8 +11,8 @@ public class NewProductDtoTest {
 
   @Test
   void dtoEqualsVerifier() throws Exception {
-    NewProductDto productDto1 = TestUtils.createNewProductDto();
-    NewProductDto productDto2 = new NewProductDto();
+    var productDto1 = TestUtils.createNewProductDto();
+    var productDto2 = new NewProductDto();
     assertThat(productDto1).isNotEqualTo(productDto2);
 
     productDto2 = TestUtils.createNewProductDto();
@@ -32,7 +32,7 @@ public class NewProductDtoTest {
 
     productDto1 = TestUtils.createNewProductDto();
     productDto2 = TestUtils.createNewProductDto();
-    RefCategoryDto categoryDto = new RefCategoryDto();
+    var categoryDto = new RefCategoryDto();
     categoryDto.setId(3L);
     productDto2.setCategory(categoryDto);
     TestUtils.checkNotEqualHashAndToString(productDto1, productDto2);

@@ -13,7 +13,7 @@ class ProductMapperTest {
 
   @Test
   void testEntityFromId() {
-    Long id = 1L;
+    var id = 1L;
     assertThat(productMapper.fromId(id).getId()).isEqualTo(id);
     assertThat(productMapper.fromId(null)).isNull();
   }
@@ -22,10 +22,10 @@ class ProductMapperTest {
   void testNullObject() {
     assertThat(productMapper.toDto(null)).isNull();
 
-    NewProductDto productDto = null;
+    var productDto = (NewProductDto) null;
     assertThat(productMapper.toEntity(productDto)).isNull();
 
-    RefProductDto dto = null;
+    var dto = (RefProductDto) null;
     assertThat(productMapper.toEntity(dto)).isNull();
 
     assertDoesNotThrow(() -> productMapper.updateEntityFromDto(null, null));

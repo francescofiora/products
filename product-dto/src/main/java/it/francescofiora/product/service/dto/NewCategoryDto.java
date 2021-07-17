@@ -33,7 +33,7 @@ public class NewCategoryDto implements Serializable {
       return false;
     }
 
-    NewCategoryDto other = (NewCategoryDto) obj;
+    var other = (NewCategoryDto) obj;
     return Objects.equals(getName(), other.getName())
         && Objects.equals(getDescription(), other.getDescription());
   }

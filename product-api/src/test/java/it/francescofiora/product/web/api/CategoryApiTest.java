@@ -12,7 +12,6 @@ import it.francescofiora.product.service.CategoryService;
 import it.francescofiora.product.service.dto.CategoryDto;
 import it.francescofiora.product.service.dto.NewCategoryDto;
 import it.francescofiora.product.util.TestUtils;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MvcResult;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = CategoryApi.class)
@@ -42,14 +40,14 @@ class CategoryApiTest extends AbstractApiTest {
 
   @Test
   void testCreate() throws Exception {
-    NewCategoryDto newCategoryDto = TestUtils.createNewCategoryDto();
+    var newCategoryDto = TestUtils.createNewCategoryDto();
 
-    CategoryDto categoryDto = new CategoryDto();
+    var categoryDto = new CategoryDto();
     categoryDto.setId(ID);
     given(categoryService.create(any(NewCategoryDto.class))).willReturn(categoryDto);
 
-    MvcResult result = performPost(ADMIN, CATEGORIES_URI, newCategoryDto)
-        .andExpect(status().isCreated()).andReturn();
+    var result = performPost(ADMIN, CATEGORIES_URI, newCategoryDto).andExpect(status().isCreated())
+        .andReturn();
 
     assertThat(result.getResponse().getHeaderValue(HttpHeaders.LOCATION))
         .isEqualTo(CATEGORIES_URI + "/" + ID);
@@ -57,7 +55,7 @@ class CategoryApiTest extends AbstractApiTest {
 
   @Test
   void testCreateForbidden() throws Exception {
-    NewCategoryDto newCategoryDto = TestUtils.createNewCategoryDto();
+    var newCategoryDto = TestUtils.createNewCategoryDto();
 
     performPost(USER, CATEGORIES_URI, newCategoryDto).andExpect(status().isForbidden());
 
@@ -71,7 +69,7 @@ class CategoryApiTest extends AbstractApiTest {
   @Test
   void testCreateBadRequest() throws Exception {
     // Name
-    NewCategoryDto categoryDto = TestUtils.createNewCategoryDto();
+    var categoryDto = TestUtils.createNewCategoryDto();
     categoryDto.setName(null);
     performPost(ADMIN, CATEGORIES_URI, categoryDto).andExpect(status().isBadRequest());
 
@@ -87,7 +85,7 @@ class CategoryApiTest extends AbstractApiTest {
   @Test
   void testUpdateBadRequest() throws Exception {
     // id
-    CategoryDto categoryDto = TestUtils.createCategoryDto(null);
+    var categoryDto = TestUtils.createCategoryDto(null);
     performPut(ADMIN, CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isBadRequest());
 
     // Name
@@ -106,13 +104,13 @@ class CategoryApiTest extends AbstractApiTest {
 
   @Test
   void testUpdate() throws Exception {
-    CategoryDto categoryDto = TestUtils.createCategoryDto(ID);
+    var categoryDto = TestUtils.createCategoryDto(ID);
     performPut(ADMIN, CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isOk());
   }
 
   @Test
   void testUpdateForbidden() throws Exception {
-    CategoryDto categoryDto = TestUtils.createCategoryDto(ID);
+    var categoryDto = TestUtils.createCategoryDto(ID);
 
     performPut(USER, CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isForbidden());
 
@@ -125,22 +123,21 @@ class CategoryApiTest extends AbstractApiTest {
 
   @Test
   void testGetAll() throws Exception {
-    Pageable pageable = PageRequest.of(1, 1);
-    CategoryDto expected = new CategoryDto();
+    var pageable = PageRequest.of(1, 1);
+    var expected = new CategoryDto();
     expected.setId(ID);
     given(categoryService.findAll(any(Pageable.class)))
-        .willReturn(new PageImpl<CategoryDto>(Collections.singletonList(expected)));
+        .willReturn(new PageImpl<CategoryDto>(List.of(expected)));
 
-    MvcResult result =
-        performGet(USER, CATEGORIES_URI, pageable).andExpect(status().isOk()).andReturn();
-    List<CategoryDto> list = readValue(result, new TypeReference<List<CategoryDto>>() {});
+    var result = performGet(USER, CATEGORIES_URI, pageable).andExpect(status().isOk()).andReturn();
+    var list = readValue(result, new TypeReference<List<CategoryDto>>() {});
     assertThat(list).isNotNull().isNotEmpty();
     assertThat(list.get(0)).isEqualTo(expected);
   }
 
   @Test
   void testGetAllForbidden() throws Exception {
-    Pageable pageable = PageRequest.of(1, 1);
+    var pageable = PageRequest.of(1, 1);
 
     performGet(USER_NOT_EXIST, CATEGORIES_URI, pageable).andExpect(status().isUnauthorized());
 
@@ -149,12 +146,11 @@ class CategoryApiTest extends AbstractApiTest {
 
   @Test
   void testGet() throws Exception {
-    CategoryDto expected = new CategoryDto();
+    var expected = new CategoryDto();
     expected.setId(ID);
     given(categoryService.findOne(eq(ID))).willReturn(Optional.of(expected));
-    MvcResult result =
-        performGet(USER, CATEGORIES_ID_URI, ID).andExpect(status().isOk()).andReturn();
-    CategoryDto actual = readValue(result, new TypeReference<CategoryDto>() {});
+    var result = performGet(USER, CATEGORIES_ID_URI, ID).andExpect(status().isOk()).andReturn();
+    var actual = readValue(result, new TypeReference<CategoryDto>() {});
     assertThat(actual).isNotNull().isEqualTo(expected);
   }
 

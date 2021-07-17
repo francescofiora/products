@@ -10,8 +10,8 @@ public class NewOrderDtoTest {
 
   @Test
   void dtoEqualsVerifier() throws Exception {
-    NewOrderDto orderDto1 = TestUtils.createNewOrderDto();
-    NewOrderDto orderDto2 = new NewOrderDto();
+    var orderDto1 = TestUtils.createNewOrderDto();
+    var orderDto2 = new NewOrderDto();
     assertThat(orderDto1).isNotEqualTo(orderDto2);
 
     orderDto2 = TestUtils.createNewOrderDto();

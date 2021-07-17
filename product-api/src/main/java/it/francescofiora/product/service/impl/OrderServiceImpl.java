@@ -2,7 +2,6 @@ package it.francescofiora.product.service.impl;
 
 import it.francescofiora.product.domain.Order;
 import it.francescofiora.product.domain.OrderItem;
-import it.francescofiora.product.domain.Product;
 import it.francescofiora.product.repository.OrderItemRepository;
 import it.francescofiora.product.repository.OrderRepository;
 import it.francescofiora.product.repository.ProductRepository;
@@ -72,10 +71,10 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public OrderDto create(NewOrderDto orderDto) {
     log.debug("Request to create a new Order : {}", orderDto);
-    Order order = orderMapper.toEntity(orderDto);
+    var order = orderMapper.toEntity(orderDto);
     order.setStatus(OrderStatus.PENDING);
     order = orderRepository.save(order);
-    for (OrderItem item : order.getOrderItems()) {
+    for (var item : order.getOrderItems()) {
       if (item == null) {
         throw new BadRequestAlertException("NewOrderItemDto",
             "newOrderDto.items.item - NotNull", "an item can not be null");
@@ -88,9 +87,9 @@ public class OrderServiceImpl implements OrderService {
   }
 
   private void setTotalPrice(OrderItem item) {
-    Optional<Product> productOpt = productRepository.findById(item.getProduct().getId());
+    var productOpt = productRepository.findById(item.getProduct().getId());
     if (!productOpt.isPresent()) {
-      String id = String.valueOf(item.getProduct().getId());
+      var id = String.valueOf(item.getProduct().getId());
       throw new NotFoundAlertException(ProductServiceImpl.ENTITY_NAME, id, PRODUCT_NOT_FOUND);
     }
     item.setProduct(productOpt.get());
@@ -100,9 +99,9 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public OrderItemDto addOrderItem(Long orderId, NewOrderItemDto orderItemDto) {
     log.debug("Request to create a new item {} to the Order {}", orderItemDto, orderId);
-    Order order = findOrderById(orderId);
+    var order = findOrderById(orderId);
     checkOrderUpdateble(order);
-    OrderItem orderItem = orderItemMapper.toEntity(orderItemDto);
+    var orderItem = orderItemMapper.toEntity(orderItemDto);
     orderItem.setOrder(order);
     setTotalPrice(orderItem);
     orderItem = orderItemRepository.save(orderItem);
@@ -112,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public void patch(UpdatebleOrderDto orderDto) {
     log.debug("Request to patch Order : {}", orderDto);
-    Order order = findOrderById(orderDto.getId());
+    var order = findOrderById(orderDto.getId());
     checkOrderUpdateble(order);
     orderMapper.updateEntityFromDto(orderDto, order);
     orderRepository.save(order);
@@ -135,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public void delete(Long id) {
     log.debug("Request to delete Order : {}", id);
-    Order order = findOrderById(id);
+    var order = findOrderById(id);
     checkOrderUpdateble(order);
     order.getOrderItems().forEach(item -> orderItemRepository.delete(item));
     orderRepository.deleteById(id);
@@ -150,13 +149,13 @@ public class OrderServiceImpl implements OrderService {
 
   private void checkOrderUpdateble(Order order) {
     if (!OrderStatus.PENDING.equals(order.getStatus())) {
-      Long id = order.getId();
+      var id = order.getId();
       throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(id), ORDER_NOT_UPDATEBLE);
     }
   }
 
   private Order findOrderById(Long id) {
-    Optional<Order> optOrder = orderRepository.findById(id);
+    var optOrder = orderRepository.findById(id);
     if (!optOrder.isPresent()) {
       throw new NotFoundAlertException(ENTITY_NAME, String.valueOf(id), ORDER_NOT_FOUND);
     }

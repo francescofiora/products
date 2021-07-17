@@ -49,13 +49,13 @@ class OrderApiTest extends AbstractApiTest {
 
   @Test
   void testCreate() throws Exception {
-    NewOrderDto newOrderDto = TestUtils.createNewOrderDto();
+    var newOrderDto = TestUtils.createNewOrderDto();
 
-    OrderDto orderDto = new OrderDto();
+    var orderDto = new OrderDto();
     orderDto.setId(ID);
     given(orderService.create(any(NewOrderDto.class))).willReturn(orderDto);
 
-    MvcResult result =
+    var result =
         performPost(USER, ORDERS_URI, newOrderDto).andExpect(status().isCreated()).andReturn();
 
     assertThat(result.getResponse().getHeaderValue(HttpHeaders.LOCATION))
@@ -64,7 +64,7 @@ class OrderApiTest extends AbstractApiTest {
 
   @Test
   void testCreateForbidden() throws Exception {
-    NewOrderDto newOrderDto = TestUtils.createNewOrderDto();
+    var newOrderDto = TestUtils.createNewOrderDto();
 
     performPost(USER_NOT_EXIST, ORDERS_URI, newOrderDto).andExpect(status().isUnauthorized());
 
@@ -74,7 +74,7 @@ class OrderApiTest extends AbstractApiTest {
   @Test
   void testCreateBadRequest() throws Exception {
     // Code
-    NewOrderDto newOrderDto = TestUtils.createNewOrderDto();
+    var newOrderDto = TestUtils.createNewOrderDto();
     newOrderDto.setCode(null);
     performPost(USER, ORDERS_URI, newOrderDto).andExpect(status().isBadRequest());
 
@@ -135,7 +135,7 @@ class OrderApiTest extends AbstractApiTest {
   @Test
   void testUpdateBadRequest() throws Exception {
     // id
-    UpdatebleOrderDto orderDto = TestUtils.createUpdatebleOrderDto(null);
+    var orderDto = TestUtils.createUpdatebleOrderDto(null);
     performPatch(USER, ORDERS_ID_URI, ID, orderDto).andExpect(status().isBadRequest());
 
     // code
@@ -172,7 +172,7 @@ class OrderApiTest extends AbstractApiTest {
 
   @Test
   void testUpdate() throws Exception {
-    UpdatebleOrderDto orderDto = TestUtils.createUpdatebleOrderDto(ID);
+    var orderDto = TestUtils.createUpdatebleOrderDto(ID);
     performPatch(USER, ORDERS_ID_URI, ID, orderDto).andExpect(status().isOk());
   }
 
@@ -192,7 +192,7 @@ class OrderApiTest extends AbstractApiTest {
     OrderDto expected = new OrderDto();
     expected.setId(ID);
     given(orderService.findAll(any(Pageable.class)))
-        .willReturn(new PageImpl<OrderDto>(Collections.singletonList(expected)));
+        .willReturn(new PageImpl<OrderDto>(List.of(expected)));
 
     MvcResult result =
         performGet(USER, ORDERS_URI, pageable).andExpect(status().isOk()).andReturn();

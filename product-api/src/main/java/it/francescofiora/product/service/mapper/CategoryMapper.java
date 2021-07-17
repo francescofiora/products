@@ -36,7 +36,7 @@ public interface CategoryMapper {
     if (id == null) {
       return null;
     }
-    Category category = new Category();
+    var category = new Category();
     category.setId(id);
     return category;
   }

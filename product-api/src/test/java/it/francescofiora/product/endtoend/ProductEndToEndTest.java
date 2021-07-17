@@ -2,12 +2,9 @@ package it.francescofiora.product.endtoend;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import it.francescofiora.product.service.dto.NewProductDto;
 import it.francescofiora.product.service.dto.ProductDto;
-import it.francescofiora.product.service.dto.UpdatebleProductDto;
 import it.francescofiora.product.util.TestUtils;
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,22 +47,22 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
 
   @Test
   void testCreate() throws Exception {
-    Long categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
+    var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
 
-    NewProductDto newProductDto = TestUtils.createNewProductDto();
+    var newProductDto = TestUtils.createNewProductDto();
     newProductDto.setCategory(TestUtils.createRefCategoryDto(categoryId));
-    Long productId = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_CREATED);
+    var productId = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_CREATED);
 
-    final String productIdUri = String.format(PRODUCTS_ID_URI, productId);
+    final var productIdUri = String.format(PRODUCTS_ID_URI, productId);
 
     categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
-    UpdatebleProductDto productDto = TestUtils.createUpdatebleProductDto(productId);
+    var productDto = TestUtils.createUpdatebleProductDto(productId);
     productDto.setCategory(TestUtils.createRefCategoryDto(categoryId));
     update(ADMIN, productIdUri, productDto, ALERT_UPDATED, String.valueOf(productId));
 
-    ProductDto actual =
+    var actual =
         get(ADMIN, productIdUri, ProductDto.class, ALERT_GET, String.valueOf(productId));
     assertThat(actual.getId()).isEqualTo(productDto.getId());
     assertThat(actual.getCategory().getId()).isEqualTo(productDto.getCategory().getId());
@@ -76,10 +73,10 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
     assertThat(actual.getPrice().toBigInteger()).isEqualTo(productDto.getPrice().toBigInteger());
     assertThat(actual.getSize()).isEqualTo(productDto.getSize());
 
-    ProductDto[] products = get(ADMIN, PRODUCTS_URI, PageRequest.of(1, 1), ProductDto[].class,
+    var products = get(ADMIN, PRODUCTS_URI, PageRequest.of(1, 1), ProductDto[].class,
         ALERT_GET, PARAM_PAGE_20);
     assertThat(products).isNotEmpty();
-    Optional<ProductDto> option =
+    var option =
         Stream.of(products).filter(product -> product.getId().equals(productId)).findAny();
     assertThat(option).isPresent();
     assertThat(option.get()).isEqualTo(actual);
@@ -92,7 +89,7 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
 
   @Test
   void testCreateBadRequest() throws Exception {
-    NewProductDto newProductDto = TestUtils.createNewProductDto();
+    var newProductDto = TestUtils.createNewProductDto();
     newProductDto.setCategory(TestUtils.createRefCategoryDto(100L));
     assertCreateNotFound(ADMIN, PRODUCTS_URI, newProductDto, ALERT_CATEGORY_NOT_FOUND,
         String.valueOf(newProductDto.getCategory().getId()));
@@ -124,19 +121,19 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
     assertUpdateBadRequest(ADMIN, String.format(PRODUCTS_ID_URI, 1L),
         TestUtils.createUpdatebleProductDto(null), ALERT_UPDATE_BAD_REQUEST, PARAM_ID_NOT_NULL);
 
-    Long categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
+    var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
-    NewProductDto newProductDto = TestUtils.createNewProductDto();
+    var newProductDto = TestUtils.createNewProductDto();
     newProductDto.setCategory(TestUtils.createRefCategoryDto(categoryId));
-    Long id = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_CREATED);
+    var id = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_CREATED);
 
     assertUpdateBadRequest(ADMIN, String.format(PRODUCTS_ID_URI, (id + 1)),
         TestUtils.createUpdatebleProductDto(id), ALERT_UPDATE_BAD_REQUEST, String.valueOf(id));
 
-    final String path = String.format(PRODUCTS_ID_URI, id);
+    final var path = String.format(PRODUCTS_ID_URI, id);
 
     // Name
-    UpdatebleProductDto productDto = TestUtils.createUpdatebleProductDto(id);
+    var productDto = TestUtils.createUpdatebleProductDto(id);
     productDto.setName(null);
     assertUpdateBadRequest(ADMIN, path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_NAME_NOT_BLANK);
 

@@ -40,7 +40,7 @@ public interface ProductMapper {
     if (id == null) {
       return null;
     }
-    Product product = new Product();
+    var product = new Product();
     product.setId(id);
     return product;
   }

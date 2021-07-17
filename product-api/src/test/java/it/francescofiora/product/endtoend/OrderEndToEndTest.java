@@ -2,11 +2,8 @@ package it.francescofiora.product.endtoend;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import it.francescofiora.product.service.dto.NewOrderDto;
-import it.francescofiora.product.service.dto.NewProductDto;
 import it.francescofiora.product.service.dto.OrderDto;
 import it.francescofiora.product.util.TestUtils;
-import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,29 +51,28 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
 
   @Test
   void testCreate() throws Exception {
-    Long categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
+    var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
 
-    NewProductDto newProductDto = TestUtils.createNewProductDto();
+    var newProductDto = TestUtils.createNewProductDto();
     newProductDto.setCategory(TestUtils.createRefCategoryDto(categoryId));
-    Long productId = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_PRODUCT_CREATED);
+    var productId = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_PRODUCT_CREATED);
 
-    NewOrderDto newOrderDto = TestUtils.createNewSimpleOrderDto();
+    var newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
-    Long orderId = createAndReturnId(USER, ORDERS_URI, newOrderDto, ALERT_CREATED);
+    var orderId = createAndReturnId(USER, ORDERS_URI, newOrderDto, ALERT_CREATED);
 
-    final String orderIdUri = String.format(ORDERS_ID_URI, orderId);
+    final var orderIdUri = String.format(ORDERS_ID_URI, orderId);
 
-    OrderDto actual = get(USER, orderIdUri, OrderDto.class, ALERT_GET, String.valueOf(orderId));
+    var actual = get(USER, orderIdUri, OrderDto.class, ALERT_GET, String.valueOf(orderId));
     assertThat(actual.getCode()).isEqualTo(newOrderDto.getCode());
     assertThat(actual.getCustomer()).isEqualTo(newOrderDto.getCustomer());
     assertThat(actual.getPlacedDate()).isEqualTo(newOrderDto.getPlacedDate());
 
-    OrderDto[] orders =
+    var orders =
         get(USER, ORDERS_URI, PageRequest.of(1, 1), OrderDto[].class, ALERT_GET, PARAM_PAGE_20);
     assertThat(orders).isNotEmpty();
-    Optional<OrderDto> option =
-        Stream.of(orders).filter(order -> order.getId().equals(orderId)).findAny();
+    var option = Stream.of(orders).filter(order -> order.getId().equals(orderId)).findAny();
     assertThat(option).isPresent();
     assertThat(option.get()).isEqualTo(actual);
 
@@ -87,16 +83,16 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
 
   @Test
   void testCreateBadRequest() throws Exception {
-    NewOrderDto newOrderDto = TestUtils.createNewSimpleOrderDto();
+    var newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(100L));
     assertCreateNotFound(USER, ORDERS_URI, newOrderDto, ALERT_PRODUCT_NOT_FOUND,
         String.valueOf(newOrderDto.getItems().get(0).getProduct().getId()));
 
-    Long categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
+    var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
-    NewProductDto newProductDto = TestUtils.createNewProductDto();
+    var newProductDto = TestUtils.createNewProductDto();
     newProductDto.setCategory(TestUtils.createRefCategoryDto(categoryId));
-    Long productId = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_PRODUCT_CREATED);
+    var productId = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_PRODUCT_CREATED);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));

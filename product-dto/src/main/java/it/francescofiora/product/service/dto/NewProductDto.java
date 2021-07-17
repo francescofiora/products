@@ -30,7 +30,7 @@ public class NewProductDto extends BaseProductDto implements Serializable {
       return false;
     }
 
-    NewProductDto other = (NewProductDto) obj;
+    var other = (NewProductDto) obj;
     return Objects.equals(getCategory(), other.getCategory())
         && Objects.equals(getDescription(), other.getDescription())
         && Objects.equals(getImage(), other.getImage())

@@ -9,8 +9,8 @@ public class NewCategoryDtoTest {
 
   @Test
   void dtoEqualsVerifier() throws Exception {
-    NewCategoryDto categoryDto1 = TestUtils.createNewCategoryDto();
-    NewCategoryDto categoryDto2 = new NewCategoryDto();
+    var categoryDto1 = TestUtils.createNewCategoryDto();
+    var categoryDto2 = new NewCategoryDto();
     assertThat(categoryDto1).isNotEqualTo(categoryDto2);
 
     categoryDto2 = TestUtils.createNewCategoryDto();

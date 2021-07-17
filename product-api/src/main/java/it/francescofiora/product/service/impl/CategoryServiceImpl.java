@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public CategoryDto create(NewCategoryDto categoryDto) {
     log.debug("Request to create a new Category : {}", categoryDto);
-    Category category = categoryMapper.toEntity(categoryDto);
+    var category = categoryMapper.toEntity(categoryDto);
     category = categoryRepository.save(category);
     return categoryMapper.toDto(category);
   }
@@ -50,12 +50,12 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public void update(CategoryDto categoryDto) {
     log.debug("Request to save Category : {}", categoryDto);
-    Optional<Category> categoryOpt = categoryRepository.findById(categoryDto.getId());
+    var categoryOpt = categoryRepository.findById(categoryDto.getId());
     if (!categoryOpt.isPresent()) {
-      String id = String.valueOf(categoryDto.getId());
+      var id = String.valueOf(categoryDto.getId());
       throw new NotFoundAlertException(ENTITY_NAME, id, ENTITY_NAME + " not found with id " + id);
     }
-    Category category = categoryOpt.get();
+    var category = categoryOpt.get();
     categoryMapper.updateEntityFromDto(categoryDto, category);
     categoryRepository.save(category);
   }

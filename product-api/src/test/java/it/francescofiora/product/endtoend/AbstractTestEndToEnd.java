@@ -2,12 +2,10 @@ package it.francescofiora.product.endtoend;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import it.francescofiora.product.domain.User;
 import it.francescofiora.product.repository.UserRepository;
 import it.francescofiora.product.util.TestUtils;
 import it.francescofiora.product.web.util.HeaderUtil;
 import java.net.URI;
-import java.util.Optional;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +45,7 @@ public class AbstractTestEndToEnd {
   @BeforeEach
   @Transactional
   void setUp() {
-    Optional<User> opt = userRepository.findByUsername(USER);
+    var opt = userRepository.findByUsername(USER);
     if (!opt.isPresent()) {
       userRepository.save(TestUtils.createUser(USER, PASSWORD, ROLE_USER));
       userRepository.save(TestUtils.createUser(ADMIN, PASSWORD, ROLE_ADMIN));
@@ -56,7 +54,7 @@ public class AbstractTestEndToEnd {
   }
 
   protected void testGetUnauthorized(String path) throws Exception {
-    ResponseEntity<String> result = performGet(null, path, String.class);
+    var result = performGet(null, path, String.class);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
 
     result = performGet(USER_NOT_EXIST, path, String.class);
@@ -72,7 +70,7 @@ public class AbstractTestEndToEnd {
 
   protected <T> void testPostUnauthorized(String path, T body, boolean userAllowed)
       throws Exception {
-    ResponseEntity<Void> result = performPost(null, path, body);
+    var result = performPost(null, path, body);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
 
     if (!userAllowed) {
@@ -88,7 +86,7 @@ public class AbstractTestEndToEnd {
   }
 
   protected <T> void testPutUnauthorized(String path, T body) throws Exception {
-    ResponseEntity<Void> result = performPut(null, path, body);
+    var result = performPut(null, path, body);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
 
     result = performPut(USER, path, body);
@@ -106,7 +104,7 @@ public class AbstractTestEndToEnd {
   }
 
   protected void testDeleteUnauthorized(String path, boolean userAllowed) throws Exception {
-    ResponseEntity<Void> result = performDelete(null, path);
+    var result = performDelete(null, path);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
 
     if (!userAllowed) {
@@ -123,36 +121,36 @@ public class AbstractTestEndToEnd {
 
   protected <T> ResponseEntity<T> performGet(String username, String path, Class<T> responseType)
       throws Exception {
-    HttpEntity<Void> request = new HttpEntity<>(null, createHttpHeaders(username));
+    var request = new HttpEntity<>(null, createHttpHeaders(username));
     return restTemplate.exchange(getPath(path), HttpMethod.GET, request, responseType);
   }
 
   protected <T> ResponseEntity<T> performGet(String username, String path, Pageable pageable,
       Class<T> responseType) throws Exception {
-    HttpEntity<Pageable> request = new HttpEntity<>(pageable, createHttpHeaders(username));
+    var request = new HttpEntity<>(pageable, createHttpHeaders(username));
     return restTemplate.exchange(getPath(path), HttpMethod.GET, request, responseType);
   }
 
   protected ResponseEntity<Void> performDelete(String username, String path) throws Exception {
-    HttpEntity<Void> request = new HttpEntity<>(null, createHttpHeaders(username));
+    var request = new HttpEntity<>(null, createHttpHeaders(username));
     return restTemplate.exchange(getPath(path), HttpMethod.DELETE, request, Void.class);
   }
 
   protected <T> ResponseEntity<Void> performPost(String username, String path, T body)
       throws Exception {
-    HttpEntity<T> request = new HttpEntity<>(body, createHttpHeaders(username));
+    var request = new HttpEntity<>(body, createHttpHeaders(username));
     return restTemplate.postForEntity(new URI(getPath(path)), request, Void.class);
   }
 
   protected <T> ResponseEntity<Void> performPut(String username, String path, T body)
       throws Exception {
-    HttpEntity<T> request = new HttpEntity<>(body, createHttpHeaders(username));
+    var request = new HttpEntity<>(body, createHttpHeaders(username));
     return restTemplate.exchange(getPath(path), HttpMethod.PUT, request, Void.class);
   }
 
   protected <T> ResponseEntity<Void> performPatch(String username, String path, T body)
       throws Exception {
-    HttpEntity<T> request = new HttpEntity<>(body, createHttpHeaders(username));
+    var request = new HttpEntity<>(body, createHttpHeaders(username));
     return restTemplate.exchange(getPath(path), HttpMethod.PATCH, request, Void.class);
   }
 
@@ -164,47 +162,47 @@ public class AbstractTestEndToEnd {
 
   protected <T> Long createAndReturnId(String username, String path, T body, String alert)
       throws Exception {
-    ResponseEntity<Void> result = performPost(username, path, body);
+    var result = performPost(username, path, body);
     assertThat(result.getHeaders()).containsKeys(HeaderUtil.X_ALERT, HttpHeaders.LOCATION,
         HeaderUtil.X_PARAMS);
     assertThat(result.getHeaders().get(HeaderUtil.X_ALERT)).contains(alert);
     assertThat(result.getHeaders().get(HeaderUtil.X_PARAMS)).isNotEmpty();
-    Long id = getIdFormHttpHeaders(result.getHeaders());
+    var id = getIdFormHttpHeaders(result.getHeaders());
     checkHeaders(result.getHeaders(), alert, String.valueOf(id));
     return id;
   }
 
   protected <T> void assertCreateNotFound(String username, String path, T body, String alert,
       String param) throws Exception {
-    ResponseEntity<Void> result = performPost(username, path, body);
+    var result = performPost(username, path, body);
     checkHeadersError(result.getHeaders(), alert, param);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
   protected <T> void assertCreateBadRequest(String username, String path, T body, String alert,
       String param) throws Exception {
-    ResponseEntity<Void> result = performPost(username, path, body);
+    var result = performPost(username, path, body);
     checkHeadersError(result.getHeaders(), alert, param);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
   }
 
   protected <T> void update(String username, String path, T body, String alert, String param)
       throws Exception {
-    ResponseEntity<Void> result = performPut(username, path, body);
+    var result = performPut(username, path, body);
     checkHeaders(result.getHeaders(), alert, param);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   protected <T> void patch(String username, String path, T body, String alert, String param)
       throws Exception {
-    ResponseEntity<Void> result = performPatch(username, path, body);
+    var result = performPatch(username, path, body);
     checkHeaders(result.getHeaders(), alert, param);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   protected <T> void assertUpdateBadRequest(String username, String path, T body, String alert,
       String param) throws Exception {
-    ResponseEntity<Void> result = performPut(username, path, body);
+    var result = performPut(username, path, body);
     checkHeadersError(result.getHeaders(), alert, param);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
   }
@@ -258,14 +256,14 @@ public class AbstractTestEndToEnd {
   }
 
   protected void delete(String username, String path, String alert, String param) throws Exception {
-    ResponseEntity<Void> result = performDelete(username, path);
+    var result = performDelete(username, path);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     checkHeaders(result.getHeaders(), alert, param);
   }
 
   protected void assertDeleteBadRequest(String username, String path, String alert, String param)
       throws Exception {
-    ResponseEntity<Void> result = performDelete(username, path);
+    var result = performDelete(username, path);
     checkHeadersError(result.getHeaders(), alert, param);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
   }

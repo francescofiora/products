@@ -32,7 +32,7 @@ public class NewOrderDto extends BaseOrderDto implements Serializable {
       return false;
     }
 
-    NewOrderDto other = (NewOrderDto) obj;
+    var other = (NewOrderDto) obj;
     return Objects.equals(getPlacedDate(), other.getPlacedDate())
         && Objects.equals(getCode(), other.getCode())
         && Objects.equals(getCustomer(), other.getCustomer())

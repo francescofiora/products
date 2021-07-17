@@ -131,7 +131,7 @@ public abstract class AbstractApiTest {
   }
 
   private HttpHeaders createHttpHeaders(String username) {
-    HttpHeaders headers = new HttpHeaders();
+    var headers = new HttpHeaders();
     headers.setBasicAuth(username, PASSWORD);
     return headers;
   }

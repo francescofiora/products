@@ -68,7 +68,7 @@ public class CategoryApi extends AbstractApi {
       @Parameter(description = "Add new Category") @Valid @RequestBody NewCategoryDto categoryDto)
       throws URISyntaxException {
     log.debug("REST request to create a new Category : {}", categoryDto);
-    CategoryDto result = categoryService.create(categoryDto);
+    var result = categoryService.create(categoryDto);
     return postResponse("/api/categories/" + result.getId(), result.getId());
   }
 

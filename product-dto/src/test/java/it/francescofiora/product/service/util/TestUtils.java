@@ -25,7 +25,7 @@ public interface TestUtils {
    * @return NewCategoryDto
    */
   static NewCategoryDto createNewCategoryDto() {
-    NewCategoryDto categoryDto = new NewCategoryDto();
+    var categoryDto = new NewCategoryDto();
     categoryDto.setName("Name");
     categoryDto.setDescription("Description");
     return categoryDto;
@@ -37,7 +37,7 @@ public interface TestUtils {
    * @return NewOrderDto
    */
   static NewOrderDto createNewOrderDto() {
-    NewOrderDto orderDto = new NewOrderDto();
+    var orderDto = new NewOrderDto();
     orderDto.setCode("Code");
     orderDto.setCustomer("Customer");
     orderDto.setPlacedDate(NOW);
@@ -51,8 +51,8 @@ public interface TestUtils {
    * @return NewOrderItemDto
    */
   static NewOrderItemDto createNewOrderItemDto() {
-    NewOrderItemDto orderItemDto = new NewOrderItemDto();
-    RefProductDto productDto = new RefProductDto();
+    var orderItemDto = new NewOrderItemDto();
+    var productDto = new RefProductDto();
     productDto.setId(1L);
     orderItemDto.setProduct(productDto);
     orderItemDto.setQuantity(10);
@@ -65,8 +65,8 @@ public interface TestUtils {
    * @return NewProductDto
    */
   static NewProductDto createNewProductDto() {
-    NewProductDto productDto = new NewProductDto();
-    RefCategoryDto categoryDto = new RefCategoryDto();
+    var productDto = new NewProductDto();
+    var categoryDto = new RefCategoryDto();
     categoryDto.setId(1L);
     productDto.setCategory(categoryDto);
     productDto.setDescription("Description");
@@ -82,16 +82,16 @@ public interface TestUtils {
    * Verifies the equals/hashcode contract on the domain object.
    */
   static <T> void equalsVerifier(Class<T> clazz) throws Exception {
-    T domainObject1 = clazz.getConstructor().newInstance();
+    var domainObject1 = clazz.getConstructor().newInstance();
     assertThat(domainObject1.toString()).isNotNull();
     assertThat(domainObject1).isEqualTo(domainObject1);
     assertThat(domainObject1.hashCode()).isEqualTo(domainObject1.hashCode());
     // Test with an instance of another class
-    Object testOtherObject = new Object();
+    var testOtherObject = new Object();
     assertThat(domainObject1).isNotEqualTo(testOtherObject);
     assertThat(domainObject1).isNotEqualTo(null);
     // Test with an instance of the same class
-    T domainObject2 = clazz.getConstructor().newInstance();
+    var domainObject2 = clazz.getConstructor().newInstance();
     assertThat(domainObject1).isNotEqualTo(domainObject2);
     // HashCodes are equals because the objects are not persisted yet
     assertThat(domainObject1.hashCode()).isEqualTo(domainObject2.hashCode());

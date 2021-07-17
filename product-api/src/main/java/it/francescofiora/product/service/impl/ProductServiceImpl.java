@@ -52,11 +52,11 @@ public class ProductServiceImpl implements ProductService {
     log.debug("Request to create Product : {}", productDto);
 
     if (!categoryRepository.findById(productDto.getCategory().getId()).isPresent()) {
-      String id = String.valueOf(productDto.getCategory().getId());
+      var id = String.valueOf(productDto.getCategory().getId());
       throw new NotFoundAlertException(CategoryService.ENTITY_NAME, id, "Category Not Found");
     }
 
-    Product product = productMapper.toEntity(productDto);
+    var product = productMapper.toEntity(productDto);
     product = productRepository.save(product);
     return productMapper.toDto(product);
   }
@@ -64,12 +64,12 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public void update(UpdatebleProductDto productDto) {
     log.debug("Request to update Product : {}", productDto);
-    Optional<Product> productOpt = productRepository.findById(productDto.getId());
+    var productOpt = productRepository.findById(productDto.getId());
     if (!productOpt.isPresent()) {
-      String id = String.valueOf(productDto.getId());
+      var id = String.valueOf(productDto.getId());
       throw new NotFoundAlertException(ENTITY_NAME, id, PRODUCT_NOT_FOUND);
     }
-    Product product = productOpt.get();
+    var product = productOpt.get();
     productMapper.updateEntityFromDto(productDto, product);
     productRepository.save(product);
   }

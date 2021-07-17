@@ -37,7 +37,7 @@ public class NewOrderItemDto implements Serializable {
       return false;
     }
 
-    NewOrderItemDto other = (NewOrderItemDto) obj;
+    var other = (NewOrderItemDto) obj;
     return Objects.equals(getQuantity(), other.getQuantity())
         && Objects.equals(getProduct(), other.getProduct());
   }
