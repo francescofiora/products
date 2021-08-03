@@ -1,6 +1,7 @@
 plugins {
   id 'java-library'
   id 'info.solidsoft.pitest' version '1.5.1'
+  id 'org.owasp.dependencycheck' version '6.2.2'
 }
 
 def springdoc_openapi_version = parent.property('springdoc-openapi.version')

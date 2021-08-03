@@ -27,6 +27,9 @@ The purpose of this tutorial is a Spring Boot tutorial, however I have inserted 
 ## compile
     ./gradlew clean build
 
+## Dependency-Check
+    ./gradlew dependencyCheckAnalyze --info
+
 ## Pitest
     ./gradlew pitest
 
@@ -36,12 +39,14 @@ The purpose of this tutorial is a Spring Boot tutorial, however I have inserted 
     product-api/build/reports/tests/test/index.html
     product-api/build/reports/jacoco/test/html/index.html
     product-api/build/reports/pitest/index.html
+    product-api/build/reports/dependency-check-report.html
 
     product-dto/build/reports/checkstyle/main.html
     product-dto/build/reports/checkstyle/test.html
     product-dto/build/reports/tests/test/index.html
     product-dto/build/reports/jacoco/test/html/index.html
     product-dto/build/reports/pitest/index.html
+    product-dto/build/reports/dependency-check-report.html
 
 # How to execute
 - gradle: ./gradlew bootRun
@@ -71,6 +76,7 @@ http://localhost:8081/product/swagger-ui.html
 - [Mockito](https://site.mockito.org/)
 - [JUnit 5](https://junit.org/junit5/)
 - [OpenPojo 0.8](https://github.com/OpenPojo)
-- [Jacoco 0.8](https://www.jacoco.org/)
 - [CheckStyle 8.44](https://checkstyle.sourceforge.io/)
+- [Owasp Dependency Check 6.2](https://owasp.org/www-project-dependency-check/)
+- [Jacoco 0.8](https://www.jacoco.org/)
 - [Pitest 1.5](https://pitest.org/)
