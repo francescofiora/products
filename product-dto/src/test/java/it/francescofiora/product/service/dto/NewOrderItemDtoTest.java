@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import it.francescofiora.product.service.util.TestUtils;
 import org.junit.jupiter.api.Test;
 
-public class NewOrderItemDtoTest {
+class NewOrderItemDtoTest {
 
   @Test
   void dtoEqualsVerifier() throws Exception {

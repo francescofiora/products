@@ -72,4 +72,5 @@ http://localhost:8081/product/swagger-ui.html
 - [JUnit 5](https://junit.org/junit5/)
 - [OpenPojo 0.8](https://github.com/OpenPojo)
 - [Jacoco 0.8](https://www.jacoco.org/)
+- [CheckStyle 8.44](https://checkstyle.sourceforge.io/)
 - [Pitest 1.5](https://pitest.org/)

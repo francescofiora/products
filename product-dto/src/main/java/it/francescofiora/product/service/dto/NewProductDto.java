@@ -9,6 +9,9 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * NewProduct Dto.
+ */
 @Getter
 @Setter
 public class NewProductDto extends BaseProductDto implements Serializable {

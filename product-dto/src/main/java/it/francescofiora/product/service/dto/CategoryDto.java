@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Category Dto.
+ */
 @Getter
 @Setter
 public class CategoryDto extends NewCategoryDto implements DtoIdentifier {

@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Order Dto.
+ */
 @Getter
 @Setter
 public class OrderDto extends BaseOrderDto implements DtoIdentifier, Serializable {

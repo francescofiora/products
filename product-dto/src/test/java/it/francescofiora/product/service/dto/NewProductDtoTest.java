@@ -7,7 +7,7 @@ import it.francescofiora.product.service.util.TestUtils;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 
-public class NewProductDtoTest {
+class NewProductDtoTest {
 
   @Test
   void dtoEqualsVerifier() throws Exception {

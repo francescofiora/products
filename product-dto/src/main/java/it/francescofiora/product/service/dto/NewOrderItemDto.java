@@ -10,6 +10,9 @@ import javax.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * NewOrderItem Dto.
+ */
 @Getter
 @Setter
 public class NewOrderItemDto implements Serializable {

@@ -11,6 +11,7 @@ import it.francescofiora.product.service.dto.UpdatebleProductDto;
 import it.francescofiora.product.service.mapper.ProductMapper;
 import it.francescofiora.product.web.errors.NotFoundAlertException;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,29 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
   private final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 
   private final ProductRepository productRepository;
-
   private final ProductMapper productMapper;
-
   private final CategoryRepository categoryRepository;
-
-  /**
-   * Constructor.
-   * 
-   * @param productRepository ProductRepository
-   * @param productMapper ProductMapper
-   * @param categoryRepository CategoryRepository
-   */
-  public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper,
-      CategoryRepository categoryRepository) {
-    this.productRepository = productRepository;
-    this.productMapper = productMapper;
-    this.categoryRepository = categoryRepository;
-  }
 
   @Override
   public ProductDto create(NewProductDto productDto) {

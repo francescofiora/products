@@ -6,6 +6,9 @@ import it.francescofiora.product.service.dto.OrderItemDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+/**
+ * OrderItem Mapper.
+ */
 @Mapper(componentModel = "spring", uses = {ProductMapper.class})
 public interface OrderItemMapper {
 

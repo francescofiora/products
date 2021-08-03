@@ -26,6 +26,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
+/**
+ * Support class for Api Test.
+ */
 public abstract class AbstractApiTest {
 
   protected static final String ADMIN = "admin";

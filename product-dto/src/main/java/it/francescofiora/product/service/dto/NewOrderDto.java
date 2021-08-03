@@ -11,6 +11,9 @@ import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * NewOrder Dto.
+ */
 @Getter
 @Setter
 public class NewOrderDto extends BaseOrderDto implements Serializable {

@@ -9,6 +9,9 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * UpdatebleOrder Dto.
+ */
 @Getter
 @Setter
 public class UpdatebleOrderDto extends BaseOrderDto implements DtoIdentifier, Serializable {

@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * BaseProduct Dto.
+ */
 @Getter
 @Setter
 public abstract class BaseProductDto {

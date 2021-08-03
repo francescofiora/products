@@ -10,6 +10,9 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
+/**
+ * Abstract Api RestController.
+ */
 public abstract class AbstractApi {
 
   protected static final String AUTHORIZE_ALL = "hasAnyRole('ADMIN', 'USER')";

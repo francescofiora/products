@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Ref Dto.
+ */
 @Getter
 @Setter
 public abstract class RefDto implements DtoIdentifier {

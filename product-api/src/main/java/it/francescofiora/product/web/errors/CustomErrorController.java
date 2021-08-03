@@ -1,13 +1,11 @@
 package it.francescofiora.product.web.errors;
 
 import io.swagger.v3.oas.annotations.Hidden;
-
 import it.francescofiora.product.web.util.HeaderUtil;
-
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
-
+import lombok.AllArgsConstructor;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -18,15 +16,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.ServletWebRequest;
 
+/**
+ * Custom ErrorController.
+ */
 @Controller
 @Hidden
+@AllArgsConstructor
 public class CustomErrorController implements ErrorController {
 
   private final ErrorAttributes errorAttributes;
-
-  public CustomErrorController(ErrorAttributes errorAttributes) {
-    this.errorAttributes = errorAttributes;
-  }
 
   protected Map<String, Object> getErrorAttributes(HttpServletRequest request,
       ErrorAttributeOptions options) {
@@ -47,8 +45,8 @@ public class CustomErrorController implements ErrorController {
   }
 
   /**
-   * return the error in JSON format.
-   * 
+   * Return the error in JSON format.
+   *
    * @param request rest request
    * @return handle Error
    */

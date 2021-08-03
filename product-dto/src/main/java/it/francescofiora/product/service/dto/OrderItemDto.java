@@ -12,6 +12,9 @@ import javax.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * OrderItem Dto.
+ */
 @Getter
 @Setter
 public class OrderItemDto implements DtoIdentifier, Serializable {

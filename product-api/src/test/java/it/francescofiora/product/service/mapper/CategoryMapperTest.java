@@ -22,10 +22,10 @@ class CategoryMapperTest {
   void testNullObject() {
     assertThat(categoryMapper.toDto(null)).isNull();
 
-    var categoryDto = (NewCategoryDto)null;
+    var categoryDto = (NewCategoryDto) null;
     assertThat(categoryMapper.toEntity(categoryDto)).isNull();
 
-    var dto = (RefCategoryDto)null;
+    var dto = (RefCategoryDto) null;
     assertThat(categoryMapper.toEntity(dto)).isNull();
 
     assertDoesNotThrow(() -> categoryMapper.updateEntityFromDto(null, null));

@@ -18,6 +18,7 @@ import it.francescofiora.product.web.errors.BadRequestAlertException;
 import it.francescofiora.product.web.errors.NotFoundAlertException;
 import java.math.BigDecimal;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
   private static final String ENTITY_NAME = "OrderDto";
@@ -40,33 +42,10 @@ public class OrderServiceImpl implements OrderService {
   private final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
   private final OrderRepository orderRepository;
-
-  private final OrderItemRepository orderItemRepository;
-
   private final ProductRepository productRepository;
-
+  private final OrderItemRepository orderItemRepository;
   private final OrderMapper orderMapper;
-
   private final OrderItemMapper orderItemMapper;
-
-  /**
-   * Constructor.
-   * 
-   * @param orderRepository OrderRepository
-   * @param productRepository ProductRepository
-   * @param orderItemRepository OrderItemRepository
-   * @param orderMapper OrderMapper
-   * @param orderItemMapper OrderItemMapper
-   */
-  public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository,
-      OrderItemRepository orderItemRepository, OrderMapper orderMapper,
-      OrderItemMapper orderItemMapper) {
-    this.orderRepository = orderRepository;
-    this.orderMapper = orderMapper;
-    this.productRepository = productRepository;
-    this.orderItemRepository = orderItemRepository;
-    this.orderItemMapper = orderItemMapper;
-  }
 
   @Override
   public OrderDto create(NewOrderDto orderDto) {

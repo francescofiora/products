@@ -8,6 +8,7 @@ import it.francescofiora.product.service.dto.NewCategoryDto;
 import it.francescofiora.product.service.mapper.CategoryMapper;
 import it.francescofiora.product.web.errors.NotFoundAlertException;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,24 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
   private final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
   private final CategoryRepository categoryRepository;
-
   private final CategoryMapper categoryMapper;
-
-  /**
-   * Constructor.
-   * 
-   * @param categoryRepository CategoryRepository
-   * @param categoryMapper CategoryMapper
-   */
-  public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
-    this.categoryRepository = categoryRepository;
-    this.categoryMapper = categoryMapper;
-  }
 
   @Override
   public CategoryDto create(NewCategoryDto categoryDto) {

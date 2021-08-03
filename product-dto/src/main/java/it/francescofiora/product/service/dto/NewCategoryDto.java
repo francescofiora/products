@@ -8,6 +8,9 @@ import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * NewCategory Dto.
+ */
 @Getter
 @Setter
 public class NewCategoryDto implements Serializable {

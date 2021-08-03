@@ -2,11 +2,13 @@ package it.francescofiora.product.service;
 
 import it.francescofiora.product.service.dto.CategoryDto;
 import it.francescofiora.product.service.dto.NewCategoryDto;
-
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+/**
+ * Category Service.
+ */
 public interface CategoryService {
 
   String ENTITY_NAME = "CategoryDto";

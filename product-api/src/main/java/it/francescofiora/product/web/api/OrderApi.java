@@ -165,7 +165,7 @@ public class OrderApi extends AbstractApi {
 
   /**
    * Add OrderItem.
-   * 
+   *
    * @param id Order id
    * @param orderItemDto NewOrderItemDto
    * @return the {@link ResponseEntity} with status {@code 201 (Created)}, or with status

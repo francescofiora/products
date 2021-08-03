@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * UpdatebleProduct Dto.
+ */
 @Getter
 @Setter
 public class UpdatebleProductDto extends BaseProductDto implements DtoIdentifier, Serializable {

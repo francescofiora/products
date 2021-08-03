@@ -6,7 +6,7 @@ import it.francescofiora.product.service.util.TestUtils;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
 
-public class NewOrderDtoTest {
+class NewOrderDtoTest {
 
   @Test
   void dtoEqualsVerifier() throws Exception {

@@ -23,8 +23,8 @@ public interface OrderService {
   OrderDto create(NewOrderDto orderDto);
 
   /**
-   * create a new OrderItem.
-   * 
+   * Create a new OrderItem.
+   *
    * @param orderId Long
    * @param orderItemDto NewOrderItemDto
    * @return OrderItemDto
@@ -63,7 +63,7 @@ public interface OrderService {
 
   /**
    * Delete the "id" orderItem to the order.
-   * 
+   *
    * @param orderId the id of the order.
    * @param orderItemId the id of the entity.
    */

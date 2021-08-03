@@ -8,6 +8,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+/**
+ * Category Mapper.
+ */
 @Mapper(componentModel = "spring", uses = {})
 public interface CategoryMapper {
 
