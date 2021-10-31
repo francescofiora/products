@@ -14,17 +14,19 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * Category Entity.
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "CATEGORY", schema = "STORE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Getter
-@Setter
+@ToString(callSuper = true, includeFieldNames = true)
 public class Category extends AbstractDomain implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -46,10 +48,4 @@ public class Category extends AbstractDomain implements Serializable {
   @OneToMany(mappedBy = "category")
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   private Set<Product> products = new HashSet<>();
-
-  @Override
-  public String toString() {
-    return "Category{" + "id=" + getId() + ", name='" + getName() + "'" + ", description='"
-        + getDescription() + "'" + "}";
-  }
 }

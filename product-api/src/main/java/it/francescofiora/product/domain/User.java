@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,11 +22,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * User Entity.
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "USER", schema = "STORE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Getter
-@Setter
+@ToString(callSuper = true, includeFieldNames = true)
 public class User extends AbstractDomain implements UserDetails {
 
   private static final long serialVersionUID = 1L;
@@ -62,14 +64,5 @@ public class User extends AbstractDomain implements UserDetails {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + getRole()));
-  }
-
-  @Override
-  public String toString() {
-    return "User{" + "id=" + getId() + ", username='" + getUsername() + "'" + ", password='"
-        + (getPassword() != null ? getPassword().hashCode() : "null") + "'" + ", role='" + getRole()
-        + "'" + ", enabled='" + isEnabled() + "'" + ", accountNonExpired='" + isAccountNonExpired()
-        + "'" + ", accountNonLocked='" + isAccountNonLocked() + "'" + ", credentialsNonExpired='"
-        + isCredentialsNonExpired() + "'" + "}";
   }
 }

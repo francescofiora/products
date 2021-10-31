@@ -16,17 +16,19 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * OrderItem Entity.
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "ORDER_ITEM", schema = "STORE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Getter
-@Setter
+@ToString(callSuper = true, includeFieldNames = true)
 public class OrderItem extends AbstractDomain implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -56,10 +58,4 @@ public class OrderItem extends AbstractDomain implements Serializable {
   @JsonIgnoreProperties("orderItems")
   @NotNull
   private Order order;
-
-  @Override
-  public String toString() {
-    return "OrderItem{" + "id=" + getId() + ", quantity=" + getQuantity() + ", totalPrice="
-        + getTotalPrice() + "}";
-  }
 }

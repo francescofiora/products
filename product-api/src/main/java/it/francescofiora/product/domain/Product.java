@@ -18,17 +18,19 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * Product Entity.
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "PRODUCT", schema = "STORE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Getter
-@Setter
+@ToString(callSuper = true, includeFieldNames = true)
 public class Product extends AbstractDomain implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -65,12 +67,4 @@ public class Product extends AbstractDomain implements Serializable {
   @ManyToOne
   @JsonIgnoreProperties("products")
   private Category category;
-
-  @Override
-  public String toString() {
-    return "Product{" + "id=" + getId() + ", name='" + getName() + "'" + ", description='"
-        + getDescription() + "'" + ", price=" + getPrice() + ", size='" + getSize() + "'"
-        + ", image='" + getImage() + "'" + ", imageContentType='" + getImageContentType() + "'"
-        + "}";
-  }
 }

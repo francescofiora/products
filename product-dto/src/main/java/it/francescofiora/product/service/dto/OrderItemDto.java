@@ -11,12 +11,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * OrderItem Dto.
  */
 @Getter
 @Setter
+@ToString(callSuper = true, includeFieldNames = true)
 public class OrderItemDto implements DtoIdentifier, Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -51,11 +53,5 @@ public class OrderItemDto implements DtoIdentifier, Serializable {
   @Override
   public int hashCode() {
     return Objects.hashCode(getId());
-  }
-
-  @Override
-  public String toString() {
-    return "OrderItemDto{" + "id=" + getId() + ", quantity=" + getQuantity() + ", totalPrice="
-        + getTotalPrice() + ", product=" + getProduct() + "}";
   }
 }

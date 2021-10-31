@@ -7,12 +7,14 @@ import java.util.Objects;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Ref Dto.
  */
 @Getter
 @Setter
+@ToString(callSuper = true, includeFieldNames = true)
 public abstract class RefDto implements DtoIdentifier {
 
   @Schema(description = "Unique identifier", example = "1", required = true)
@@ -29,5 +31,4 @@ public abstract class RefDto implements DtoIdentifier {
   public int hashCode() {
     return Objects.hashCode(getId());
   }
-  
 }

@@ -7,12 +7,14 @@ import java.util.Objects;
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * NewCategory Dto.
  */
 @Getter
 @Setter
+@ToString(callSuper = true, includeFieldNames = true)
 public class NewCategoryDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -44,11 +46,5 @@ public class NewCategoryDto implements Serializable {
   @Override
   public int hashCode() {
     return Objects.hash(getName(), getDescription());
-  }
-
-  @Override
-  public String toString() {
-    return "NewCategoryDTO{" + ", name='" + getName() + "'" + ", description='" + getDescription()
-        + "'" + "}";
   }
 }

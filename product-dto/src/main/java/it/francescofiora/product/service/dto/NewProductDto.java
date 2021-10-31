@@ -8,12 +8,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * NewProduct Dto.
  */
 @Getter
 @Setter
+@ToString(callSuper = true, includeFieldNames = true)
 public class NewProductDto extends BaseProductDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -47,13 +49,5 @@ public class NewProductDto extends BaseProductDto implements Serializable {
   public int hashCode() {
     return Objects.hash(getCategory(), getDescription(), getImage(), getImageContentType(),
         getName(), getPrice(), getSize());
-  }
-
-  @Override
-  public String toString() {
-    return "NewProductDTO{" + ", name='" + getName() + "'" + ", description='" + getDescription()
-        + "'" + ", price=" + getPrice() + ", size='" + getSize() + "'" + ", image='" + getImage()
-        + "'" + ", imageContentType='" + getImageContentType() + "'" + ", category=" + getCategory()
-        + "}";
   }
 }

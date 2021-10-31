@@ -19,8 +19,7 @@ import it.francescofiora.product.web.errors.NotFoundAlertException;
 import java.math.BigDecimal;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Service Implementation for managing {@link Order}.
  */
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -38,8 +38,6 @@ public class OrderServiceImpl implements OrderService {
   private static final String ORDER_NOT_UPDATEBLE = "Order not updatable";
   private static final String PRODUCT_NOT_FOUND = "Product not found";
   private static final String ORDER_NOT_FOUND = "Order not found";
-
-  private final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
   private final OrderRepository orderRepository;
   private final ProductRepository productRepository;

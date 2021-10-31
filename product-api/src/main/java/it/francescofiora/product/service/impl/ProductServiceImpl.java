@@ -12,8 +12,7 @@ import it.francescofiora.product.service.mapper.ProductMapper;
 import it.francescofiora.product.web.errors.NotFoundAlertException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,12 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Service Implementation for managing {@link Product}.
  */
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-
-  private final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 
   private final ProductRepository productRepository;
   private final ProductMapper productMapper;
