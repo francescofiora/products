@@ -3,6 +3,7 @@ package it.francescofiora.product.endtoend;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import it.francescofiora.product.service.dto.OrderDto;
+import it.francescofiora.product.service.dto.UpdatebleOrderDto;
 import it.francescofiora.product.util.TestUtils;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = {"classpath:application_test.properties"})
 class OrderEndToEndTest extends AbstractTestEndToEnd {
-
 
   private static final String CATEGORIES_URI = "/api/categories";
   private static final String PRODUCTS_URI = "/api/products";
@@ -34,6 +34,9 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
   private static final String ALERT_GET = "OrderDto.get";
   private static final String ALERT_CREATE_BAD_REQUEST = "NewOrderDto.badRequest";
   private static final String ALERT_CREATE_ITEM_BAD_REQUEST = "NewOrderItemDto.badRequest";
+
+  private static final String ALERT_PATCHED = "OrderDto.patched";
+  private static final String ALERT_PATCH_BAD_REQUEST = "OrderDto.badRequest";
 
   private static final String ALERT_NOT_FOUND = "OrderDto.notFound";
   private static final String ALERT_PRODUCT_NOT_FOUND = "ProductDto.notFound";
@@ -68,6 +71,14 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
     assertThat(actual.getCode()).isEqualTo(newOrderDto.getCode());
     assertThat(actual.getCustomer()).isEqualTo(newOrderDto.getCustomer());
     assertThat(actual.getPlacedDate()).isEqualTo(newOrderDto.getPlacedDate());
+
+    var orderDto = TestUtils.createUpdatebleOrderDto(orderId);
+    patch(USER, orderIdUri, orderDto, ALERT_PATCHED, String.valueOf(orderId));
+
+    actual = get(USER, orderIdUri, OrderDto.class, ALERT_GET, String.valueOf(orderId));
+    assertThat(actual.getCode()).isEqualTo(orderDto.getCode());
+    assertThat(actual.getCustomer()).isEqualTo(orderDto.getCustomer());
+    assertThat(actual.getPlacedDate()).isEqualTo(orderDto.getPlacedDate());
 
     var orders =
         get(USER, ORDERS_URI, PageRequest.of(1, 1), OrderDto[].class, ALERT_GET, PARAM_PAGE_20);
@@ -150,6 +161,13 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
     newOrderDto.getItems().get(0).setQuantity(0);
     assertCreateBadRequest(USER, ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
         PARAM_QUANTITY_NULL);
+  }
+
+  @Test
+  void testPatchBadRequest() throws Exception {
+    var orderDto = TestUtils.createUpdatebleOrderDto(1L);
+    final var orderIdUri = String.format(ORDERS_ID_URI, 2L);
+    assertPatchBadRequest(USER, orderIdUri, orderDto, ALERT_PATCH_BAD_REQUEST, "1");
   }
 
   @Test

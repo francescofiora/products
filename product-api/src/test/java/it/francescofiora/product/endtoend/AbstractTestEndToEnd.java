@@ -3,6 +3,7 @@ package it.francescofiora.product.endtoend;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import it.francescofiora.product.repository.UserRepository;
+import it.francescofiora.product.service.dto.UpdatebleOrderDto;
 import it.francescofiora.product.util.TestUtils;
 import it.francescofiora.product.web.util.HeaderUtil;
 import java.net.URI;
@@ -180,6 +181,13 @@ public class AbstractTestEndToEnd {
     var result = performPost(username, path, body);
     checkHeadersError(result.getHeaders(), alert, param);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+  }
+
+  protected <T> void assertPatchBadRequest(String username, String path, T body, String alert,
+      String param) throws Exception {
+    var result = performPatch(username, path, body);
+    checkHeadersError(result.getHeaders(), alert, param);
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
   }
 
   protected <T> void assertCreateBadRequest(String username, String path, T body, String alert,

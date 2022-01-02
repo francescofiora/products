@@ -9,6 +9,7 @@ def springdoc_openapi_version = parent.property('springdoc-openapi.version')
 def mapstruct_version = parent.property('mapstruct.version')
 def lombok_version = parent.property('lombok.version')
 def openpojo_version = parent.property('openpojo.version')
+def apache_httpclient_version = parent.property('apache-httpclient.version')
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -35,6 +36,8 @@ dependencies {
   testImplementation 'org.hsqldb:hsqldb'
   testImplementation "com.openpojo:openpojo:$openpojo_version"
   testImplementation "org.projectlombok:lombok:${lombok_version}"
+  testImplementation "org.apache.httpcomponents:httpclient:${apache_httpclient_version}"
+
   testAnnotationProcessor "org.projectlombok:lombok:${lombok_version}"
 }
 
