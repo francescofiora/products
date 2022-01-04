@@ -2,7 +2,7 @@ version: '3'
 services:
 
   product-postgresql:
-    image: postgres:12.1
+    image: postgres:14.1
     environment:
       - POSTGRES_DB=db_product
       - POSTGRES_USER=product
@@ -13,8 +13,9 @@ services:
       - "./postgresql:/docker-entrypoint-initdb.d"
 
   product-myadmin:
-    image: dockage/phppgadmin:latest
+    image:  bitnami/phppgadmin:7
     environment:
-      - PHP_PG_ADMIN_SERVER_HOST=product-postgresql
+      - DATABASE_HOST=product-postgresql
     ports:
-      - "8080:80"
+      - '8080:80'
+      - '443:8443'
