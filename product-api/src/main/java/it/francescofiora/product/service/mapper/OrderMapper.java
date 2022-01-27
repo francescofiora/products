@@ -30,6 +30,9 @@ public interface OrderMapper {
    */
   @Named("getTotalPrice")
   public static BigDecimal getTotalPrice(Set<OrderItem> orderItems) {
+    if (orderItems == null) {
+      return null;
+    }
     var result = new BigDecimal(0);
     for (var item : orderItems) {
       result = result.add(item.getTotalPrice());

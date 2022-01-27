@@ -4,12 +4,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import it.francescofiora.product.service.dto.NewProductDto;
+import it.francescofiora.product.service.dto.RefCategoryDto;
 import it.francescofiora.product.service.dto.RefProductDto;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith(SpringExtension.class)
+@TestPropertySource(locations = {"classpath:application_test.properties"})
 class ProductMapperTest {
 
-  private ProductMapper productMapper = new ProductMapperImpl();
+  @Autowired
+  private ProductMapper productMapper;
 
   @Test
   void testEntityFromId() {
@@ -29,5 +39,25 @@ class ProductMapperTest {
     assertThat(productMapper.toEntity(dto)).isNull();
 
     assertDoesNotThrow(() -> productMapper.updateEntityFromDto(null, null));
+
+    productDto = new NewProductDto();
+    assertThat(productMapper.toEntity(productDto).getCategory()).isNull();
+
+    productDto.setCategory(new RefCategoryDto());
+    assertThat(productMapper.toEntity(productDto).getCategory()).isNull();
+  }
+
+  @TestConfiguration
+  static class TestContextConfiguration {
+
+    @Bean
+    ProductMapper productMapper() {
+      return new ProductMapperImpl();
+    }
+
+    @Bean
+    CategoryMapper categoryMapper() {
+      return new CategoryMapperImpl();
+    }
   }
 }
