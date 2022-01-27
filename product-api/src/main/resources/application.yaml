@@ -1,0 +1,38 @@
+errorPath: /error
+
+server:
+  port: 8081
+  servlet:
+    context-path: /product
+  error:
+    path: errorPath
+
+spring:
+  profiles:
+    active: dev
+  batch:
+    job.enabled: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/db_product
+    username: product
+    password: secret
+    hikari:
+      poolName: Hikari
+      connectionTimeout: 30000
+      idleTimeout: 600000
+      maxLifetime: 1800000
+      maximumPoolSize: 10
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL82Dialect
+#    hibernate.ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        id:
+          new_generator_mappings: true
+        jdbc:
+          time_zone: UTC
+
+endpoints:
+  jmx.enabled: true
