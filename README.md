@@ -7,6 +7,7 @@ SpringBoot Rest Api tutorial with OpenApi 3.0 and PostgreSql.
 - Error Handling
 - Basic Authentication with roles
 - Mapper for POJO<->DTO
+- Actuator
 - Logging
 - Testing
     - Repositories using DataJpaTest
@@ -56,6 +57,11 @@ The purpose of this tutorial is a Spring Boot tutorial, however I have inserted 
  - Basic Authentication with roles
    - USER: (user/password)
    - ADMIN: (admin/password)
+
+##Actuator
+    curl -u user:password 'http://localhost:8081/product/actuator/info' -i -X GET
+    curl -u user:password 'http://localhost:8081/product/actuator/health' -i -X GET
+
 
 ## Technologies used
 - [Gradle 7.0](https://gradle.org/)

@@ -19,6 +19,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
   implementation "org.springdoc:springdoc-openapi-ui:${springdoc_openapi_version}"
   implementation "org.springdoc:springdoc-openapi-data-rest:${springdoc_openapi_version}"
@@ -48,6 +49,7 @@ dependencies {
 
 springBoot {
   mainClass.set("it.francescofiora.product.api.Application")
+  buildInfo()
 }
 
 eclipse {

@@ -34,5 +34,15 @@ spring:
         jdbc:
           time_zone: UTC
 
-endpoints:
-  jmx.enabled: true
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+     base-path: /actuator
+     exposure:
+       include: info,health
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
