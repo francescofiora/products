@@ -226,7 +226,7 @@ public class AbstractTestEndToEnd {
 
   protected <T> T get(String username, String path, Class<T> responseType, String alert,
       String param) throws Exception {
-    ResponseEntity<T> result = performGet(username, path, responseType);
+    var result = performGet(username, path, responseType);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     checkHeaders(result.getHeaders(), alert, param);
     T value = result.getBody();
@@ -236,7 +236,7 @@ public class AbstractTestEndToEnd {
 
   protected <T> T get(String username, String path, Pageable pageable, Class<T> responseType,
       String alert, String param) throws Exception {
-    ResponseEntity<T> result = performGet(username, path, pageable, responseType);
+    var result = performGet(username, path, pageable, responseType);
     checkHeaders(result.getHeaders(), alert, param);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     T value = result.getBody();
@@ -246,21 +246,21 @@ public class AbstractTestEndToEnd {
 
   protected <T> void assertGetNotFound(String username, String path, Class<T> responseType,
       String alert, String param) throws Exception {
-    ResponseEntity<T> result = performGet(username, path, responseType);
+    var result = performGet(username, path, responseType);
     checkHeadersError(result.getHeaders(), alert, param);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
   protected <T> void assertGetNotFound(String username, String path, Pageable pageable,
       Class<T> responseType, String alert, String param) throws Exception {
-    ResponseEntity<T> result = performGet(username, path, pageable, responseType);
+    var result = performGet(username, path, pageable, responseType);
     checkHeadersError(result.getHeaders(), alert, param);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
   protected <T> void assertGetBadRequest(String username, String path, Class<T> responseType,
       String alert, String param) throws Exception {
-    ResponseEntity<T> result = performGet(username, path, responseType);
+    var result = performGet(username, path, responseType);
     checkHeadersError(result.getHeaders(), alert, param);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
   }
@@ -279,12 +279,12 @@ public class AbstractTestEndToEnd {
   }
 
   protected Long getIdFormHttpHeaders(HttpHeaders headers) {
-    String url = headers.get(HttpHeaders.LOCATION).get(0);
+    var url = headers.get(HttpHeaders.LOCATION).get(0);
     return Long.valueOf(url.substring(url.lastIndexOf('/') + 1));
   }
 
   private HttpHeaders createHttpHeaders(String username) {
-    HttpHeaders headers = new HttpHeaders();
+    var headers = new HttpHeaders();
     if (username != null) {
       headers.setBasicAuth(username, PASSWORD);
     }
