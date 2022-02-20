@@ -1,0 +1,38 @@
+plugins {
+  id 'java-library'
+  id 'info.solidsoft.pitest' version '1.7.0'
+  id 'org.owasp.dependencycheck' version '6.2.2'
+}
+
+def springdoc_openapi_version = parent.property('springdoc-openapi.version')
+def lombok_version = parent.property('lombok.version')
+def jakarta_validation_version = parent.property('jakarta-validation.version')
+def unit_test_version = parent.property('unit-test.version')
+def assertj_version = parent.property('assertj.version')
+
+dependencies {
+  implementation "org.springdoc:springdoc-openapi-ui:${springdoc_openapi_version}"
+  implementation "org.springdoc:springdoc-openapi-data-rest:${springdoc_openapi_version}"
+  implementation "jakarta.validation:jakarta.validation-api:${jakarta_validation_version}"
+
+  implementation "org.projectlombok:lombok:${lombok_version}"
+  annotationProcessor "org.projectlombok:lombok:${lombok_version}"
+
+  implementation project(':product-dto')
+
+	implementation 'org.springframework:spring-webflux:5.3.15'
+
+  testImplementation "org.junit.jupiter:junit-jupiter-api:${unit_test_version}"
+  testImplementation "org.junit.jupiter:junit-jupiter-engine:${unit_test_version}"
+  testImplementation "org.assertj:assertj-core:${assertj_version}"
+  testImplementation "io.projectreactor.netty:reactor-netty-http:1.0.14"
+  testImplementation "com.squareup.okhttp3:mockwebserver:4.9.3"
+  testImplementation "org.projectlombok:lombok:${lombok_version}"
+
+  testAnnotationProcessor "org.projectlombok:lombok:${lombok_version}"
+}
+
+pitest {
+  timestampedReports = false
+  junit5PluginVersion = '0.15'
+}
