@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/product/api/v1")
 public class CategoryApi extends AbstractApi {
 
   private static final String ENTITY_NAME = "CategoryDto";
@@ -67,7 +67,7 @@ public class CategoryApi extends AbstractApi {
       throws URISyntaxException {
     log.debug("REST request to create a new Category : {}", categoryDto);
     var result = categoryService.create(categoryDto);
-    return postResponse("/api/categories/" + result.getId(), result.getId());
+    return postResponse("/product/api/v1/categories/" + result.getId(), result.getId());
   }
 
   /**

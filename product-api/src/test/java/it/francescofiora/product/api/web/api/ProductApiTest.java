@@ -31,9 +31,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 class ProductApiTest extends AbstractApiTest {
 
   private static final Long ID = 1L;
-  private static final String PRODUCTS_URI = "/api/products";
-  private static final String PRODUCTS_ID_URI = "/api/products/{id}";
-  private static final String WRONG_URI = "/api/wrong";
+  private static final String PRODUCTS_URI = "/product/api/v1/products";
+  private static final String PRODUCTS_ID_URI = "/product/api/v1/products/{id}";
+  private static final String WRONG_URI = "/product/api/v1/wrong";
 
   @MockBean
   private ProductService productService;

@@ -19,9 +19,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @TestPropertySource(locations = {"classpath:application_test.properties"})
 class ProductEndToEndTest extends AbstractTestEndToEnd {
 
-  private static final String CATEGORIES_URI = "/api/categories";
-  private static final String PRODUCTS_URI = "/api/products";
-  private static final String PRODUCTS_ID_URI = "/api/products/%d";
+  private static final String CATEGORIES_URI = "/product/api/v1/categories";
+  private static final String PRODUCTS_URI = "/product/api/v1/products";
+  private static final String PRODUCTS_ID_URI = "/product/api/v1/products/%d";
 
   private static final String ALERT_CATEGORY_CREATED = "CategoryDto.created";
 

@@ -42,7 +42,7 @@ public class AbstractTestEndToEnd {
   private TestRestTemplate restTemplate;
 
   private String getPath(String path) {
-    return "http://localhost:" + randomServerPort + "/product" + path;
+    return "http://localhost:" + randomServerPort + path;
   }
 
   @BeforeEach

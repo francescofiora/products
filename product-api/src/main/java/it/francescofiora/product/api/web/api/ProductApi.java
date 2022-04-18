@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/product/api/v1")
 public class ProductApi extends AbstractApi {
 
   private static final String ENTITY_NAME = "ProductDto";
@@ -66,7 +66,7 @@ public class ProductApi extends AbstractApi {
       throws URISyntaxException {
     log.debug("REST request to create Product : {}", productDto);
     var result = productService.create(productDto);
-    return postResponse("/api/products/" + result.getId(), result.getId());
+    return postResponse("/product/api/v1/products/" + result.getId(), result.getId());
   }
 
   /**

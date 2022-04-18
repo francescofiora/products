@@ -18,10 +18,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @TestPropertySource(locations = {"classpath:application_test.properties"})
 class OrderEndToEndTest extends AbstractTestEndToEnd {
 
-  private static final String CATEGORIES_URI = "/api/categories";
-  private static final String PRODUCTS_URI = "/api/products";
-  private static final String ORDERS_URI = "/api/orders";
-  private static final String ORDERS_ID_URI = "/api/orders/%d";
+  private static final String CATEGORIES_URI = "/product/api/v1/categories";
+  private static final String PRODUCTS_URI = "/product/api/v1/products";
+  private static final String ORDERS_URI = "/product/api/v1/orders";
+  private static final String ORDERS_ID_URI = "/product/api/v1/orders/%d";
   private static final String ORDER_ITEMS_URI = "/orders/{id}/items";
   private static final String ORDER_ITEMS_ID_URI = "/orders/{order_id}/items/{order_item_id}";
 

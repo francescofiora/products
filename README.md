@@ -50,7 +50,7 @@ The purpose of this tutorial is a Spring Boot tutorial, however I have inserted 
     java -jar ./product-api/build/libs/product-api-1.0-SNAPSHOT.jar
 
 **Links**
- - http://localhost:8081/product/swagger-ui.html (Api Doc)
+ - http://localhost:8081/swagger-ui.html (Api Doc)
  - https://localhost/ (phpPgAdmin)
 
 ## Security
@@ -59,8 +59,8 @@ The purpose of this tutorial is a Spring Boot tutorial, however I have inserted 
    - ADMIN: (admin/password)
 
 ##Actuator
-    curl -u user:password 'http://localhost:8081/product/actuator/info' -i -X GET
-    curl -u user:password 'http://localhost:8081/product/actuator/health' -i -X GET
+    curl -u user:password 'http://localhost:8081/actuator/info' -i -X GET
+    curl -u user:password 'http://localhost:8081/actuator/health' -i -X GET
 
 ## Technologies used
 - [Gradle 7.0](https://gradle.org/)

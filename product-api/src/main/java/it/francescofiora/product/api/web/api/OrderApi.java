@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/product/api/v1")
 @PreAuthorize(AbstractApi.AUTHORIZE_ALL)
 public class OrderApi extends AbstractApi {
 
@@ -69,7 +69,7 @@ public class OrderApi extends AbstractApi {
       throws URISyntaxException {
     log.debug("REST request to create a new Order : {}", orderDto);
     var result = orderService.create(orderDto);
-    return postResponse("/api/orders/" + result.getId(), result.getId());
+    return postResponse("/product/api/v1/orders/" + result.getId(), result.getId());
   }
 
   /**
@@ -182,7 +182,7 @@ public class OrderApi extends AbstractApi {
       throws URISyntaxException {
     log.debug("REST request to add a new Item {} to the order {}", orderItemDto, id);
     var result = orderService.addOrderItem(id, orderItemDto);
-    return postResponse(ENTITY_ORDER_ITEM, "/api/orders/" + id + "/items/" + result.getId(),
+    return postResponse(ENTITY_ORDER_ITEM, "/product/api/v1/orders/" + id + "/items/" + result.getId(),
         result.getId());
   }
 

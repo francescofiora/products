@@ -37,12 +37,12 @@ class OrderApiTest extends AbstractApiTest {
 
   private static final Long ID = 1L;
   private static final Long ITEM_ID = 10L;
-  private static final String ORDERS_URI = "/api/orders";
-  private static final String ORDERS_ID_URI = "/api/orders/{id}";
-  private static final String ORDERS_ID_ITEMS_URI = "/api/orders/{id}/items";
+  private static final String ORDERS_URI = "/product/api/v1/orders";
+  private static final String ORDERS_ID_URI = "/product/api/v1/orders/{id}";
+  private static final String ORDERS_ID_ITEMS_URI = "/product/api/v1/orders/{id}/items";
   private static final String ORDERS_ID_ITEMS_ID_URI =
-      "/api/orders/{order_id}/items/{order_item_id}";
-  private static final String WRONG_URI = "/api/wrong";
+      "/product/api/v1/orders/{order_id}/items/{order_item_id}";
+  private static final String WRONG_URI = "/product/api/v1/wrong";
 
   @MockBean
   private OrderService orderService;
