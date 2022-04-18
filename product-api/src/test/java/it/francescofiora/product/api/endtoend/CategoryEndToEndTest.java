@@ -57,8 +57,7 @@ class CategoryEndToEndTest extends AbstractTestEndToEnd {
     assertThat(categories).isNotEmpty();
     var option =
         Stream.of(categories).filter(category -> category.getId().equals(categoryId)).findAny();
-    assertThat(option).isPresent();
-    assertThat(option.get()).isEqualTo(categoryDto);
+    assertThat(option).isPresent().contains(categoryDto);
 
     delete(ADMIN, categoryIdUri, ALERT_DELETED, String.valueOf(categoryId));
 

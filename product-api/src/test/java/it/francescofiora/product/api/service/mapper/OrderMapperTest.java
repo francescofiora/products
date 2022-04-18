@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import it.francescofiora.product.api.domain.Order;
 import it.francescofiora.product.api.service.dto.NewOrderDto;
-import it.francescofiora.product.api.service.dto.OrderDto;
 import org.junit.jupiter.api.Test;
 
 class OrderMapperTest {

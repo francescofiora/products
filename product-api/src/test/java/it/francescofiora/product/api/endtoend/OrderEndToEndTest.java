@@ -3,7 +3,6 @@ package it.francescofiora.product.api.endtoend;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import it.francescofiora.product.api.service.dto.OrderDto;
-import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;
 import it.francescofiora.product.api.util.TestUtils;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -84,8 +83,7 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
         get(USER, ORDERS_URI, PageRequest.of(1, 1), OrderDto[].class, ALERT_GET, PARAM_PAGE_20);
     assertThat(orders).isNotEmpty();
     var option = Stream.of(orders).filter(order -> order.getId().equals(orderId)).findAny();
-    assertThat(option).isPresent();
-    assertThat(option.get()).isEqualTo(actual);
+    assertThat(option).isPresent().contains(actual);
 
     delete(USER, orderIdUri, ALERT_DELETED, String.valueOf(orderId));
 

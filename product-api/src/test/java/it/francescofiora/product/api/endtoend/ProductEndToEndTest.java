@@ -78,8 +78,7 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
     assertThat(products).isNotEmpty();
     var option =
         Stream.of(products).filter(product -> product.getId().equals(productId)).findAny();
-    assertThat(option).isPresent();
-    assertThat(option.get()).isEqualTo(actual);
+    assertThat(option).isPresent().contains(actual);
 
     delete(ADMIN, productIdUri, ALERT_DELETED, String.valueOf(productId));
 
