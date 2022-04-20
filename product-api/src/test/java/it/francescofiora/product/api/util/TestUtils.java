@@ -19,12 +19,15 @@ import it.francescofiora.product.api.service.dto.enumeration.OrderStatus;
 import it.francescofiora.product.api.service.dto.enumeration.Size;
 import java.math.BigDecimal;
 import java.time.Instant;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Utility for testing.
  */
-public interface TestUtils {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class TestUtils {
 
   /**
    * Create User.
@@ -33,7 +36,7 @@ public interface TestUtils {
    * @param role the role
    * @return the User
    */
-  static User createUser(String username, String password, String role) {
+  public static User createUser(String username, String password, String role) {
     var user = new User();
     user.setPassword(new BCryptPasswordEncoder().encode(password));
     user.setAccountNonExpired(true);
@@ -52,7 +55,7 @@ public interface TestUtils {
    * @param id the id
    * @return Category
    */
-  static Category createCategory(Long id) {
+  public static Category createCategory(Long id) {
     var category = new Category();
     category.setId(id);
     category.setName("Name");
@@ -66,7 +69,7 @@ public interface TestUtils {
    * @param id the id
    * @return Order
    */
-  static Order createOrder(Long id) {
+  public static Order createOrder(Long id) {
     var order = new Order();
     order.setCode("CODE");
     order.setCustomer("Customer");
@@ -80,7 +83,7 @@ public interface TestUtils {
    * @param id the id
    * @return Order
    */
-  static Order createPendingOrder(Long id) {
+  public static Order createPendingOrder(Long id) {
     var order = createOrder(id);
     order.setStatus(OrderStatus.PENDING);
     return order;
@@ -92,7 +95,7 @@ public interface TestUtils {
    * @param id the id
    * @return Product
    */
-  static Product createProduct(Long id) {
+  public static Product createProduct(Long id) {
     var product = new Product();
     product.setName("Name");
     product.setDescription("Description");
@@ -104,7 +107,7 @@ public interface TestUtils {
    *
    * @return NewCategoryDto
    */
-  static NewCategoryDto createNewCategoryDto() {
+  public static NewCategoryDto createNewCategoryDto() {
     var category = new NewCategoryDto();
     category.setName("New Name");
     category.setDescription("New Description");
@@ -117,7 +120,7 @@ public interface TestUtils {
    * @param id the id
    * @return CategoryDto
    */
-  static CategoryDto createCategoryDto(Long id) {
+  public static CategoryDto createCategoryDto(Long id) {
     var category = new CategoryDto();
     category.setId(id);
     category.setName("Name");
@@ -131,7 +134,7 @@ public interface TestUtils {
    * @param id the id of the product
    * @return NewOrderItemDto
    */
-  static NewOrderItemDto createNewOrderItemDto(Long id) {
+  public static NewOrderItemDto createNewOrderItemDto(Long id) {
     var item = new NewOrderItemDto();
     var product = new RefProductDto();
     product.setId(id);
@@ -146,7 +149,7 @@ public interface TestUtils {
    *
    * @return NewOrderItemDto
    */
-  static NewOrderItemDto createNewOrderItemDto() {
+  public static NewOrderItemDto createNewOrderItemDto() {
     return createNewOrderItemDto(1L);
   }
 
@@ -155,7 +158,7 @@ public interface TestUtils {
    *
    * @return NewOrderDto
    */
-  static NewOrderDto createNewOrderDto() {
+  public static NewOrderDto createNewOrderDto() {
     var order = new NewOrderDto();
     order.setCode("New CODE");
     order.setCustomer("New Customer");
@@ -169,7 +172,7 @@ public interface TestUtils {
    *
    * @return NewOrderDto
    */
-  static NewOrderDto createNewSimpleOrderDto() {
+  public static NewOrderDto createNewSimpleOrderDto() {
     var order = new NewOrderDto();
     order.setCode("New CODE");
     order.setCustomer("New Customer");
@@ -182,7 +185,7 @@ public interface TestUtils {
    *
    * @return NewProductDto
    */
-  static NewProductDto createNewProductDto() {
+  public static NewProductDto createNewProductDto() {
     var product = new NewProductDto();
     product.setDescription("New Description");
     product.setImage("New Image");
@@ -200,7 +203,7 @@ public interface TestUtils {
    * @param id the id of the Category
    * @return RefCategoryDto
    */
-  static RefCategoryDto createRefCategoryDto(Long id) {
+  public static RefCategoryDto createRefCategoryDto(Long id) {
     var category = new RefCategoryDto();
     category.setId(id);
     return category;
@@ -212,7 +215,7 @@ public interface TestUtils {
    * @param id the id
    * @return UpdatebleProductDto
    */
-  static UpdatebleProductDto createUpdatebleProductDto(Long id) {
+  public static UpdatebleProductDto createUpdatebleProductDto(Long id) {
     var product = new UpdatebleProductDto();
     product.setId(id);
     product.setDescription("Description updated");
@@ -231,7 +234,7 @@ public interface TestUtils {
    * @param id the id
    * @return UpdatebleOrderDto
    */
-  static UpdatebleOrderDto createUpdatebleOrderDto(Long id) {
+  public static UpdatebleOrderDto createUpdatebleOrderDto(Long id) {
     var order = new UpdatebleOrderDto();
     order.setId(id);
     order.setCode("CODE updated");
@@ -243,7 +246,7 @@ public interface TestUtils {
   /**
    * Verifies the equals/hashcode contract on the domain object.
    */
-  static <T> void equalsVerifier(Class<T> clazz) throws Exception {
+  public static <T> void equalsVerifier(Class<T> clazz) throws Exception {
     var domainObject1 = clazz.getConstructor().newInstance();
     assertThat(domainObject1.toString()).isNotNull();
     assertThat(domainObject1).isEqualTo(domainObject1);
@@ -265,7 +268,7 @@ public interface TestUtils {
    * @param obj1 the Object to compare
    * @param obj2 the Object to compare
    */
-  static void checkEqualHashAndToString(final Object obj1, final Object obj2) {
+  public static void checkEqualHashAndToString(final Object obj1, final Object obj2) {
     assertThat(obj1.equals(obj2)).isTrue();
     assertThat(obj1.hashCode()).isEqualTo(obj2.hashCode());
     assertThat(obj1.toString()).isEqualTo(obj2.toString());
@@ -277,7 +280,7 @@ public interface TestUtils {
    * @param obj1 the Object to compare
    * @param obj2 the Object to compare
    */
-  static void checkNotEqualHashAndToString(final Object obj1, final Object obj2) {
+  public static void checkNotEqualHashAndToString(final Object obj1, final Object obj2) {
     assertThat(obj1.equals(obj2)).isFalse();
     assertThat(obj1.hashCode()).isNotEqualTo(obj2.hashCode());
     assertThat(obj1.toString()).isNotEqualTo(obj2.toString());

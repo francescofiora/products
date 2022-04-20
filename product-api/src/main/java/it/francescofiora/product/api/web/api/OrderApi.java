@@ -182,8 +182,8 @@ public class OrderApi extends AbstractApi {
       throws URISyntaxException {
     log.debug("REST request to add a new Item {} to the order {}", orderItemDto, id);
     var result = orderService.addOrderItem(id, orderItemDto);
-    return postResponse(ENTITY_ORDER_ITEM, "/product/api/v1/orders/" + id + "/items/" + result.getId(),
-        result.getId());
+    return postResponse(ENTITY_ORDER_ITEM,
+        "/product/api/v1/orders/" + id + "/items/" + result.getId(), result.getId());
   }
 
   /**

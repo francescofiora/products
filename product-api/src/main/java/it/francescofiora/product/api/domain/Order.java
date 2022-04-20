@@ -60,4 +60,14 @@ public class Order extends AbstractDomain implements Serializable {
   @OneToMany(mappedBy = "order")
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   private Set<OrderItem> orderItems = new HashSet<>();
+
+  @Override
+  public boolean equals(Object obj) {
+    return super.equals(obj);
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
 }

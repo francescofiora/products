@@ -58,4 +58,14 @@ public class OrderItem extends AbstractDomain implements Serializable {
   @JsonIgnoreProperties("orderItems")
   @NotNull
   private Order order;
+
+  @Override
+  public boolean equals(Object obj) {
+    return super.equals(obj);
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
 }

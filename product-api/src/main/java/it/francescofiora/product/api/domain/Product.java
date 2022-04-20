@@ -67,4 +67,14 @@ public class Product extends AbstractDomain implements Serializable {
   @ManyToOne
   @JsonIgnoreProperties("products")
   private Category category;
+
+  @Override
+  public boolean equals(Object obj) {
+    return super.equals(obj);
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
 }

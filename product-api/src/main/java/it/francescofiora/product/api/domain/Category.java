@@ -48,4 +48,14 @@ public class Category extends AbstractDomain implements Serializable {
   @OneToMany(mappedBy = "category")
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   private Set<Product> products = new HashSet<>();
+
+  @Override
+  public boolean equals(Object obj) {
+    return super.equals(obj);
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
 }
