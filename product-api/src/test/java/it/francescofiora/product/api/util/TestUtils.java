@@ -3,6 +3,7 @@ package it.francescofiora.product.api.util;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import it.francescofiora.product.api.domain.Category;
+import it.francescofiora.product.api.domain.DomainIdentifier;
 import it.francescofiora.product.api.domain.Order;
 import it.francescofiora.product.api.domain.Product;
 import it.francescofiora.product.api.domain.User;
@@ -244,44 +245,39 @@ public final class TestUtils {
   }
 
   /**
-   * Verifies the equals/hashcode contract on the domain object.
+   * Create new DomainIdentifier.
+   *
+   * @param clazz the DomainIdentifier class.
+   * @param id the id
+   * @return a new DomainIdentifier Object
+   * @throws Exception if error occurs
    */
-  public static <T> void equalsVerifier(Class<T> clazz) throws Exception {
-    var domainObject1 = clazz.getConstructor().newInstance();
-    assertThat(domainObject1.toString()).isNotNull();
-    assertThat(domainObject1).isEqualTo(domainObject1);
-    assertThat(domainObject1.hashCode()).isEqualTo(domainObject1.hashCode());
-    // Test with an instance of another class
-    var testOtherObject = new Object();
-    assertThat(domainObject1).isNotEqualTo(testOtherObject);
-    assertThat(domainObject1).isNotEqualTo(null);
-    // Test with an instance of the same class
-    var domainObject2 = clazz.getConstructor().newInstance();
-    assertThat(domainObject1).isNotEqualTo(domainObject2);
-    // HashCodes are equals because the objects are not persisted yet
-    assertThat(domainObject1.hashCode()).isEqualTo(domainObject2.hashCode());
+  public static <T> Object createNewDomain(Class<T> clazz, Long id) throws Exception {
+    var domainObj = (DomainIdentifier) clazz.getConstructor().newInstance();
+    domainObj.setId(id);
+    return domainObj;
   }
 
   /**
-   * assert that obj1 is equal to obj2 and also their hashCode and ToString.
+   * Assert that obj1 is equal to obj2 and also their hashCode and ToString.
    *
    * @param obj1 the Object to compare
    * @param obj2 the Object to compare
    */
   public static void checkEqualHashAndToString(final Object obj1, final Object obj2) {
-    assertThat(obj1.equals(obj2)).isTrue();
-    assertThat(obj1.hashCode()).isEqualTo(obj2.hashCode());
-    assertThat(obj1.toString()).isEqualTo(obj2.toString());
+    assertThat(obj1).isEqualTo(obj2);
+    assertThat(obj1).hasSameHashCodeAs(obj2.hashCode());
+    assertThat(obj1).hasToString(obj2.toString());
   }
 
   /**
-   * assert that obj1 is not equal to obj2 and also their hashCode and ToString.
+   * Assert that obj1 is not equal to obj2 and also their hashCode and ToString.
    *
    * @param obj1 the Object to compare
    * @param obj2 the Object to compare
    */
   public static void checkNotEqualHashAndToString(final Object obj1, final Object obj2) {
-    assertThat(obj1.equals(obj2)).isFalse();
+    assertThat(obj1).isNotEqualTo(obj2);
     assertThat(obj1.hashCode()).isNotEqualTo(obj2.hashCode());
     assertThat(obj1.toString()).isNotEqualTo(obj2.toString());
   }
