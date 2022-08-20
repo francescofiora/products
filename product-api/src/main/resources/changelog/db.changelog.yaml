@@ -1,0 +1,299 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022080901
+      author: Francesco
+      changes:
+        - createSequence:  
+            schemaName: STORE
+            sequenceName: SEQ_USER
+            startValue: 3
+        - createTable:
+            schemaName: STORE
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enabled
+                  type: tinyint
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_non_expired
+                  type: tinyint
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_non_locked
+                  type: tinyint
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: credentials_non_expired
+                  type: tinyint
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+        - insert:
+            schemaName: STORE
+            tableName: user
+            columns:  
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: username
+                  value: user
+              - column:
+                  name: password
+                  value: $2a$10$PMF.CrlbWKk/AdSmtKiOHu/5Fb9sZsEBSohppyoAKoNJeOhkoixzi
+              - column:
+                  name: role
+                  value: USER
+              - column:
+                  name: enabled
+                  value: 1
+              - column:
+                  name: account_non_expired
+                  value: 1
+              - column:
+                  name: account_non_locked
+                  value: 1
+              - column:
+                  name: credentials_non_expired
+                  value: 1
+        - insert:
+            schemaName: STORE
+            tableName: user
+            columns:  
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: username
+                  value: admin
+              - column:
+                  name: password
+                  value: $2a$10$PMF.CrlbWKk/AdSmtKiOHu/5Fb9sZsEBSohppyoAKoNJeOhkoixzi
+              - column:
+                  name: role
+                  value: ADMIN
+              - column:
+                  name: enabled
+                  value: 1
+              - column:
+                  name: account_non_expired
+                  value: 1
+              - column:
+                  name: account_non_locked
+                  value: 1
+              - column:
+                  name: credentials_non_expired
+                  value: 1
+
+  - changeSet:
+      id: 2022080902
+      author: Francesco
+      changes:
+        - createSequence:  
+            schemaName: STORE
+            sequenceName: SEQ_CATEGORY
+            startValue: 1
+        - createTable:
+            schemaName: STORE
+            tableName: CATEGORY
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2022080903
+      author: Francesco
+      changes:
+        - createSequence:  
+            schemaName: STORE
+            sequenceName: SEQ_PRODUCT
+            startValue: 1
+        - createTable:
+            schemaName: STORE
+            tableName: PRODUCT
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image_content_type
+                  type: varchar(5)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: number(21,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: size
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: FK1_PRODUCT  
+            baseTableSchemaName: STORE  
+            baseTableName: PRODUCT
+            baseColumnNames: category_id
+            referencedTableSchemaName: STORE
+            referencedTableName: CATEGORY
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 2022080904
+      author: Francesco
+      changes:
+        - createSequence:  
+            schemaName:  STORE  
+            sequenceName:  SEQ_ORDER  
+            startValue:  1
+        - createTable:
+            schemaName: STORE
+            tableName: order
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: customer
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: placed_date
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2022080905
+      author: Francesco
+      changes:
+        - createSequence:  
+            schemaName: STORE
+            sequenceName: SEQ_ORDER_ITEM
+            startValue: 1
+        - createTable:
+            schemaName: STORE
+            tableName: ORDER_ITEM
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_price
+                  type: number(21,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: FK1_ORDER_ITEM
+            baseTableSchemaName: STORE
+            baseTableName: ORDER_ITEM
+            baseColumnNames: product_id
+            referencedTableSchemaName: STORE
+            referencedTableName: PRODUCT
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            constraintName: FK2_ORDER_ITEM
+            baseTableSchemaName: STORE
+            baseTableName: ORDER_ITEM
+            baseColumnNames: order_id
+            referencedTableSchemaName: STORE
+            referencedTableName: order
+            referencedColumnNames: id

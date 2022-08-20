@@ -33,6 +33,10 @@ spring:
           new_generator_mappings: true
         jdbc:
           time_zone: UTC
+  liquibase:
+    user: ${DATASOURCE_ADMIN_USERNAME:product}
+    password: ${DATASOURCE_ADMIN_PASSWORD:secret}
+    change-log: classpath:changelog/db.changelog.yaml
 
 management:
   endpoints:
