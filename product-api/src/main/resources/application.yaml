@@ -14,9 +14,9 @@ spring:
     job.enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/db_product
-    username: product
-    password: secret
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/db_product}
+    username: ${DATASOURCE_USERNAME:product}
+    password: ${DATASOURCE_PASSWORD:secret}
     hikari:
       poolName: Hikari
       connectionTimeout: 30000

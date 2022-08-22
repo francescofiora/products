@@ -62,6 +62,9 @@ The purpose of this tutorial is a Spring Boot tutorial, however I have inserted 
     curl -u user:password 'http://localhost:8081/actuator/info' -i -X GET
     curl -u user:password 'http://localhost:8081/actuator/health' -i -X GET
 
+### Create docker image
+    ./gradlew jibDockerBuild
+
 ## Technologies used
 - [Gradle 7.0](https://gradle.org/)
 - [Java 11](https://openjdk.java.net/projects/jdk/11/)
