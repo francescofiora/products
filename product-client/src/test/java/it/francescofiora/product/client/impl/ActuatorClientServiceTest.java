@@ -29,9 +29,9 @@ class ActuatorClientServiceTest extends AbstractTestClientService {
       @Override
       public MockResponse dispatch(RecordedRequest request) {
         switch (request.getPath()) {
-          case "/product/actuator/info":
+          case "/actuator/info":
             return createMockResponse(BODY_INFO);
-          case "/product/actuator/health":
+          case "/actuator/health":
             return createMockResponse(BODY_HEALTH);
           default:
             return new MockResponse().setResponseCode(HttpStatus.BAD_REQUEST.value());

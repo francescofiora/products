@@ -17,8 +17,8 @@ import reactor.core.publisher.Mono;
 @Component
 public class ProductClientServiceImpl extends AbtractClient implements ProductClientService {
 
-  private static final String PRODUCTS_URI = "/product/api/products";
-  private static final String PRODUCTS_ID_URI = "/product/api/products/{id}";
+  private static final String PRODUCTS_URI = "/product/api/v1/products";
+  private static final String PRODUCTS_ID_URI = "/product/api/v1/products/{id}";
 
   public ProductClientServiceImpl(ClientInfo clientInfo) {
     super(clientInfo);

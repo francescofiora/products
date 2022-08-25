@@ -18,11 +18,11 @@ public class ActuatorClientServiceImpl extends AbtractClient implements Actuator
 
   @Override
   public Mono<ResponseEntity<String>> getInfo() {
-    return get("/product/actuator/info", String.class);
+    return get("/actuator/info", String.class);
   }
 
   @Override
   public Mono<ResponseEntity<String>> getHealth() {
-    return get("/product/actuator/health", String.class);
+    return get("/actuator/health", String.class);
   }
 }

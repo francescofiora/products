@@ -29,9 +29,9 @@ class ProductClientServiceTest extends AbstractTestClientService {
       @Override
       public MockResponse dispatch(RecordedRequest request) {
         switch (request.getPath()) {
-          case "/product/api/products":
+          case "/product/api/v1/products":
             return createMockResponse("");
-          case "/product/api/products/1":
+          case "/product/api/v1/products/1":
             return createMockResponse("");
           default:
             return createMockBadRequestResponse();
