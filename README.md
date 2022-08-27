@@ -65,6 +65,16 @@ The purpose of this tutorial is a Spring Boot tutorial, however I have inserted 
 ### Create docker image
     ./gradlew jibDockerBuild
 
+### Integration test
+
+###Publish client and dto jars
+    ./gradlew publishToMavenLocal
+
+###Run Integration tests
+    cd product-integration-test
+    ./gradlew clean build
+
+
 ## Technologies used
 - [Gradle 7.0](https://gradle.org/)
 - [Java 11](https://openjdk.java.net/projects/jdk/11/)

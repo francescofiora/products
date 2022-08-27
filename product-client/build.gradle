@@ -2,6 +2,7 @@ plugins {
   id 'java-library'
   id 'info.solidsoft.pitest' version '1.7.0'
   id 'org.owasp.dependencycheck' version '6.2.2'
+  id 'maven-publish'
 }
 
 def springdoc_openapi_version = parent.property('springdoc-openapi.version')
@@ -35,4 +36,12 @@ dependencies {
 pitest {
   timestampedReports = false
   junit5PluginVersion = '0.15'
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+    }
+  }
 }
