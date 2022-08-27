@@ -80,6 +80,16 @@ public abstract class AbstractApiTest {
     // @formatter:on
   }
 
+  protected ResultActions performPost(String username, String path, Long id, Object content)
+      throws Exception {
+    // @formatter:off
+    return mvc.perform(post(path, id)
+        .contentType(APPLICATION_JSON)
+        .headers(createHttpHeaders(username))
+        .content(writeValueAsString(content)));
+    // @formatter:on
+  }
+
   protected ResultActions performPut(String username, String path, Long id, Object content)
       throws Exception {
     // @formatter:off

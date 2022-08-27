@@ -15,7 +15,6 @@ import it.francescofiora.product.api.web.errors.BadRequestAlertException;
 import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * REST controller for managing {@link it.francescofiora.product.domain.Product}.
  */
-@Slf4j
 @RestController
 @RequestMapping("/product/api/v1")
 public class ProductApi extends AbstractApi {
@@ -64,7 +62,6 @@ public class ProductApi extends AbstractApi {
   public ResponseEntity<Void> createProduct(
       @Parameter(description = "Add new Product") @Valid @RequestBody NewProductDto productDto)
       throws URISyntaxException {
-    log.debug("REST request to create Product : {}", productDto);
     var result = productService.create(productDto);
     return postResponse("/product/api/v1/products/" + result.getId(), result.getId());
   }
@@ -90,7 +87,6 @@ public class ProductApi extends AbstractApi {
           description = "Product to update") @Valid @RequestBody UpdatebleProductDto productDto,
       @Parameter(description = "The id of the category to update", required = true,
           example = "1") @PathVariable("id") Long id) {
-    log.debug("REST request to update Product : {}", productDto);
     if (!id.equals(productDto.getId())) {
       throw new BadRequestAlertException("UpdatebleProductDto", String.valueOf(productDto.getId()),
           "Invalid id");
@@ -118,7 +114,6 @@ public class ProductApi extends AbstractApi {
   @GetMapping("/products")
   @PreAuthorize(AUTHORIZE_ALL)
   public ResponseEntity<List<ProductDto>> getAllProducts(Pageable pageable) {
-    log.debug("REST request to get a page of Products");
     return getResponse(productService.findAll(pageable));
   }
 
@@ -140,7 +135,6 @@ public class ProductApi extends AbstractApi {
   @PreAuthorize(AUTHORIZE_ALL)
   public ResponseEntity<ProductDto> getProduct(@Parameter(description = "Id of the Product to get",
       required = true, example = "1") @PathVariable Long id) {
-    log.debug("REST request to get Product : {}", id);
     return getResponse(productService.findOne(id), id);
   }
 
@@ -160,7 +154,6 @@ public class ProductApi extends AbstractApi {
   @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> deleteProduct(@Parameter(description = "Id of the Product to delete",
       required = true, example = "1") @PathVariable Long id) {
-    log.debug("REST request to delete Product : {}", id);
     productService.delete(id);
     return deleteResponse(id);
   }

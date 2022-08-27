@@ -14,7 +14,6 @@ import it.francescofiora.product.api.web.errors.BadRequestAlertException;
 import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * REST controller for managing {@link it.francescofiora.product.domain.Category}.
  */
-@Slf4j
 @RestController
 @RequestMapping("/product/api/v1")
 public class CategoryApi extends AbstractApi {
@@ -65,7 +63,6 @@ public class CategoryApi extends AbstractApi {
   public ResponseEntity<Void> createCategory(
       @Parameter(description = "Add new Category") @Valid @RequestBody NewCategoryDto categoryDto)
       throws URISyntaxException {
-    log.debug("REST request to create a new Category : {}", categoryDto);
     var result = categoryService.create(categoryDto);
     return postResponse("/product/api/v1/categories/" + result.getId(), result.getId());
   }
@@ -91,7 +88,6 @@ public class CategoryApi extends AbstractApi {
       @Parameter(description = "Category to update") @Valid @RequestBody CategoryDto categoryDto,
       @Parameter(description = "The id of the category to update", required = true,
           example = "1") @PathVariable("id") Long id) {
-    log.debug("REST request to update Category : {}", categoryDto);
     if (!id.equals(categoryDto.getId())) {
       throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(categoryDto.getId()),
           "Invalid id");
@@ -118,7 +114,6 @@ public class CategoryApi extends AbstractApi {
   @GetMapping("/categories")
   @PreAuthorize(AUTHORIZE_ALL)
   public ResponseEntity<List<CategoryDto>> getAllProductCategories(Pageable pageable) {
-    log.debug("REST request to get all ProductCategories");
     return getResponse(categoryService.findAll(pageable));
   }
 
@@ -141,7 +136,6 @@ public class CategoryApi extends AbstractApi {
   public ResponseEntity<CategoryDto> getCategory(
       @Parameter(description = "Id of the Category to get", required = true,
           example = "1") @PathVariable Long id) {
-    log.debug("REST request to get Category : {}", id);
     return getResponse(categoryService.findOne(id), id);
   }
 
@@ -162,7 +156,6 @@ public class CategoryApi extends AbstractApi {
   public ResponseEntity<Void> deleteCategory(
       @Parameter(description = "Id of the Category to delete", required = true,
           example = "1") @PathVariable Long id) {
-    log.debug("REST request to delete Category : {}", id);
     categoryService.delete(id);
     return deleteResponse(id);
   }

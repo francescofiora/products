@@ -16,7 +16,6 @@ import it.francescofiora.product.api.web.errors.BadRequestAlertException;
 import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * REST controller for managing {@link it.francescofiora.product.domain.Order}.
  */
-@Slf4j
 @RestController
 @RequestMapping("/product/api/v1")
 @PreAuthorize(AbstractApi.AUTHORIZE_ALL)
@@ -67,7 +65,6 @@ public class OrderApi extends AbstractApi {
   public ResponseEntity<Void> createOrder(
       @Parameter(description = "Add new Order") @Valid @RequestBody NewOrderDto orderDto)
       throws URISyntaxException {
-    log.debug("REST request to create a new Order : {}", orderDto);
     var result = orderService.create(orderDto);
     return postResponse("/product/api/v1/orders/" + result.getId(), result.getId());
   }
@@ -91,7 +88,6 @@ public class OrderApi extends AbstractApi {
       @Parameter(description = "Order to update") @Valid @RequestBody UpdatebleOrderDto orderDto,
       @Parameter(description = "The id of the order to patch", required = true,
           example = "1") @PathVariable("id") Long id) {
-    log.debug("REST request to patch Order : {}", orderDto);
     if (!id.equals(orderDto.getId())) {
       throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(orderDto.getId()),
           "Invalid id");
@@ -117,7 +113,6 @@ public class OrderApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/orders")
   public ResponseEntity<List<OrderDto>> getAllOrders(Pageable pageable) {
-    log.debug("REST request to get a page of Orders");
     return getResponse(orderService.findAll(pageable));
   }
 
@@ -138,7 +133,6 @@ public class OrderApi extends AbstractApi {
   @GetMapping("/orders/{id}")
   public ResponseEntity<OrderDto> getOrder(@Parameter(description = "Id of the Order to get",
       required = true, example = "1") @PathVariable Long id) {
-    log.debug("REST request to get Order : {}", id);
     return getResponse(orderService.findOne(id), id);
   }
 
@@ -156,7 +150,6 @@ public class OrderApi extends AbstractApi {
   @DeleteMapping("/orders/{id}")
   public ResponseEntity<Void> deleteOrder(@Parameter(description = "The id of the Order to delete",
       required = true, example = "1") @PathVariable Long id) {
-    log.debug("REST request to delete Order : {}", id);
     orderService.delete(id);
     return deleteResponse(id);
   }
@@ -175,12 +168,11 @@ public class OrderApi extends AbstractApi {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OrderItem added"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @PutMapping("/orders/{id}/items")
+  @PostMapping("/orders/{id}/items")
   public ResponseEntity<Void> addOrderItem(
       @Parameter(description = "Order id", required = true, example = "1") @PathVariable Long id,
       @Parameter(description = "Item to add") @Valid @RequestBody NewOrderItemDto orderItemDto)
       throws URISyntaxException {
-    log.debug("REST request to add a new Item {} to the order {}", orderItemDto, id);
     var result = orderService.addOrderItem(id, orderItemDto);
     return postResponse(ENTITY_ORDER_ITEM,
         "/product/api/v1/orders/" + id + "/items/" + result.getId(), result.getId());
@@ -204,7 +196,6 @@ public class OrderApi extends AbstractApi {
           example = "1") @PathVariable(name = "order_id") Long orderId,
       @Parameter(description = "Id of the Item to delete", required = true,
           example = "1") @PathVariable(name = "order_item_id") Long orderItemId) {
-    log.debug("REST request to delete the Item {} to the order {}", orderItemId, orderId);
     orderService.deleteOrderItem(orderId, orderItemId);
     return deleteResponse(ENTITY_ORDER_ITEM, orderItemId);
   }

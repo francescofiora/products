@@ -246,7 +246,7 @@ class OrderApiTest extends AbstractApiTest {
     OrderItemDto orderItemDto = new OrderItemDto();
     orderItemDto.setId(ITEM_ID);
     given(orderService.addOrderItem(eq(ID), any(NewOrderItemDto.class))).willReturn(orderItemDto);
-    MvcResult result = performPut(USER, ORDERS_ID_ITEMS_URI, ID, newOrderItemDto)
+    MvcResult result = performPost(USER, ORDERS_ID_ITEMS_URI, ID, newOrderItemDto)
         .andExpect(status().isCreated()).andReturn();
     assertThat(result.getResponse().getHeaderValue(HttpHeaders.LOCATION))
         .isEqualTo(ORDERS_URI + "/" + ID + "/items/" + ITEM_ID);
@@ -256,10 +256,10 @@ class OrderApiTest extends AbstractApiTest {
   void testAddItemForbidden() throws Exception {
     NewOrderItemDto newOrderItemDto = TestUtils.createNewOrderItemDto();
 
-    performPut(USER_NOT_EXIST, ORDERS_ID_ITEMS_URI, ID, newOrderItemDto)
+    performPost(USER_NOT_EXIST, ORDERS_ID_ITEMS_URI, ID, newOrderItemDto)
         .andExpect(status().isUnauthorized());
 
-    performPut(USER_WITH_WRONG_ROLE, ORDERS_ID_ITEMS_URI, ID, newOrderItemDto)
+    performPost(USER_WITH_WRONG_ROLE, ORDERS_ID_ITEMS_URI, ID, newOrderItemDto)
         .andExpect(status().isForbidden());
   }
 
@@ -268,20 +268,20 @@ class OrderApiTest extends AbstractApiTest {
     // Items->Quantity
     NewOrderItemDto orderItemDto = TestUtils.createNewOrderItemDto();
     orderItemDto.setQuantity(null);
-    performPut(USER, ORDERS_ID_ITEMS_URI, ID, orderItemDto).andExpect(status().isBadRequest());
+    performPost(USER, ORDERS_ID_ITEMS_URI, ID, orderItemDto).andExpect(status().isBadRequest());
 
     orderItemDto = TestUtils.createNewOrderItemDto();
     orderItemDto.setQuantity(0);
-    performPut(USER, ORDERS_ID_ITEMS_URI, ID, orderItemDto).andExpect(status().isBadRequest());
+    performPost(USER, ORDERS_ID_ITEMS_URI, ID, orderItemDto).andExpect(status().isBadRequest());
 
     // Items->Product
     orderItemDto = TestUtils.createNewOrderItemDto();
     orderItemDto.setProduct(null);
-    performPut(USER, ORDERS_ID_ITEMS_URI, ID, orderItemDto).andExpect(status().isBadRequest());
+    performPost(USER, ORDERS_ID_ITEMS_URI, ID, orderItemDto).andExpect(status().isBadRequest());
 
     orderItemDto = TestUtils.createNewOrderItemDto();
     orderItemDto.getProduct().setId(null);
-    performPut(USER, ORDERS_ID_ITEMS_URI, ID, orderItemDto).andExpect(status().isBadRequest());
+    performPost(USER, ORDERS_ID_ITEMS_URI, ID, orderItemDto).andExpect(status().isBadRequest());
   }
 
   @Test
