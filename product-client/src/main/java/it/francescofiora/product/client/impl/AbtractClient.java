@@ -40,11 +40,34 @@ public abstract class AbtractClient {
     // @formatter:on
   }
 
+  protected <T> Mono<ResponseEntity<Void>> create(String uri, Long id, T body, Class<T> clazz) {
+    // @formatter:off
+    return buildWebClient()
+        .post()
+        .uri(uri, id)
+        .body(Mono.just(body), clazz)
+        .retrieve()
+        .toEntity(Void.class);
+    // @formatter:on
+  }
+
   protected <T extends DtoIdentifier> Mono<ResponseEntity<Void>> update(String uri, T body,
       Class<T> clazz) {
     // @formatter:off
     return buildWebClient()
         .put()
+        .uri(uri, body.getId())
+        .body(Mono.just(body), clazz)
+        .retrieve()
+        .toEntity(Void.class);
+    // @formatter:on
+  }
+
+  protected <T extends DtoIdentifier> Mono<ResponseEntity<Void>> patch(String uri, T body,
+      Class<T> clazz) {
+    // @formatter:off
+    return buildWebClient()
+        .patch()
         .uri(uri, body.getId())
         .body(Mono.just(body), clazz)
         .retrieve()
@@ -82,11 +105,11 @@ public abstract class AbtractClient {
     // @formatter:on
   }
 
-  protected Mono<ResponseEntity<Void>> delete(String url, Long id) {
+  protected Mono<ResponseEntity<Void>> delete(String url, Object... ids) {
     // @formatter:off
     return buildWebClient()
         .delete()
-        .uri(url, id)
+        .uri(url, ids)
         .retrieve()
         .toEntity(Void.class);
     // @formatter:on
