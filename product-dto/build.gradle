@@ -28,6 +28,11 @@ dependencies {
   testAnnotationProcessor "org.projectlombok:lombok:${lombok_version}"
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 pitest {
   timestampedReports = false
   junit5PluginVersion = '0.15'
