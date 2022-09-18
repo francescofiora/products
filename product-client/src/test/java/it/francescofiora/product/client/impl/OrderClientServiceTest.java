@@ -1,6 +1,7 @@
 package it.francescofiora.product.client.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import it.francescofiora.product.api.service.dto.NewOrderDto;
 import it.francescofiora.product.api.service.dto.NewOrderItemDto;
 import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;

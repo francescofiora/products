@@ -15,12 +15,10 @@ SpringBoot Rest Api tutorial with OpenApi 3.0 and PostgreSql.
     - EndPoints using WebMvcTest
     - Pojos and Dtos using OpenPojo
     - End to End Test with TestRestTemplate
+    - Integration test using TestContainers
 - Eclipse support
 
-## Getting Started
-**Using Docker to simplify development**
-The purpose of this tutorial is a Spring Boot tutorial, however I have inserted and a Dockerfile for PostgreSql and phpPgAdmin for development purpose.
-
+# Getting Started
 ### Compile
     ./gradlew clean build
 
@@ -75,7 +73,7 @@ The purpose of this tutorial is a Spring Boot tutorial, however I have inserted 
     ./gradlew clean build
 
 
-## Technologies used
+# Technologies used
 - [Gradle 7.0](https://gradle.org/)
 - [Java 11](https://openjdk.java.net/projects/jdk/11/)
 - [Spring Boot 2.6](https://spring.io/projects/spring-boot)
@@ -94,3 +92,4 @@ The purpose of this tutorial is a Spring Boot tutorial, however I have inserted 
 - [Owasp Dependency Check 6.2](https://owasp.org/www-project-dependency-check/)
 - [Jacoco 0.8](https://www.jacoco.org/)
 - [Pitest 1.7](https://pitest.org/)
+- [TestContainers 1.17](https://www.testcontainers.org/)

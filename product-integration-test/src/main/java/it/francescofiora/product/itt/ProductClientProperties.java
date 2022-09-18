@@ -18,4 +18,10 @@ public class ProductClientProperties implements ClientInfo {
 
   @NotBlank
   private String password;
+
+  boolean sslEnabled = false;
+
+  private String keyStoreFile;
+
+  private String keyStorePassword;
 }

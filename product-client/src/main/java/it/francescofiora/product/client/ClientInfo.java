@@ -10,4 +10,10 @@ public interface ClientInfo {
   String getUserName();
 
   String getPassword();
+
+  String getKeyStoreFile();
+
+  String getKeyStorePassword();
+
+  boolean isSslEnabled();
 }

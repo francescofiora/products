@@ -1,34 +1,21 @@
 package it.francescofiora.product.itt.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.Network;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
  * Abstract TestContainer.
  */
 public class AbstractTestContainer {
-
-  private static Network network = Network.newNetwork();
-
-  protected static PostgreSQLContainer<?> createPostgreSqlContainer() {
-    // @formatter:off
-    var mysql = new PostgreSQLContainer<>("postgres:14.1")
-        .withNetwork(network)
-        .withNetworkAliases("postgre")
-        .withUsername("product").withPassword("secret")
-        .withDatabaseName("db_product");
-    // @formatter:on
-    return mysql;
-  }
-
-  protected static GenericContainer<?> createContainer(String dockerImageName) {
-    return new GenericContainer<>(dockerImageName).withNetwork(network);
-  }
 
   protected static HikariDataSource createHikariDataSource(PostgreSQLContainer<?> container) {
     var hikariConfig = new HikariConfig();
@@ -52,4 +39,13 @@ public class AbstractTestContainer {
     resultSet.next();
     return resultSet;
   }
+
+  protected Long validateResponseAndGetId(ResponseEntity<Void> result) {
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    assertNotNull(result.getHeaders().get(HttpHeaders.LOCATION));
+    var url = result.getHeaders().get(HttpHeaders.LOCATION).get(0);
+    assertNotNull(url);
+    return Long.valueOf(url.substring(url.lastIndexOf('/') + 1));
+  }
+
 }

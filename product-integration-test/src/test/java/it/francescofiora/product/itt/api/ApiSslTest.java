@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import it.francescofiora.product.client.ActuatorClientService;
 import it.francescofiora.product.client.CategoryClientService;
 import it.francescofiora.product.client.OrderClientService;
@@ -16,21 +19,20 @@ import it.francescofiora.product.itt.ProductClientProperties;
 import it.francescofiora.product.itt.StartStopContainers;
 import it.francescofiora.product.itt.api.util.ContainerGenerator;
 import it.francescofiora.product.itt.api.util.TestUtils;
+import java.io.File;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 
-/**
- * Product Integration Test.
- */
 @Slf4j
-class ApiTest extends AbstractTestContainer {
+class ApiSslTest extends AbstractTestContainer {
 
   private static final String DATASOURCE_URL =
       "jdbc:postgresql://product-postgresql:5432/db_product";
@@ -45,10 +47,12 @@ class ApiTest extends AbstractTestContainer {
 
   private static StartStopContainers containers = new StartStopContainers();
 
-  private static ContainerGenerator containerGenerator = new ContainerGenerator(false);
+  private static ContainerGenerator containerGenerator = new ContainerGenerator(true);
 
   @BeforeAll
   public static void init() throws Exception {
+    containerGenerator.useSsl();
+
     postgreContainer = containerGenerator.createPostgreSqlContainer();
     containers.add(postgreContainer);
 
@@ -59,26 +63,61 @@ class ApiTest extends AbstractTestContainer {
     // @formatter:off
     product = containerGenerator.createContainer("francescofiora-product")
         .withEnv("DATASOURCE_URL", DATASOURCE_URL)
+        .withEnv("SSL_ENABLED", "true")
+        .withEnv("KEYSTORE_PASSWORD", "mypass")
+        .withEnv("KEYSTORE_FILE", "/workspace/config/product-keystore.jks")
+        .withEnv("TRUSTSTORE_PASSWORD", "mypass")
+        .withEnv("TRUSTSTORE_FILE", "/workspace/config/truststore.ts")
         .withLogConsumer(new Slf4jLogConsumer(log))
         .withNetworkAliases(ContainerGenerator.PRODUCT_API)
         .withExposedPorts(8081);
     // @formatter:on
+    var tmpDir = containerGenerator.getTmpDir();
+    product.addFileSystemBind(tmpDir + File.separator + "product-keystore.jks",
+        "/workspace/config/product-keystore.jks", BindMode.READ_ONLY);
+    product.addFileSystemBind(tmpDir + File.separator + "truststore.ts",
+        "/workspace/config/truststore.ts", BindMode.READ_ONLY);
     containers.add(product);
 
     var adminProp = new ProductClientProperties();
-    adminProp.setBaseUrl("http://" + product.getHost() + ":" + product.getFirstMappedPort());
+    adminProp.setBaseUrl("https://" + product.getHost() + ":" + product.getFirstMappedPort());
     adminProp.setUserName("admin");
     adminProp.setPassword("password");
+    adminProp.setSslEnabled(true);
 
     var userProp = new ProductClientProperties();
-    userProp.setBaseUrl("http://" + product.getHost() + ":" + product.getFirstMappedPort());
+    userProp.setBaseUrl("https://" + product.getHost() + ":" + product.getFirstMappedPort());
     userProp.setUserName("user");
     userProp.setPassword("password");
+    userProp.setSslEnabled(true);
 
-    actuatorClientService = new ActuatorClientServiceImpl(userProp);
-    categoryClientService = new CategoryClientServiceImpl(adminProp);
-    productClientService = new ProductClientServiceImpl(adminProp);
-    orderClientService = new OrderClientServiceImpl(userProp);
+    var sslContext =
+        SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+
+    actuatorClientService = new ActuatorClientServiceImpl(userProp) {
+      @Override
+      protected SslContext createSslContext() {
+        return sslContext;
+      }
+    };
+    categoryClientService = new CategoryClientServiceImpl(adminProp) {
+      @Override
+      protected SslContext createSslContext() {
+        return sslContext;
+      }
+    };
+    productClientService = new ProductClientServiceImpl(adminProp) {
+      @Override
+      protected SslContext createSslContext() {
+        return sslContext;
+      }
+    };
+    orderClientService = new OrderClientServiceImpl(userProp) {
+      @Override
+      protected SslContext createSslContext() {
+        return sslContext;
+      }
+    };
   }
 
   @Test

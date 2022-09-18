@@ -43,6 +43,21 @@ public abstract class AbstractTestClientService {
       public String getPassword() {
         return "password";
       }
+
+      @Override
+      public String getKeyStoreFile() {
+        return null;
+      }
+
+      @Override
+      public String getKeyStorePassword() {
+        return null;
+      }
+
+      @Override
+      public boolean isSslEnabled() {
+        return false;
+      }
     };
   }
 
