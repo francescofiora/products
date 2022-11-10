@@ -18,11 +18,11 @@ import reactor.core.publisher.Mono;
 @Component
 public class OrderClientServiceImpl extends AbtractClient implements OrderClientService {
 
-  private static final String ORDERS_URI = "/product/api/v1/orders";
-  private static final String ORDERS_ID_URI = "/product/api/v1/orders/{id}";
-  private static final String ORDERS_ITEMS_URI = "/product/api/v1/orders/{id}/items";
+  private static final String ORDERS_URI = "/api/v1/orders";
+  private static final String ORDERS_ID_URI = "/api/v1/orders/{id}";
+  private static final String ORDERS_ITEMS_URI = "/api/v1/orders/{id}/items";
   private static final String ORDERS_ITEMS_ID_URI =
-      "/product/api/v1/orders/{order_id}/items/{order_item_id}";
+      "/api/v1/orders/{order_id}/items/{order_item_id}";
 
   public OrderClientServiceImpl(ClientInfo clientInfo) {
     super(clientInfo);

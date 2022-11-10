@@ -3,7 +3,7 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'info.solidsoft.pitest' version '1.7.0'
   id 'org.owasp.dependencycheck' version '6.2.2'
-  id 'com.google.cloud.tools.jib' version '3.2.1'
+  id 'com.google.cloud.tools.jib' version '3.3.0'
 }
 
 def main_class = 'it.francescofiora.product.api.Application'
@@ -84,8 +84,4 @@ eclipse {
 pitest {
   timestampedReports = false
   junit5PluginVersion = '0.15'
-}
-
-bootBuildImage {
-  imageName = "francescofiora.it/library/${project.name}:${project.version}"
 }

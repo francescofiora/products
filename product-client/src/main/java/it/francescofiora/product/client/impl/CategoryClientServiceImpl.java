@@ -16,8 +16,8 @@ import reactor.core.publisher.Mono;
 @Component
 public class CategoryClientServiceImpl extends AbtractClient implements CategoryClientService {
 
-  private static final String CATEGORIES_URI = "/product/api/v1/categories";
-  private static final String CATEGORIES_ID_URI = "/product/api/v1/categories/{id}";
+  private static final String CATEGORIES_URI = "/api/v1/categories";
+  private static final String CATEGORIES_ID_URI = "/api/v1/categories/{id}";
 
   public CategoryClientServiceImpl(ClientInfo clientInfo) {
     super(clientInfo);

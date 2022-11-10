@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
  * REST controller for managing {@link it.francescofiora.product.domain.Product}.
  */
 @RestController
-@RequestMapping("/product/api/v1")
+@RequestMapping("/api/v1")
 public class ProductApi extends AbstractApi {
 
   private static final String ENTITY_NAME = "ProductDto";
@@ -63,7 +63,7 @@ public class ProductApi extends AbstractApi {
       @Parameter(description = "Add new Product") @Valid @RequestBody NewProductDto productDto)
       throws URISyntaxException {
     var result = productService.create(productDto);
-    return postResponse("/product/api/v1/products/" + result.getId(), result.getId());
+    return postResponse("/api/v1/products/" + result.getId(), result.getId());
   }
 
   /**

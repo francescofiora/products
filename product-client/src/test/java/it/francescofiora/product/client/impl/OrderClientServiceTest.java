@@ -30,13 +30,13 @@ class OrderClientServiceTest extends AbstractTestClientService {
       @Override
       public MockResponse dispatch(RecordedRequest request) {
         switch (request.getPath()) {
-          case "/product/api/v1/orders":
+          case "/api/v1/orders":
             return createMockResponse("");
-          case "/product/api/v1/orders/1":
+          case "/api/v1/orders/1":
             return createMockResponse("");
-          case "/product/api/v1/orders/1/items":
+          case "/api/v1/orders/1/items":
             return createMockResponse("");
-          case "/product/api/v1/orders/1/items/1":
+          case "/api/v1/orders/1/items/1":
             return createMockResponse("");
           default:
             return createMockBadRequestResponse();

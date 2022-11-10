@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  * REST controller for managing {@link it.francescofiora.product.domain.Order}.
  */
 @RestController
-@RequestMapping("/product/api/v1")
+@RequestMapping("/api/v1")
 @PreAuthorize(AbstractApi.AUTHORIZE_ALL)
 public class OrderApi extends AbstractApi {
 
@@ -66,7 +66,7 @@ public class OrderApi extends AbstractApi {
       @Parameter(description = "Add new Order") @Valid @RequestBody NewOrderDto orderDto)
       throws URISyntaxException {
     var result = orderService.create(orderDto);
-    return postResponse("/product/api/v1/orders/" + result.getId(), result.getId());
+    return postResponse("/api/v1/orders/" + result.getId(), result.getId());
   }
 
   /**
@@ -174,8 +174,8 @@ public class OrderApi extends AbstractApi {
       @Parameter(description = "Item to add") @Valid @RequestBody NewOrderItemDto orderItemDto)
       throws URISyntaxException {
     var result = orderService.addOrderItem(id, orderItemDto);
-    return postResponse(ENTITY_ORDER_ITEM,
-        "/product/api/v1/orders/" + id + "/items/" + result.getId(), result.getId());
+    return postResponse(ENTITY_ORDER_ITEM, "/api/v1/orders/" + id + "/items/" + result.getId(),
+        result.getId());
   }
 
   /**

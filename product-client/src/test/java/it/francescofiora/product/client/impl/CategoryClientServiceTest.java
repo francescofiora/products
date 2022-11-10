@@ -29,9 +29,9 @@ class CategoryClientServiceTest extends AbstractTestClientService {
       @Override
       public MockResponse dispatch(RecordedRequest request) {
         switch (request.getPath()) {
-          case "/product/api/v1/categories":
+          case "/api/v1/categories":
             return createMockResponse("");
-          case "/product/api/v1/categories/1":
+          case "/api/v1/categories/1":
             return createMockResponse("");
           default:
             return createMockBadRequestResponse();

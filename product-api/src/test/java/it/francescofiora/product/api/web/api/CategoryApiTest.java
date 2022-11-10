@@ -32,9 +32,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 class CategoryApiTest extends AbstractApiTest {
 
   private static final Long ID = 1L;
-  private static final String CATEGORIES_URI = "/product/api/v1/categories";
-  private static final String CATEGORIES_ID_URI = "/product/api/v1/categories/{id}";
-  private static final String WRONG_URI = "/product/api/v1/wrong";
+  private static final String CATEGORIES_URI = "/api/v1/categories";
+  private static final String CATEGORIES_ID_URI = "/api/v1/categories/{id}";
+  private static final String WRONG_URI = "/api/v1/wrong";
 
   @MockBean
   private CategoryService categoryService;

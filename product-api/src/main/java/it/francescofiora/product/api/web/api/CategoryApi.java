@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  * REST controller for managing {@link it.francescofiora.product.domain.Category}.
  */
 @RestController
-@RequestMapping("/product/api/v1")
+@RequestMapping("/api/v1")
 public class CategoryApi extends AbstractApi {
 
   private static final String ENTITY_NAME = "CategoryDto";
@@ -64,7 +64,7 @@ public class CategoryApi extends AbstractApi {
       @Parameter(description = "Add new Category") @Valid @RequestBody NewCategoryDto categoryDto)
       throws URISyntaxException {
     var result = categoryService.create(categoryDto);
-    return postResponse("/product/api/v1/categories/" + result.getId(), result.getId());
+    return postResponse("/api/v1/categories/" + result.getId(), result.getId());
   }
 
   /**
