@@ -8,7 +8,9 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Abstract Api RestController.
@@ -17,7 +19,7 @@ public abstract class AbstractApi {
 
   protected static final String AUTHORIZE_ALL = "hasAnyRole('ADMIN', 'USER')";
   protected static final String AUTHORIZE_ADMIN = "hasRole('ADMIN')";
-  
+
   private final String entityName;
 
   protected AbstractApi(String entityName) {
@@ -30,10 +32,8 @@ public abstract class AbstractApi {
    * @param path the path
    * @param id the id of the resource created
    * @return ResponseEntity
-   * @throws URISyntaxException if the Location URI syntax is incorrect
    */
-  protected ResponseEntity<Void> postResponse(final String path, final Long id)
-      throws URISyntaxException {
+  protected ResponseEntity<Void> postResponse(final String path, final Long id) {
     return postResponse(entityName, path, id);
   }
 
@@ -44,16 +44,19 @@ public abstract class AbstractApi {
    * @param path the path
    * @param id the id of the resource created
    * @return ResponseEntity
-   * @throws URISyntaxException if the Location URI syntax is incorrect
    */
   protected ResponseEntity<Void> postResponse(final String refEntityName, final String path,
-      final Long id) throws URISyntaxException {
-    // @formatter:off
-    return ResponseEntity
-        .created(new URI(path))
-        .headers(HeaderUtil.createEntityCreationAlert(refEntityName, String.valueOf(id)))
-        .build();
-    // @formatter:on
+      final Long id) {
+    try {
+      // @formatter:off
+      return ResponseEntity
+          .created(new URI(path))
+          .headers(HeaderUtil.createEntityCreationAlert(refEntityName, String.valueOf(id)))
+          .build();
+      // @formatter:on
+    } catch (URISyntaxException e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+    }
   }
 
   /**

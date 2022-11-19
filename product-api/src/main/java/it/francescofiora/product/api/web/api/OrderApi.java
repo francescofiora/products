@@ -13,7 +13,6 @@ import it.francescofiora.product.api.service.dto.NewOrderItemDto;
 import it.francescofiora.product.api.service.dto.OrderDto;
 import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;
 import it.francescofiora.product.api.web.errors.BadRequestAlertException;
-import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -54,7 +53,6 @@ public class OrderApi extends AbstractApi {
    * @param orderDto the orderDto to create.
    * @return the {@link ResponseEntity} with status {@code 201 (Created)}, or with status
    *         {@code 400 (Bad Request)} if the order has already an ID.
-   * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @Operation(summary = "Add new Order", description = "Add a new Order to the system",
       tags = {"order"})
@@ -63,8 +61,7 @@ public class OrderApi extends AbstractApi {
       @ApiResponse(responseCode = "409", description = "An existing Order already exists")})
   @PostMapping("/orders")
   public ResponseEntity<Void> createOrder(
-      @Parameter(description = "Add new Order") @Valid @RequestBody NewOrderDto orderDto)
-      throws URISyntaxException {
+      @Parameter(description = "Add new Order") @Valid @RequestBody NewOrderDto orderDto) {
     var result = orderService.create(orderDto);
     return postResponse("/api/v1/orders/" + result.getId(), result.getId());
   }
@@ -76,7 +73,6 @@ public class OrderApi extends AbstractApi {
    * @return the {@link ResponseEntity} with status {@code 200 (OK)}, or with status
    *         {@code 400 (Bad Request)} if the orderDto is not valid, or with status
    *         {@code 500 (Internal Server Error)} if the orderDto couldn't be patched.
-   * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @Operation(summary = "Patch Order", description = "Patch an Order to the system",
       tags = {"order"})
@@ -161,7 +157,6 @@ public class OrderApi extends AbstractApi {
    * @param orderItemDto NewOrderItemDto
    * @return the {@link ResponseEntity} with status {@code 201 (Created)}, or with status
    *         {@code 400 (Bad Request)} if the order has already an ID.
-   * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @Operation(summary = "Add OrderItem", description = "Add a new item to an Order",
       tags = {"order"})
@@ -171,8 +166,7 @@ public class OrderApi extends AbstractApi {
   @PostMapping("/orders/{id}/items")
   public ResponseEntity<Void> addOrderItem(
       @Parameter(description = "Order id", required = true, example = "1") @PathVariable Long id,
-      @Parameter(description = "Item to add") @Valid @RequestBody NewOrderItemDto orderItemDto)
-      throws URISyntaxException {
+      @Parameter(description = "Item to add") @Valid @RequestBody NewOrderItemDto orderItemDto) {
     var result = orderService.addOrderItem(id, orderItemDto);
     return postResponse(ENTITY_ORDER_ITEM, "/api/v1/orders/" + id + "/items/" + result.getId(),
         result.getId());

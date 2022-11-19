@@ -11,7 +11,6 @@ import it.francescofiora.product.api.service.CategoryService;
 import it.francescofiora.product.api.service.dto.CategoryDto;
 import it.francescofiora.product.api.service.dto.NewCategoryDto;
 import it.francescofiora.product.api.web.errors.BadRequestAlertException;
-import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -49,20 +48,17 @@ public class CategoryApi extends AbstractApi {
    * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new
    *         categoryDto, or with status {@code 400 (Bad Request)} if the category has already an
    *         ID.
-   * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @Operation(summary = "Add new Category", description = "Add a new Category to the system",
       tags = {"category"})
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Category created"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
-      @ApiResponse(responseCode = "409", description = "An existing Category already exists")
-  })
+      @ApiResponse(responseCode = "409", description = "An existing Category already exists")})
   @PostMapping("/categories")
   @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> createCategory(
-      @Parameter(description = "Add new Category") @Valid @RequestBody NewCategoryDto categoryDto)
-      throws URISyntaxException {
+      @Parameter(description = "Add new Category") @Valid @RequestBody NewCategoryDto categoryDto) {
     var result = categoryService.create(categoryDto);
     return postResponse("/api/v1/categories/" + result.getId(), result.getId());
   }

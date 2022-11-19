@@ -12,7 +12,6 @@ import it.francescofiora.product.api.service.dto.NewProductDto;
 import it.francescofiora.product.api.service.dto.ProductDto;
 import it.francescofiora.product.api.service.dto.UpdatebleProductDto;
 import it.francescofiora.product.api.web.errors.BadRequestAlertException;
-import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -49,7 +48,6 @@ public class ProductApi extends AbstractApi {
    * @param productDto the Product to create.
    * @return the {@link ResponseEntity} with status {@code 201 (Created)}, or with status
    *         {@code 400 (Bad Request)} if the product has already an ID.
-   * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @Operation(summary = "Add new Product", description = "Add a new Product to the system",
       tags = {"product"})
@@ -60,8 +58,7 @@ public class ProductApi extends AbstractApi {
   @PostMapping("/products")
   @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> createProduct(
-      @Parameter(description = "Add new Product") @Valid @RequestBody NewProductDto productDto)
-      throws URISyntaxException {
+      @Parameter(description = "Add new Product") @Valid @RequestBody NewProductDto productDto) {
     var result = productService.create(productDto);
     return postResponse("/api/v1/products/" + result.getId(), result.getId());
   }
