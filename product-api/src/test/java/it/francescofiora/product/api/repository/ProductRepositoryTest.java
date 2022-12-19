@@ -12,7 +12,7 @@ class ProductRepositoryTest extends AbstractTestRepository {
   private ProductRepository productRepository;
 
   @Test
-  void testCrud() throws Exception {
+  void testCrud() {
     var expected = TestUtils.createProduct(null);
     expected = productRepository.save(expected);
 

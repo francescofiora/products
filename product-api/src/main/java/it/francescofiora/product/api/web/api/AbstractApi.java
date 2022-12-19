@@ -47,13 +47,23 @@ public abstract class AbstractApi {
    */
   protected ResponseEntity<Void> postResponse(final String refEntityName, final String path,
       final Long id) {
+    // @formatter:off
+    return ResponseEntity
+        .created(createUri(path))
+        .headers(HeaderUtil.createEntityCreationAlert(refEntityName, String.valueOf(id)))
+        .build();
+    // @formatter:on
+  }
+
+  /**
+   * Create URI object from string.
+   *
+   * @param uri the URI in String to be converted
+   * @return the URI created
+   */
+  public static URI createUri(String uri) {
     try {
-      // @formatter:off
-      return ResponseEntity
-          .created(new URI(path))
-          .headers(HeaderUtil.createEntityCreationAlert(refEntityName, String.valueOf(id)))
-          .build();
-      // @formatter:on
+      return new URI(uri);
     } catch (URISyntaxException e) {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
     }

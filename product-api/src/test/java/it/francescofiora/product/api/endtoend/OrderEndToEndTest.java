@@ -52,7 +52,7 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
   private static final String PARAM_QUANTITY_NULL = "[newOrderDto.items[0].quantity - Positive]";
 
   @Test
-  void testCreate() throws Exception {
+  void testCreate() {
     var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
 
@@ -91,7 +91,7 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
   }
 
   @Test
-  void testCreateBadRequest() throws Exception {
+  void testCreateBadRequest() {
     var newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(100L));
     assertCreateNotFound(USER, ORDERS_URI, newOrderDto, ALERT_PRODUCT_NOT_FOUND,
@@ -162,14 +162,14 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
   }
 
   @Test
-  void testPatchBadRequest() throws Exception {
+  void testPatchBadRequest() {
     var orderDto = TestUtils.createUpdatebleOrderDto(1L);
     final var orderIdUri = String.format(ORDERS_ID_URI, 2L);
     assertPatchBadRequest(USER, orderIdUri, orderDto, ALERT_PATCH_BAD_REQUEST, "1");
   }
 
   @Test
-  void testUnauthorized() throws Exception {
+  void testUnauthorized() {
     testPostUnauthorized(ORDERS_URI, TestUtils.createNewOrderDto(), true);
 
     testGetUnauthorized(ORDERS_URI);
@@ -180,7 +180,7 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
   }
 
   @Test
-  void testGetBadRequest() throws Exception {
+  void testGetBadRequest() {
     assertGetBadRequest(ADMIN, ORDERS_URI + "/999999999999999999999999", String.class,
         "id.badRequest", PARAM_NOT_VALID_LONG);
   }

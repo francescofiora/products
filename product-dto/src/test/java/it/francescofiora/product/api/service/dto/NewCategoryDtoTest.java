@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class NewCategoryDtoTest {
 
   @Test
-  void dtoEqualsVerifier() throws Exception {
+  void dtoEqualsVerifier() {
     var categoryDto1 = TestUtils.createNewCategoryDto();
     var categoryDto2 = new NewCategoryDto();
     assertThat(categoryDto1).isNotEqualTo(categoryDto2);

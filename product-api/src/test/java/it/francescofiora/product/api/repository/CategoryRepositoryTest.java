@@ -12,7 +12,7 @@ class CategoryRepositoryTest extends AbstractTestRepository {
   private CategoryRepository categoryRepository;
 
   @Test
-  void testCrud() throws Exception {
+  void testCrud() {
     var expected = TestUtils.createCategory(null);
     expected = categoryRepository.save(expected);
 

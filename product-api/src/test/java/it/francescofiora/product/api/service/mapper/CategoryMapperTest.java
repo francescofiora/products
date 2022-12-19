@@ -9,17 +9,17 @@ import org.junit.jupiter.api.Test;
 
 class CategoryMapperTest {
 
-  private CategoryMapper categoryMapper = new CategoryMapperImpl();
-
   @Test
   void testEntityFromId() {
     var id = 1L;
+    var categoryMapper = new CategoryMapperImpl();
     assertThat(categoryMapper.fromId(id).getId()).isEqualTo(id);
     assertThat(categoryMapper.fromId(null)).isNull();
   }
 
   @Test
   void testNullObject() {
+    var categoryMapper = new CategoryMapperImpl();
     assertThat(categoryMapper.toDto(null)).isNull();
 
     var categoryDto = (NewCategoryDto) null;

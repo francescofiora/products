@@ -2,14 +2,12 @@ package it.francescofiora.product.client.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import it.francescofiora.product.client.ActuatorClientService;
 import java.io.IOException;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -17,8 +15,6 @@ import org.springframework.http.HttpStatus;
  * ActuatorClientService Test.
  */
 class ActuatorClientServiceTest extends AbstractTestClientService {
-
-  private ActuatorClientService actuatorClientService;
 
   private static final String BODY_INFO = "{ \"UP\" }";
   private static final String BODY_HEALTH = "{ \"HEALTH\" }";
@@ -42,11 +38,6 @@ class ActuatorClientServiceTest extends AbstractTestClientService {
     startServer(dispatcher);
   }
 
-  @BeforeEach
-  public void setUp() {
-    actuatorClientService = new ActuatorClientServiceImpl(createClientInfo());
-  }
-
   @AfterAll
   static void tearDown() throws IOException {
     stopServer();
@@ -54,6 +45,7 @@ class ActuatorClientServiceTest extends AbstractTestClientService {
 
   @Test
   void testGetInfo() {
+    var actuatorClientService = new ActuatorClientServiceImpl(createClientInfo());
     var result = actuatorClientService.getInfo().block();
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(result.getBody()).isEqualTo(BODY_INFO);
@@ -61,6 +53,7 @@ class ActuatorClientServiceTest extends AbstractTestClientService {
 
   @Test
   void testGetHealth() {
+    var actuatorClientService = new ActuatorClientServiceImpl(createClientInfo());
     var result = actuatorClientService.getHealth().block();
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(result.getBody()).isEqualTo(BODY_HEALTH);

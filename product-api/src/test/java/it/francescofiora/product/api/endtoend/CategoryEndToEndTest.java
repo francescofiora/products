@@ -37,7 +37,7 @@ class CategoryEndToEndTest extends AbstractTestEndToEnd {
   private static final String PARAM_DESCRIPTION_NOT_BLANK = "[categoryDto.description - NotBlank]";
 
   @Test
-  void testCreate() throws Exception {
+  void testCreate() {
     var newCategoryDto = TestUtils.createNewCategoryDto();
     var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, newCategoryDto, ALERT_CREATED);
 
@@ -66,7 +66,7 @@ class CategoryEndToEndTest extends AbstractTestEndToEnd {
   }
 
   @Test
-  void testUnauthorized() throws Exception {
+  void testUnauthorized() {
     testPostUnauthorized(CATEGORIES_URI, TestUtils.createNewCategoryDto());
 
     testPutUnauthorized(String.format(CATEGORIES_ID_URI, 1L), TestUtils.createCategoryDto(1L));
@@ -79,13 +79,13 @@ class CategoryEndToEndTest extends AbstractTestEndToEnd {
   }
 
   @Test
-  void testGetBadRequest() throws Exception {
+  void testGetBadRequest() {
     assertGetBadRequest(ADMIN, CATEGORIES_URI + "/999999999999999999999999", String.class,
         "id.badRequest", PARAM_NOT_VALID_LONG);
   }
 
   @Test
-  void testUpdateBadRequest() throws Exception {
+  void testUpdateBadRequest() {
     // id
     assertUpdateBadRequest(ADMIN, String.format(CATEGORIES_ID_URI, 1L),
         TestUtils.createCategoryDto(null), ALERT_BAD_REQUEST, PARAM_ID_NOT_NULL);

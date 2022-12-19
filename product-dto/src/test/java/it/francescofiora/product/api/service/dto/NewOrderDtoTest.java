@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class NewOrderDtoTest {
 
   @Test
-  void dtoEqualsVerifier() throws Exception {
+  void dtoEqualsVerifier() {
     var orderDto1 = TestUtils.createNewOrderDto();
     var orderDto2 = new NewOrderDto();
     assertThat(orderDto1).isNotEqualTo(orderDto2);

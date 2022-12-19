@@ -6,10 +6,9 @@ import org.junit.jupiter.api.Test;
 
 class OrderItemMapperTest {
 
-  private OrderItemMapper orderItemMapper = new OrderItemMapperImpl();
-
   @Test
   void testNullObject() {
+    var orderItemMapper = new OrderItemMapperImpl();
     assertThat(orderItemMapper.toDto(null)).isNull();
 
     assertThat(orderItemMapper.toEntity(null)).isNull();

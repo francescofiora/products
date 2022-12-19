@@ -46,7 +46,7 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
   private static final String PARAM_SIZE_NOT_NULL = "[updatebleProductDto.size - NotNull]";
 
   @Test
-  void testCreate() throws Exception {
+  void testCreate() {
     var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
 
@@ -87,7 +87,7 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
   }
 
   @Test
-  void testCreateBadRequest() throws Exception {
+  void testCreateBadRequest() {
     var newProductDto = TestUtils.createNewProductDto();
     newProductDto.setCategory(TestUtils.createRefCategoryDto(100L));
     assertCreateNotFound(ADMIN, PRODUCTS_URI, newProductDto, ALERT_CATEGORY_NOT_FOUND,
@@ -95,7 +95,7 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
   }
 
   @Test
-  void testUnauthorized() throws Exception {
+  void testUnauthorized() {
     testPostUnauthorized(PRODUCTS_URI, TestUtils.createNewProductDto());
 
     testPutUnauthorized(String.format(PRODUCTS_ID_URI, 1L),
@@ -109,13 +109,13 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
   }
 
   @Test
-  void testGetBadRequest() throws Exception {
+  void testGetBadRequest() {
     assertGetBadRequest(ADMIN, PRODUCTS_URI + "/999999999999999999999999", String.class,
         "id.badRequest", PARAM_NOT_VALID_LONG);
   }
 
   @Test
-  void testUpdateBadRequest() throws Exception {
+  void testUpdateBadRequest() {
     // id
     assertUpdateBadRequest(ADMIN, String.format(PRODUCTS_ID_URI, 1L),
         TestUtils.createUpdatebleProductDto(null), ALERT_UPDATE_BAD_REQUEST, PARAM_ID_NOT_NULL);

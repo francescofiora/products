@@ -5,14 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import it.francescofiora.product.api.service.dto.NewOrderDto;
 import it.francescofiora.product.api.service.dto.NewOrderItemDto;
 import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;
-import it.francescofiora.product.client.OrderClientService;
 import java.io.IOException;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,8 +19,6 @@ import org.springframework.http.HttpStatus;
  * OrderClientService Test.
  */
 class OrderClientServiceTest extends AbstractTestClientService {
-
-  private OrderClientService orderClientService;
 
   @BeforeAll
   static void setUpMockWebServer() throws IOException {
@@ -47,11 +43,6 @@ class OrderClientServiceTest extends AbstractTestClientService {
     startServer(dispatcher);
   }
 
-  @BeforeEach
-  void setUp() {
-    orderClientService = new OrderClientServiceImpl(createClientInfo());
-  }
-
   @AfterAll
   static void tearDown() throws IOException {
     stopServer();
@@ -59,6 +50,7 @@ class OrderClientServiceTest extends AbstractTestClientService {
 
   @Test
   void testCreate() {
+    var orderClientService = new OrderClientServiceImpl(createClientInfo());
     var result = orderClientService.create(new NewOrderDto()).block();
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
@@ -67,36 +59,42 @@ class OrderClientServiceTest extends AbstractTestClientService {
   void testPatch() {
     var order = new UpdatebleOrderDto();
     order.setId(1L);
+    var orderClientService = new OrderClientServiceImpl(createClientInfo());
     var result = orderClientService.patch(order).block();
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   @Test
   void testFindAll() {
+    var orderClientService = new OrderClientServiceImpl(createClientInfo());
     var result = orderClientService.findAll(Pageable.unpaged()).collectList().block();
     assertThat(result).isNotNull();
   }
 
   @Test
   void testFindOne() {
+    var orderClientService = new OrderClientServiceImpl(createClientInfo());
     var result = orderClientService.findOne(1L).block();
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   @Test
   void testDelete() {
+    var orderClientService = new OrderClientServiceImpl(createClientInfo());
     var result = orderClientService.delete(1L).block();
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   @Test
   void testAddOrderItem() {
+    var orderClientService = new OrderClientServiceImpl(createClientInfo());
     var result = orderClientService.addOrderItem(1L, new NewOrderItemDto()).block();
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   @Test
   void testDeleteOrderItem() {
+    var orderClientService = new OrderClientServiceImpl(createClientInfo());
     var result = orderClientService.deleteOrderItem(1L, 1L).block();
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }

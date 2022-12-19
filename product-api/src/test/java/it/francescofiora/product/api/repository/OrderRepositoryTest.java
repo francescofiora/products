@@ -12,7 +12,7 @@ class OrderRepositoryTest extends AbstractTestRepository {
   private OrderRepository orderRepository;
 
   @Test
-  void testCrud() throws Exception {
+  void testCrud() {
     var expected = TestUtils.createOrder(null);
     expected = orderRepository.save(expected);
 
