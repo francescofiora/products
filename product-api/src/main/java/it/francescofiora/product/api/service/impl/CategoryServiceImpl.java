@@ -10,6 +10,10 @@ import it.francescofiora.product.api.web.errors.NotFoundAlertException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
+
+  private static final GenericPropertyMatcher PROPERTY_MATCHER_DEFAULT =
+      GenericPropertyMatchers.contains().ignoreCase();
 
   private final CategoryRepository categoryRepository;
   private final CategoryMapper categoryMapper;
@@ -50,9 +57,16 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<CategoryDto> findAll(Pageable pageable) {
+  public Page<CategoryDto> findAll(String name, String description, Pageable pageable) {
     log.debug("Request to get all ProductCategories");
-    return categoryRepository.findAll(pageable).map(categoryMapper::toDto);
+    var category = new Category();
+    category.setName(name);
+    category.setDescription(description);
+    category.setProducts(null);
+    var exampleMatcher = ExampleMatcher.matchingAll().withMatcher("name", PROPERTY_MATCHER_DEFAULT)
+        .withMatcher("description", PROPERTY_MATCHER_DEFAULT);
+    var example = Example.of(category, exampleMatcher);
+    return categoryRepository.findAll(example, pageable).map(categoryMapper::toDto);
   }
 
   @Override

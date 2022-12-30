@@ -20,6 +20,10 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,6 +37,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
+
+  private static final GenericPropertyMatcher PROPERTY_MATCHER_DEFAULT =
+      GenericPropertyMatchers.contains().ignoreCase();
+  private static final GenericPropertyMatcher PROPERTY_MATCHER_EXACT =
+      GenericPropertyMatchers.exact();
 
   private static final String ENTITY_NAME = "OrderDto";
   private static final String ORDER_NOT_UPDATEBLE = "Order not updatable";
@@ -53,8 +62,8 @@ public class OrderServiceImpl implements OrderService {
     order = orderRepository.save(order);
     for (var item : order.getOrderItems()) {
       if (item == null) {
-        throw new BadRequestAlertException("NewOrderItemDto",
-            "newOrderDto.items.item - NotNull", "an item can not be null");
+        throw new BadRequestAlertException("NewOrderItemDto", "newOrderDto.items.item - NotNull",
+            "an item can not be null");
       }
       item.setOrder(order);
       setTotalPrice(item);
@@ -96,9 +105,19 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<OrderDto> findAll(Pageable pageable) {
+  public Page<OrderDto> findAll(String code, String customer, OrderStatus status,
+      Pageable pageable) {
     log.debug("Request to get all Orders");
-    return orderRepository.findAll(pageable).map(orderMapper::toDto);
+    var order = new Order();
+    order.setCode(code);
+    order.setCustomer(customer);
+    order.setStatus(status);
+    var exampleMatcher = ExampleMatcher.matchingAll()
+        .withMatcher("code", PROPERTY_MATCHER_DEFAULT)
+        .withMatcher("customer", PROPERTY_MATCHER_DEFAULT)
+        .withMatcher("status", PROPERTY_MATCHER_EXACT);
+    var example = Example.of(order, exampleMatcher);
+    return orderRepository.findAll(example, pageable).map(orderMapper::toDto);
   }
 
   @Override

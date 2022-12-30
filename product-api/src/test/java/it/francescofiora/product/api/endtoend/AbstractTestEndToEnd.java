@@ -122,7 +122,7 @@ public class AbstractTestEndToEnd {
   }
 
   protected <T> ResponseEntity<T> performGet(String username, String path, Class<T> responseType) {
-    var request = new HttpEntity<>(null, createHttpHeaders(username));
+    var request = new HttpEntity<>(createHttpHeaders(username));
     return restTemplate.exchange(getPath(path), HttpMethod.GET, request, responseType);
   }
 
@@ -133,7 +133,7 @@ public class AbstractTestEndToEnd {
   }
 
   protected ResponseEntity<Void> performDelete(String username, String path) {
-    var request = new HttpEntity<>(null, createHttpHeaders(username));
+    var request = new HttpEntity<>(createHttpHeaders(username));
     return restTemplate.exchange(getPath(path), HttpMethod.DELETE, request, Void.class);
   }
 

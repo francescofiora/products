@@ -5,6 +5,7 @@ import it.francescofiora.product.api.service.dto.NewOrderItemDto;
 import it.francescofiora.product.api.service.dto.OrderDto;
 import it.francescofiora.product.api.service.dto.OrderItemDto;
 import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;
+import it.francescofiora.product.api.service.dto.enumeration.OrderStatus;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +18,8 @@ public interface OrderService {
   /**
    * Create a new order.
    *
-   * @param orderDto the entity to save.
-   * @return the persisted entity.
+   * @param orderDto the entity to save
+   * @return the persisted entity
    */
   OrderDto create(NewOrderDto orderDto);
 
@@ -34,38 +35,41 @@ public interface OrderService {
   /**
    * Patch a order.
    *
-   * @param orderDto the entity to patch.
+   * @param orderDto the entity to patch
    */
   void patch(UpdatebleOrderDto orderDto);
 
   /**
    * Get all the orders.
    *
-   * @param pageable the pagination information.
-   * @return the list of entities.
+   * @param code the code
+   * @param customer the customer
+   * @param status the order status
+   * @param pageable the pagination information
+   * @return the list of entities
    */
-  Page<OrderDto> findAll(Pageable pageable);
+  Page<OrderDto> findAll(String code, String customer, OrderStatus status, Pageable pageable);
 
   /**
    * Get the "id" order.
    *
-   * @param id the id of the entity.
-   * @return the entity.
+   * @param id the id of the entity
+   * @return the entity
    */
   Optional<OrderDto> findOne(Long id);
 
   /**
    * Delete the "id" order.
    *
-   * @param id the id of the entity.
+   * @param id the id of the entity
    */
   void delete(Long id);
 
   /**
    * Delete the "id" orderItem to the order.
    *
-   * @param orderId the id of the order.
-   * @param orderItemId the id of the entity.
+   * @param orderId the id of the order
+   * @param orderItemId the id of the entity
    */
   void deleteOrderItem(Long orderId, Long orderItemId);
 }

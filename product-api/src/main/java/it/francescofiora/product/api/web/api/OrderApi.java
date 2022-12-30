@@ -2,6 +2,7 @@ package it.francescofiora.product.api.web.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,6 +13,7 @@ import it.francescofiora.product.api.service.dto.NewOrderDto;
 import it.francescofiora.product.api.service.dto.NewOrderItemDto;
 import it.francescofiora.product.api.service.dto.OrderDto;
 import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;
+import it.francescofiora.product.api.service.dto.enumeration.OrderStatus;
 import it.francescofiora.product.api.web.errors.BadRequestAlertException;
 import java.util.List;
 import javax.validation.Valid;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -36,8 +39,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderApi extends AbstractApi {
 
   private static final String ENTITY_NAME = "OrderDto";
-
   private static final String ENTITY_ORDER_ITEM = "OrderItemDto";
+  private static final String TAG = "order";
 
   private final OrderService orderService;
 
@@ -49,15 +52,12 @@ public class OrderApi extends AbstractApi {
   /**
    * {@code POST  /orders} : Create a new order.
    *
-   * @param orderDto the orderDto to create.
-   * @return the {@link ResponseEntity} with status {@code 201 (Created)}, or with status
-   *         {@code 400 (Bad Request)} if the order has already an ID.
+   * @param orderDto the order to create
+   * @return the {@link ResponseEntity}
    */
-  @Operation(summary = "Add new Order", description = "Add a new Order to the system",
-      tags = {"order"})
+  @Operation(summary = "Add new Order", description = "Add a new Order to the system", tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Order created"),
-      @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
-      @ApiResponse(responseCode = "409", description = "An existing Order already exists")})
+      @ApiResponse(responseCode = "400", description = "Invalid input, object invalid")})
   @PostMapping("/orders")
   public ResponseEntity<Void> createOrder(
       @Parameter(description = "Add new Order") @Valid @RequestBody NewOrderDto orderDto) {
@@ -68,13 +68,10 @@ public class OrderApi extends AbstractApi {
   /**
    * {@code PATCH  /orders} : Patches an existing order.
    *
-   * @param orderDto the orderDto to patch.
-   * @return the {@link ResponseEntity} with status {@code 200 (OK)}, or with status
-   *         {@code 400 (Bad Request)} if the orderDto is not valid, or with status
-   *         {@code 500 (Internal Server Error)} if the orderDto couldn't be patched.
+   * @param orderDto the order to patch
+   * @return the {@link ResponseEntity}
    */
-  @Operation(summary = "Patch Order", description = "Patch an Order to the system",
-      tags = {"order"})
+  @Operation(summary = "Patch Order", description = "Patch an Order to the system", tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Order patched"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
@@ -94,32 +91,42 @@ public class OrderApi extends AbstractApi {
   /**
    * {@code GET  /orders} : get all the orders.
    *
-   * @param pageable the pagination information.
-   * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of orders in body.
+   * @param code the code
+   * @param customer the customer
+   * @param status the order status
+   * @param pageable the pagination information
+   * @return the {@link ResponseEntity} with the list of orders
    */
   @Operation(summary = "Searches Orders",
       description = "By passing in the appropriate options, "
           + "you can search for available categories in the system",
-      tags = {"order"})
+      tags = {TAG})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Search results matching criteria",
           content = @Content(
               array = @ArraySchema(schema = @Schema(implementation = OrderDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/orders")
-  public ResponseEntity<List<OrderDto>> getAllOrders(Pageable pageable) {
-    return getResponse(orderService.findAll(pageable));
+  public ResponseEntity<List<OrderDto>> getAllOrders(
+      @Parameter(description = "Order code", example = "ORD_1",
+          in = ParameterIn.QUERY) @RequestParam(required = false) String code,
+      @Parameter(description = "Customer", example = "Some Company Ltd",
+          in = ParameterIn.QUERY) @RequestParam(required = false) String customer,
+      @Parameter(description = "Status", example = "PENDING",
+          in = ParameterIn.QUERY) @RequestParam(required = false) OrderStatus status,
+      @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
+          in = ParameterIn.QUERY) Pageable pageable) {
+    return getResponse(orderService.findAll(code, customer, status, pageable));
   }
 
   /**
    * {@code GET  /orders/:id} : get the "id" order.
    *
-   * @param id the id of the orderDTO to retrieve.
-   * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the orderDto, or
-   *         with status {@code 404 (Not Found)}.
+   * @param id the id of the order to retrieve
+   * @return the {@link ResponseEntity} with the order
    */
   @Operation(summary = "Searches Order by 'id'", description = "Searches Order by 'id'",
-      tags = {"order"})
+      tags = {TAG})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Search results matching criteria",
           content = @Content(schema = @Schema(implementation = OrderDto.class))),
@@ -134,11 +141,10 @@ public class OrderApi extends AbstractApi {
   /**
    * {@code DELETE  /orders/:id} : delete the "id" order.
    *
-   * @param id the id of the orderDto to delete.
-   * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+   * @param id the id of the order to delete
+   * @return the {@link ResponseEntity}
    */
-  @Operation(summary = "Delete Order", description = "Delete an Order to the system",
-      tags = {"order"})
+  @Operation(summary = "Delete Order", description = "Delete an Order to the system", tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Order deleted"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
@@ -150,15 +156,13 @@ public class OrderApi extends AbstractApi {
   }
 
   /**
-   * Add OrderItem.
+   * Add Item to the Order.
    *
    * @param id Order id
-   * @param orderItemDto NewOrderItemDto
-   * @return the {@link ResponseEntity} with status {@code 201 (Created)}, or with status
-   *         {@code 400 (Bad Request)} if the order has already an ID.
+   * @param orderItemDto the new item to add
+   * @return the {@link ResponseEntity}
    */
-  @Operation(summary = "Add OrderItem", description = "Add a new item to an Order",
-      tags = {"order"})
+  @Operation(summary = "Add OrderItem", description = "Add a new item to an Order", tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OrderItem added"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
@@ -172,14 +176,14 @@ public class OrderApi extends AbstractApi {
   }
 
   /**
-   * {@code DELETE  /orders/:id/items/:id} : delete the "id" order.
+   * {@code DELETE  /orders/:id/items/:id} : delete the "id" item.
    *
-   * @param orderId the id of the order.
-   * @param orderItemId the id of the orderItemDto to delete.
-   * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+   * @param orderId the id of the order
+   * @param orderItemId the id of the item to delete
+   * @return the {@link ResponseEntity}
    */
   @Operation(summary = "Delete item of a Order", description = "Delete an item of a Order",
-      tags = {"order"})
+      tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "OrderItem deleted"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})

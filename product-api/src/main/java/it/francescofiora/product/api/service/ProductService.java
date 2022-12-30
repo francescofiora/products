@@ -18,38 +18,41 @@ public interface ProductService {
   /**
    * Create a product.
    *
-   * @param productDto the entity to create.
-   * @return the persisted entity.
+   * @param productDto the entity to create
+   * @return the persisted entity
    */
   ProductDto create(NewProductDto productDto);
 
   /**
    * Update a product.
    *
-   * @param productDto the entity to update.
+   * @param productDto the entity to update
    */
   void update(UpdatebleProductDto productDto);
 
   /**
    * Get all the products.
    *
-   * @param pageable the pagination information.
-   * @return the list of entities.
+   * @param name the name
+   * @param description the description
+   * @param categoryId the id of the category
+   * @param pageable the pagination information
+   * @return the list of entities
    */
-  Page<ProductDto> findAll(Pageable pageable);
+  Page<ProductDto> findAll(String name, String description, Long categoryId, Pageable pageable);
 
   /**
    * Get the "id" product.
    *
-   * @param id the id of the entity.
-   * @return the entity.
+   * @param id the id of the entity
+   * @return the entity
    */
   Optional<ProductDto> findOne(Long id);
 
   /**
    * Delete the "id" product.
    *
-   * @param id the id of the entity.
+   * @param id the id of the entity
    */
   void delete(Long id);
 }

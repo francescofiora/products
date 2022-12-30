@@ -7,29 +7,21 @@ import it.francescofiora.product.api.service.dto.NewProductDto;
 import it.francescofiora.product.api.service.dto.RefCategoryDto;
 import it.francescofiora.product.api.service.dto.RefProductDto;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
-@ExtendWith(SpringExtension.class)
-@TestPropertySource(locations = {"classpath:application_test.properties"})
 class ProductMapperTest {
-
-  @Autowired
-  private ProductMapper productMapper;
 
   @Test
   void testEntityFromId() {
     var id = 1L;
+    var productMapper = createProductMapper();
     assertThat(productMapper.fromId(id).getId()).isEqualTo(id);
     assertThat(productMapper.fromId(null)).isNull();
   }
 
   @Test
   void testNullObject() {
+    var productMapper = createProductMapper();
     assertThat(productMapper.toDto(null)).isNull();
 
     var productDto = (NewProductDto) null;
@@ -47,17 +39,9 @@ class ProductMapperTest {
     assertThat(productMapper.toEntity(productDto).getCategory()).isNull();
   }
 
-  @TestConfiguration
-  static class TestContextConfiguration {
-
-    @Bean
-    ProductMapper productMapper() {
-      return new ProductMapperImpl();
-    }
-
-    @Bean
-    CategoryMapper categoryMapper() {
-      return new CategoryMapperImpl();
-    }
+  private ProductMapper createProductMapper() {
+    var productMapper = new ProductMapperImpl();
+    ReflectionTestUtils.setField(productMapper, "categoryMapper", new CategoryMapperImpl());
+    return productMapper;
   }
 }

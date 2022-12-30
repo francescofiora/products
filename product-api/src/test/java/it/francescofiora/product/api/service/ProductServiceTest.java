@@ -22,6 +22,8 @@ import it.francescofiora.product.api.web.errors.NotFoundAlertException;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -83,7 +85,7 @@ class ProductServiceTest {
   void testFindAll() {
     var product = new Product();
     var productRepository = mock(ProductRepository.class);
-    when(productRepository.findAll(any(Pageable.class)))
+    when(productRepository.findAll(ArgumentMatchers.<Example<Product>>any(), any(Pageable.class)))
         .thenReturn(new PageImpl<Product>(List.of(product)));
 
     var expected = new ProductDto();
@@ -93,7 +95,7 @@ class ProductServiceTest {
     var pageable = PageRequest.of(1, 1);
     var productService =
         new ProductServiceImpl(productRepository, productMapper, mock(CategoryRepository.class));
-    var page = productService.findAll(pageable);
+    var page = productService.findAll(null, null, null, pageable);
     assertThat(page.getContent().get(0)).isEqualTo(expected);
   }
 

@@ -2,6 +2,7 @@ package it.francescofiora.product.api.web.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoryApi extends AbstractApi {
 
   private static final String ENTITY_NAME = "CategoryDto";
+  private static final String TAG = "category";
 
   private final CategoryService categoryService;
 
@@ -44,17 +47,14 @@ public class CategoryApi extends AbstractApi {
   /**
    * {@code POST  /categories} : Create a new category.
    *
-   * @param categoryDto the categoryDto to create.
-   * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new
-   *         categoryDto, or with status {@code 400 (Bad Request)} if the category has already an
-   *         ID.
+   * @param categoryDto the category to create
+   * @return the {@link ResponseEntity}
    */
   @Operation(summary = "Add new Category", description = "Add a new Category to the system",
-      tags = {"category"})
+      tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Category created"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
-      @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
-      @ApiResponse(responseCode = "409", description = "An existing Category already exists")})
+      @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized")})
   @PostMapping("/categories")
   @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> createCategory(
@@ -66,14 +66,12 @@ public class CategoryApi extends AbstractApi {
   /**
    * {@code PUT  /categories} : Updates an existing category.
    *
-   * @param categoryDto the categoryDto to update.
+   * @param categoryDto the category to update
    * @param id the id of the category to update
-   * @return the {@link ResponseEntity} with status {@code 200 (OK)}, or with status
-   *         {@code 400 (Bad Request)} if the categoryDto is not valid, or with status
-   *         {@code 500 (Internal Server Error)} if the categoryDto couldn't be updated.
+   * @return the {@link ResponseEntity}
    */
   @Operation(summary = "Update Category", description = "Update an Category to the system",
-      tags = {"category"})
+      tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Category updated"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
@@ -93,15 +91,17 @@ public class CategoryApi extends AbstractApi {
   }
 
   /**
-   * {@code GET  /categories} : get all the productCategories.
+   * {@code GET  /categories} : get all the categories.
    *
-   * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of
-   *         productCategories in body.
+   * @param name the name
+   * @param description the description
+   * @param pageable the pagination information
+   * @return the {@link ResponseEntity} with the list of categories
    */
   @Operation(summary = "Searches Categories",
       description = "By passing in the appropriate options, "
           + "you can search for available categories in the system",
-      tags = {"category"})
+      tags = {TAG})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Search results matching criteria",
           content = @Content(
@@ -109,19 +109,24 @@ public class CategoryApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/categories")
   @PreAuthorize(AUTHORIZE_ALL)
-  public ResponseEntity<List<CategoryDto>> getAllProductCategories(Pageable pageable) {
-    return getResponse(categoryService.findAll(pageable));
+  public ResponseEntity<List<CategoryDto>> getAllProductCategories(
+      @Parameter(description = "Name", example = "Shirt",
+          in = ParameterIn.QUERY) @RequestParam(required = false) String name,
+      @Parameter(description = "Description of the category", example = "Shirt",
+          in = ParameterIn.QUERY) @RequestParam(required = false) String description,
+      @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
+          in = ParameterIn.QUERY) Pageable pageable) {
+    return getResponse(categoryService.findAll(name, description, pageable));
   }
 
   /**
    * {@code GET  /categories/:id} : get the "id" category.
    *
-   * @param id the id of the categoryDto to retrieve.
-   * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the categoryDto,
-   *         or with status {@code 404 (Not Found)}.
+   * @param id the id of the category to retrieve
+   * @return the {@link ResponseEntity} with the category
    */
   @Operation(summary = "Searches Category by 'id'", description = "Searches Category by 'id'",
-      tags = {"category"})
+      tags = {TAG})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Search results matching criteria",
           content = @Content(schema = @Schema(implementation = CategoryDto.class))),
@@ -138,11 +143,11 @@ public class CategoryApi extends AbstractApi {
   /**
    * {@code DELETE  /categories/:id} : delete the "id" category.
    *
-   * @param id the id of the categoryDto to delete.
-   * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+   * @param id the id of the category to delete
+   * @return the {@link ResponseEntity}
    */
   @Operation(summary = "Delete Category", description = "Delete an Category to the system",
-      tags = {"category"})
+      tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Category deleted"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),

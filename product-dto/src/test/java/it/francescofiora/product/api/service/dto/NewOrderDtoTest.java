@@ -43,5 +43,4 @@ class NewOrderDtoTest {
     orderDto1.setItems(null);
     TestUtils.checkNotEqualHashAndToString(orderDto1, orderDto2);
   }
-  
 }

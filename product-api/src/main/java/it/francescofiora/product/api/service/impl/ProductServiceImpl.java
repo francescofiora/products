@@ -1,5 +1,6 @@
 package it.francescofiora.product.api.service.impl;
 
+import it.francescofiora.product.api.domain.Category;
 import it.francescofiora.product.api.domain.Product;
 import it.francescofiora.product.api.repository.CategoryRepository;
 import it.francescofiora.product.api.repository.ProductRepository;
@@ -13,6 +14,10 @@ import it.francescofiora.product.api.web.errors.NotFoundAlertException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +31,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
+
+  private static final GenericPropertyMatcher PROPERTY_MATCHER_DEFAULT =
+      GenericPropertyMatchers.contains().ignoreCase();
+  private static final GenericPropertyMatcher PROPERTY_MATCHER_EXACT =
+      GenericPropertyMatchers.exact();
 
   private final ProductRepository productRepository;
   private final ProductMapper productMapper;
@@ -60,9 +70,22 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<ProductDto> findAll(Pageable pageable) {
+  public Page<ProductDto> findAll(String name, String description, Long categoryId,
+      Pageable pageable) {
     log.debug("Request to get all Products");
-    return productRepository.findAll(pageable).map(productMapper::toDto);
+    var product = new Product();
+    product.setName(name);
+    product.setDescription(description);
+    if (categoryId != null) {
+      product.setCategory(new Category());
+      product.getCategory().setId(categoryId);
+    }
+    var exampleMatcher = ExampleMatcher.matchingAll()
+        .withMatcher("name", PROPERTY_MATCHER_DEFAULT)
+        .withMatcher("description", PROPERTY_MATCHER_DEFAULT)
+        .withMatcher("categoryId", PROPERTY_MATCHER_EXACT);
+    var example = Example.of(product, exampleMatcher);
+    return productRepository.findAll(example, pageable).map(productMapper::toDto);
   }
 
   @Override

@@ -18,6 +18,8 @@ import it.francescofiora.product.api.web.errors.NotFoundAlertException;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -70,14 +72,14 @@ class CategoryServiceTest {
   void testFindAll() {
     var category = new Category();
     var categoryRepository = mock(CategoryRepository.class);
-    when(categoryRepository.findAll(any(Pageable.class)))
+    when(categoryRepository.findAll(ArgumentMatchers.<Example<Category>>any(), any(Pageable.class)))
         .thenReturn(new PageImpl<Category>(List.of(category)));
     var expected = new CategoryDto();
     var categoryMapper = mock(CategoryMapper.class);
     when(categoryMapper.toDto(any(Category.class))).thenReturn(expected);
     var pageable = PageRequest.of(1, 1);
     var categoryService = new CategoryServiceImpl(categoryRepository, categoryMapper);
-    var page = categoryService.findAll(pageable);
+    var page = categoryService.findAll(null, null, pageable);
 
     assertThat(page.getContent().get(0)).isEqualTo(expected);
   }
@@ -114,5 +116,4 @@ class CategoryServiceTest {
     categoryService.delete(ID);
     verify(categoryRepository).deleteById(ID);
   }
-
 }

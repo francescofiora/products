@@ -2,6 +2,7 @@ package it.francescofiora.product.api.web.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -34,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductApi extends AbstractApi {
 
   private static final String ENTITY_NAME = "ProductDto";
+  private static final String TAG = "product";
 
   private final ProductService productService;
 
@@ -45,16 +48,14 @@ public class ProductApi extends AbstractApi {
   /**
    * {@code POST  /products} : Create a new product.
    *
-   * @param productDto the Product to create.
-   * @return the {@link ResponseEntity} with status {@code 201 (Created)}, or with status
-   *         {@code 400 (Bad Request)} if the product has already an ID.
+   * @param productDto the Product to create
+   * @return the {@link ResponseEntity}
    */
   @Operation(summary = "Add new Product", description = "Add a new Product to the system",
-      tags = {"product"})
+      tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Product created"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
-      @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
-      @ApiResponse(responseCode = "409", description = "An existing Product already exists")})
+      @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized")})
   @PostMapping("/products")
   @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> createProduct(
@@ -66,13 +67,11 @@ public class ProductApi extends AbstractApi {
   /**
    * {@code PUT  /products} : Updates an existing product.
    *
-   * @param productDto the product to update.
-   * @return the {@link ResponseEntity} with status {@code 200 (OK)} or with status
-   *         {@code 400 (Bad Request)} if the productDto is not valid, or with status
-   *         {@code 500 (Internal Server Error)} if the productDto couldn't be updated.
+   * @param productDto the product to update
+   * @return the {@link ResponseEntity}
    */
   @Operation(summary = "Update Product", description = "Update an Product to the system",
-      tags = {"product"})
+      tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Product updated"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
@@ -95,14 +94,16 @@ public class ProductApi extends AbstractApi {
   /**
    * {@code GET  /products} : get all the products.
    *
-   * @param pageable the pagination information.
-   * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in
-   *         body.
+   * @param name the name
+   * @param description the description
+   * @param categoryId the id of the category
+   * @param pageable the pagination information
+   * @return the {@link ResponseEntity} with the list of products
    */
   @Operation(summary = "Searches Products",
       description = "By passing in the appropriate options, "
           + "you can search for available products in the system",
-      tags = {"product"})
+      tags = {TAG})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Search results matching criteria",
           content = @Content(
@@ -110,19 +111,26 @@ public class ProductApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/products")
   @PreAuthorize(AUTHORIZE_ALL)
-  public ResponseEntity<List<ProductDto>> getAllProducts(Pageable pageable) {
-    return getResponse(productService.findAll(pageable));
+  public ResponseEntity<List<ProductDto>> getAllProducts(
+      @Parameter(description = "Name", example = "SHIRTM01",
+          in = ParameterIn.QUERY) @RequestParam(required = false) String name,
+      @Parameter(description = "Description of the product", example = "Shirt for Men",
+          in = ParameterIn.QUERY) @RequestParam(required = false) String description,
+      @Parameter(description = "ID of the Category", example = "1",
+          in = ParameterIn.QUERY) @RequestParam(required = false) Long categoryId,
+      @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
+          in = ParameterIn.QUERY) Pageable pageable) {
+    return getResponse(productService.findAll(name, description, categoryId, pageable));
   }
 
   /**
    * {@code GET  /products/:id} : get the "id" product.
    *
-   * @param id the id of the productDto to retrieve.
-   * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the productDto,
-   *         or with status {@code 404 (Not Found)}.
+   * @param id the id of the product to retrieve
+   * @return the {@link ResponseEntity} with the product
    */
   @Operation(summary = "Searches Product by 'id'", description = "Searches Product by 'id'",
-      tags = {"product"})
+      tags = {TAG})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Search results matching criteria",
           content = @Content(schema = @Schema(implementation = ProductDto.class))),
@@ -138,11 +146,11 @@ public class ProductApi extends AbstractApi {
   /**
    * {@code DELETE  /products/:id} : delete the "id" product.
    *
-   * @param id the id of the productDto to delete.
-   * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+   * @param id the id of the product to delete
+   * @return the {@link ResponseEntity}
    */
   @Operation(summary = "Delete Product", description = "Delete an Product to the system",
-      tags = {"product"})
+      tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Product deleted"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),

@@ -17,6 +17,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -28,7 +29,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = CategoryApi.class)
-@Import({MethodSecurityConfig.class, ProjectInfoAutoConfiguration.class})
+@Import({BuildProperties.class, MethodSecurityConfig.class, ProjectInfoAutoConfiguration.class})
 class CategoryApiTest extends AbstractApiTest {
 
   private static final Long ID = 1L;
@@ -127,7 +128,7 @@ class CategoryApiTest extends AbstractApiTest {
     var pageable = PageRequest.of(1, 1);
     var expected = new CategoryDto();
     expected.setId(ID);
-    given(categoryService.findAll(any(Pageable.class)))
+    given(categoryService.findAll(any(), any(), any(Pageable.class)))
         .willReturn(new PageImpl<CategoryDto>(List.of(expected)));
 
     var result = performGet(USER, CATEGORIES_URI, pageable).andExpect(status().isOk()).andReturn();
