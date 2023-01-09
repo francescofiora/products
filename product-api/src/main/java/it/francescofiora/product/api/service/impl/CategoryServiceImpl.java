@@ -62,7 +62,6 @@ public class CategoryServiceImpl implements CategoryService {
     var category = new Category();
     category.setName(name);
     category.setDescription(description);
-    category.setProducts(null);
     var exampleMatcher = ExampleMatcher.matchingAll().withMatcher("name", PROPERTY_MATCHER_DEFAULT)
         .withMatcher("description", PROPERTY_MATCHER_DEFAULT);
     var example = Example.of(category, exampleMatcher);

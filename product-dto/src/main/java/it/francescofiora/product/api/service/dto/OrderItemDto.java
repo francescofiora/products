@@ -2,6 +2,7 @@ package it.francescofiora.product.api.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import it.francescofiora.product.api.service.util.DtoUtils;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -23,24 +24,24 @@ public class OrderItemDto implements DtoIdentifier, Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  @Schema(description = "Unique identifier", example = "1", required = true)
+  @Schema(description = "Unique identifier", example = "1", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("id")
   @NotNull
   private Long id;
 
-  @Schema(description = "Quantity", example = "10", required = true)
+  @Schema(description = "Quantity", example = "10", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("quantity")
   @NotNull
   @Positive
   private Integer quantity;
 
-  @Schema(description = "Total Price", example = "10", required = true)
+  @Schema(description = "Total Price", example = "10", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("totalPrice")
   @NotNull
   @DecimalMin(value = "0")
   private BigDecimal totalPrice;
 
-  @Schema(required = true)
+  @Schema(requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("product")
   @NotNull
   private ProductDto product;

@@ -2,6 +2,7 @@ package it.francescofiora.product.api.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.time.Instant;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,17 +16,18 @@ import lombok.Setter;
 @Setter
 public abstract class BaseOrderDto {
 
-  @Schema(description = "Placed Date", example = "", required = true)
+  @Schema(description = "Placed Date", example = "", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("placedDate")
   @NotNull
   private Instant placedDate;
 
-  @Schema(description = "Order code", example = "ORD_1", required = true)
+  @Schema(description = "Order code", example = "ORD_1", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("code")
   @NotBlank
   private String code;
 
-  @Schema(description = "Customer", example = "Some Company Ltd", required = true)
+  @Schema(description = "Customer", example = "Some Company Ltd",
+      requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("customer")
   @NotBlank
   private String customer;

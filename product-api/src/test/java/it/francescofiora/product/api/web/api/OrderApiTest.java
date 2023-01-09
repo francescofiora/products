@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import it.francescofiora.product.api.config.MethodSecurityConfig;
+import it.francescofiora.product.api.config.SecurityConfig;
 import it.francescofiora.product.api.service.OrderService;
 import it.francescofiora.product.api.service.dto.NewOrderDto;
 import it.francescofiora.product.api.service.dto.NewOrderItemDto;
@@ -20,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = OrderApi.class)
-@Import({BuildProperties.class, MethodSecurityConfig.class, ProjectInfoAutoConfiguration.class})
+@Import({BuildProperties.class, SecurityConfig.class, MethodSecurityConfig.class})
 class OrderApiTest extends AbstractApiTest {
 
   private static final Long ID = 1L;

@@ -35,8 +35,8 @@ public class OrderItem extends AbstractDomain implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqOrderItem")
-  @SequenceGenerator(name = "seqOrderItem", sequenceName = "SEQ_ORDER_ITEM", schema = "STORE")
-  @NotNull
+  @SequenceGenerator(name = "seqOrderItem", sequenceName = "SEQ_ORDER_ITEM", schema = "STORE",
+      allocationSize = 1)
   private Long id;
 
   @Column(name = "quantity", nullable = false)

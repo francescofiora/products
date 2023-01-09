@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import it.francescofiora.product.api.config.MethodSecurityConfig;
+import it.francescofiora.product.api.config.SecurityConfig;
 import it.francescofiora.product.api.service.CategoryService;
 import it.francescofiora.product.api.service.dto.CategoryDto;
 import it.francescofiora.product.api.service.dto.NewCategoryDto;
@@ -16,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -29,7 +29,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = CategoryApi.class)
-@Import({BuildProperties.class, MethodSecurityConfig.class, ProjectInfoAutoConfiguration.class})
+@Import({BuildProperties.class, SecurityConfig.class, MethodSecurityConfig.class})
 class CategoryApiTest extends AbstractApiTest {
 
   private static final Long ID = 1L;

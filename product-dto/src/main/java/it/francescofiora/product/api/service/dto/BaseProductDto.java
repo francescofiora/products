@@ -2,6 +2,7 @@ package it.francescofiora.product.api.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import it.francescofiora.product.api.service.dto.enumeration.Size;
 import java.math.BigDecimal;
 import javax.validation.constraints.DecimalMin;
@@ -17,7 +18,7 @@ import lombok.Setter;
 @Setter
 public abstract class BaseProductDto {
 
-  @Schema(description = "Name", example = "SHIRTM01", required = true)
+  @Schema(description = "Name", example = "SHIRTM01", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("name")
   @NotBlank
   private String name;
@@ -27,13 +28,13 @@ public abstract class BaseProductDto {
   @NotBlank
   private String description;
 
-  @Schema(description = "Price", example = "10", required = true)
+  @Schema(description = "Price", example = "10", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("price")
   @NotNull
   @DecimalMin(value = "0")
   private BigDecimal price;
 
-  @Schema(description = "Size", example = "L", required = true)
+  @Schema(description = "Size", example = "L", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("size")
   @NotNull
   private Size size;

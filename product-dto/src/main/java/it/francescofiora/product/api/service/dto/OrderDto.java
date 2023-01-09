@@ -2,6 +2,7 @@ package it.francescofiora.product.api.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import it.francescofiora.product.api.service.dto.enumeration.OrderStatus;
 import it.francescofiora.product.api.service.util.DtoUtils;
 import java.io.Serializable;
@@ -24,22 +25,23 @@ public class OrderDto extends BaseOrderDto implements DtoIdentifier, Serializabl
 
   private static final long serialVersionUID = 1L;
 
-  @Schema(description = "Unique Order identifier", example = "1", required = true)
+  @Schema(description = "Unique Order identifier", example = "1",
+      requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("id")
   @NotNull
   private Long id;
 
-  @Schema(description = "Total Price", example = "10", required = true)
+  @Schema(description = "Total Price", example = "10", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("totalPrice")
   @NotNull
   private BigDecimal totalPrice;
-  
-  @Schema(description = "Status", example = "", required = true)
+
+  @Schema(description = "Status", example = "", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("status")
   @NotNull
   private OrderStatus status;
 
-  @Schema(required = true)
+  @Schema(requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("items")
   @NotNull
   private List<OrderItemDto> items = new ArrayList<>();

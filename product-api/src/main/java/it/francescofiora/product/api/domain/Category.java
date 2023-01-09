@@ -1,14 +1,11 @@
 package it.francescofiora.product.api.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -34,7 +31,7 @@ public class Category extends AbstractDomain implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqCategory")
   @SequenceGenerator(name = "seqCategory", sequenceName = "SEQ_CATEGORY",
-      schema = "STORE")
+      schema = "STORE", allocationSize = 1)
   private Long id;
 
   @NotNull
@@ -44,10 +41,6 @@ public class Category extends AbstractDomain implements Serializable {
   @NotNull
   @Column(name = "description", nullable = false)
   private String description;
-
-  @OneToMany(mappedBy = "category")
-  @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-  private Set<Product> products = new HashSet<>();
 
   @Override
   public boolean equals(Object obj) {

@@ -1,7 +1,7 @@
 plugins {
   id 'java-library'
   id 'info.solidsoft.pitest' version '1.7.0'
-  id 'org.owasp.dependencycheck' version '6.2.2'
+  id 'org.owasp.dependencycheck' version '7.4.4'
   id 'maven-publish'
 }
 

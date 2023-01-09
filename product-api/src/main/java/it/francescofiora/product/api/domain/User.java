@@ -33,8 +33,9 @@ public class User extends AbstractDomain implements UserDetails {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqOrder")
-  @SequenceGenerator(name = "seqOrder", sequenceName = "SEQ_USER", schema = "STORE")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqUser")
+  @SequenceGenerator(name = "seqUser", sequenceName = "SEQ_USER", schema = "STORE",
+      allocationSize = 1)
   private Long id;
 
   @NotNull

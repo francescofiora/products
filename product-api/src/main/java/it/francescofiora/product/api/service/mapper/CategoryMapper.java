@@ -15,16 +15,13 @@ import org.mapstruct.MappingTarget;
 public interface CategoryMapper {
 
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "products", ignore = true)
   void updateEntityFromDto(CategoryDto categoryDto, @MappingTarget Category category);
 
   CategoryDto toDto(Category entity);
 
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "products", ignore = true)
   Category toEntity(NewCategoryDto categoryDto);
 
-  @Mapping(target = "products", ignore = true)
   @Mapping(target = "name", ignore = true)
   @Mapping(target = "description", ignore = true)
   Category toEntity(RefCategoryDto categoryDto);
