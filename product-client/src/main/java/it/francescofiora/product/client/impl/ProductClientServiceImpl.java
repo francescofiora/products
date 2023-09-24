@@ -20,6 +20,11 @@ public class ProductClientServiceImpl extends AbtractClient implements ProductCl
   private static final String PRODUCTS_URI = "/api/v1/products";
   private static final String PRODUCTS_ID_URI = "/api/v1/products/{id}";
 
+  /**
+   * Constructor.
+   *
+   * @param clientInfo the ClientInfo
+   */
   public ProductClientServiceImpl(ClientInfo clientInfo) {
     super(clientInfo);
   }

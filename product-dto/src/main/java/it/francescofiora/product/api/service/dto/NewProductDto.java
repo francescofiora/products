@@ -21,6 +21,9 @@ public class NewProductDto extends BaseProductDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * The reference of the category.
+   */
   @Schema(requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("category")
   @NotNull

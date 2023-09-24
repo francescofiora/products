@@ -18,11 +18,17 @@ import lombok.Setter;
 @Setter
 public abstract class BaseProductDto {
 
+  /**
+   * The name.
+   */
   @Schema(description = "Name", example = "SHIRTM01", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("name")
   @NotBlank
   private String name;
 
+  /**
+   * The description.
+   */
   @Schema(description = "Description of the product", example = "Shirt for Men")
   @JsonProperty("description")
   @NotBlank

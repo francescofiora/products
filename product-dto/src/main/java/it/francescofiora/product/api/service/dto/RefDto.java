@@ -18,6 +18,9 @@ import lombok.ToString;
 @ToString(callSuper = true, includeFieldNames = true)
 public abstract class RefDto implements DtoIdentifier {
 
+  /**
+   * the id.
+   */
   @Schema(description = "Unique identifier", example = "1", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("id")
   @NotNull

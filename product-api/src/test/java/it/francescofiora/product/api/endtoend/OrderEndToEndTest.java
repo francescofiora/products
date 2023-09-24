@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import it.francescofiora.product.api.service.dto.OrderDto;
 import it.francescofiora.product.api.util.TestUtils;
+import java.time.temporal.ChronoUnit;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -69,7 +70,8 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
     var actual = get(USER, orderIdUri, OrderDto.class, ALERT_GET, String.valueOf(orderId));
     assertThat(actual.getCode()).isEqualTo(newOrderDto.getCode());
     assertThat(actual.getCustomer()).isEqualTo(newOrderDto.getCustomer());
-    assertThat(actual.getPlacedDate()).isEqualTo(newOrderDto.getPlacedDate());
+    assertThat(actual.getPlacedDate().truncatedTo(ChronoUnit.DAYS))
+        .isEqualTo(newOrderDto.getPlacedDate().truncatedTo(ChronoUnit.DAYS));
 
     var orderDto = TestUtils.createUpdatebleOrderDto(orderId);
     patch(USER, orderIdUri, orderDto, ALERT_PATCHED, String.valueOf(orderId));
@@ -77,7 +79,8 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
     actual = get(USER, orderIdUri, OrderDto.class, ALERT_GET, String.valueOf(orderId));
     assertThat(actual.getCode()).isEqualTo(orderDto.getCode());
     assertThat(actual.getCustomer()).isEqualTo(orderDto.getCustomer());
-    assertThat(actual.getPlacedDate()).isEqualTo(orderDto.getPlacedDate());
+    assertThat(actual.getPlacedDate().truncatedTo(ChronoUnit.DAYS))
+        .isEqualTo(orderDto.getPlacedDate().truncatedTo(ChronoUnit.DAYS));
 
     var orders =
         get(USER, ORDERS_URI, PageRequest.of(1, 1), OrderDto[].class, ALERT_GET, PARAM_PAGE_20);

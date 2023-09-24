@@ -24,23 +24,35 @@ public class OrderItemDto implements DtoIdentifier, Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * The id.
+   */
   @Schema(description = "Unique identifier", example = "1", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("id")
   @NotNull
   private Long id;
 
+  /**
+   * The quantity.
+   */
   @Schema(description = "Quantity", example = "10", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("quantity")
   @NotNull
   @Positive
   private Integer quantity;
 
+  /**
+   * The total price.
+   */
   @Schema(description = "Total Price", example = "10", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("totalPrice")
   @NotNull
   @DecimalMin(value = "0")
   private BigDecimal totalPrice;
 
+  /**
+   * The product.
+   */
   @Schema(requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("product")
   @NotNull

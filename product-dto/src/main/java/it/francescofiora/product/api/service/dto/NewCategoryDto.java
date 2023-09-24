@@ -20,11 +20,17 @@ public class NewCategoryDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * The name.
+   */
   @Schema(description = "Name", example = "Shirt", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("name")
   @NotBlank
   private String name;
 
+  /**
+   * The description.
+   */
   @Schema(description = "Description of the category", example = "Shirt",
       requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("description")

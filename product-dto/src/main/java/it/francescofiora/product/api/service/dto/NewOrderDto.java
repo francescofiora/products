@@ -23,6 +23,9 @@ public class NewOrderDto extends BaseOrderDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * The items.
+   */
   @Schema(requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("items")
   @NotEmpty

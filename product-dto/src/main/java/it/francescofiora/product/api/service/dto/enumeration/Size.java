@@ -4,5 +4,28 @@ package it.francescofiora.product.api.service.dto.enumeration;
  * The Size enumeration.
  */
 public enum Size {
-    S, M, L, XL, XXL
+  /**
+   * S: small.
+   */
+  S,
+
+  /**
+   * M: medium.
+   */
+  M,
+
+  /**
+   * L: large.
+   */
+  L,
+
+  /**
+   * XL: extra large.
+   */
+  XL,
+
+  /**
+   * XXL: extra extra large.
+   */
+  XXL
 }

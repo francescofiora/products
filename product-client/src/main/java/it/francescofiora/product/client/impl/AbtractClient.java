@@ -24,6 +24,11 @@ public abstract class AbtractClient {
 
   private final ClientInfo clientInfo;
 
+  /**
+   * Create SSL Context.
+   *
+   * @return the SslContext
+   */
   protected SslContext createSslContext() {
     try {
       var keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -40,6 +45,11 @@ public abstract class AbtractClient {
     }
   }
 
+  /**
+   * Build WebClient.
+   *
+   * @return the WebClient
+   */
   protected WebClient buildWebClient() {
     // @formatter:off
     var builder = WebClient.builder()
@@ -56,6 +66,15 @@ public abstract class AbtractClient {
     return builder.build();
   }
 
+  /**
+   * Call POST endpoint to create a new resource.
+   *
+   * @param <T> Class type of the body
+   * @param uri the uri
+   * @param body the body
+   * @param clazz the class of the body
+   * @return the ResponseEntity
+   */
   protected <T> Mono<ResponseEntity<Void>> create(String uri, T body, Class<T> clazz) {
     // @formatter:off
     return buildWebClient()
@@ -67,6 +86,16 @@ public abstract class AbtractClient {
     // @formatter:on
   }
 
+  /**
+   * Call POST endpoint with id to create a new resource.
+   *
+   * @param <T> Class type of the body
+   * @param uri the uri
+   * @param id the id
+   * @param body the body
+   * @param clazz the class of the body
+   * @return the ResponseEntity
+   */
   protected <T> Mono<ResponseEntity<Void>> create(String uri, Long id, T body, Class<T> clazz) {
     // @formatter:off
     return buildWebClient()
@@ -78,6 +107,15 @@ public abstract class AbtractClient {
     // @formatter:on
   }
 
+  /**
+   * Call PUT endpoint to update a resource.
+   *
+   * @param <T> Class type of the body
+   * @param uri the uri
+   * @param body the body
+   * @param clazz the class of the body
+   * @return the ResponseEntity
+   */
   protected <T extends DtoIdentifier> Mono<ResponseEntity<Void>> update(String uri, T body,
       Class<T> clazz) {
     // @formatter:off
@@ -90,6 +128,15 @@ public abstract class AbtractClient {
     // @formatter:on
   }
 
+  /**
+   * Call PUT endpoint to patch a resource.
+   *
+   * @param <T> Class type of the body
+   * @param uri the uri
+   * @param body the body
+   * @param clazz the class of the body
+   * @return the ResponseEntity
+   */
   protected <T extends DtoIdentifier> Mono<ResponseEntity<Void>> patch(String uri, T body,
       Class<T> clazz) {
     // @formatter:off
@@ -102,6 +149,15 @@ public abstract class AbtractClient {
     // @formatter:on
   }
 
+  /**
+   * Call GET endpoint to return resources in pages.
+   *
+   * @param <T> Class type of the body
+   * @param pageable the Pageable
+   * @param uri the uri
+   * @param clazz the class of the result
+   * @return the resources in pages
+   */
   protected <T> Flux<T> findAll(Pageable pageable, String uri, Class<T> clazz) {
     // @formatter:off
     return buildWebClient()
@@ -112,31 +168,55 @@ public abstract class AbtractClient {
     // @formatter:on
   }
 
-  protected <T> Mono<ResponseEntity<T>> get(String url, Class<T> clazz) {
+  /**
+   * Call GET endpoint to return a resource.
+   *
+   * @param <T> Class type of the body
+   * @param uri the uri
+   * @param clazz the class of the result
+   * @return the ResponseEntity
+   */
+  protected <T> Mono<ResponseEntity<T>> get(String uri, Class<T> clazz) {
     // @formatter:off
     return buildWebClient()
         .get()
-        .uri(url)
+        .uri(uri)
         .retrieve()
         .toEntity(clazz);
     // @formatter:on
   }
 
-  protected <T> Mono<ResponseEntity<T>> findOne(String url, Long id, Class<T> clazz) {
+  /**
+   * Call GET endpoint to return a resource.
+   *
+   * @param <T> Class type of the body
+   * @param uri the uri
+   * @param id the id of the resource
+   * @param clazz the class of the result
+   * @return the ResponseEntity
+   */
+  protected <T> Mono<ResponseEntity<T>> findOne(String uri, Long id, Class<T> clazz) {
     // @formatter:off
     return buildWebClient()
         .get()
-        .uri(url, id)
+        .uri(uri, id)
         .retrieve()
         .toEntity(clazz);
     // @formatter:on
   }
 
-  protected Mono<ResponseEntity<Void>> delete(String url, Object... ids) {
+  /**
+   * Call DELETE endpoint to delete a resource.
+   *
+   * @param uri the uri
+   * @param ids list of id
+   * @return a void ResponseEntity
+   */
+  protected Mono<ResponseEntity<Void>> delete(String uri, Object... ids) {
     // @formatter:off
     return buildWebClient()
         .delete()
-        .uri(url, ids)
+        .uri(uri, ids)
         .retrieve()
         .toEntity(Void.class);
     // @formatter:on

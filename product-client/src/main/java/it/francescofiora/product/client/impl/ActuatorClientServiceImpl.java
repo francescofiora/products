@@ -12,6 +12,11 @@ import reactor.core.publisher.Mono;
 @Component
 public class ActuatorClientServiceImpl extends AbtractClient implements ActuatorClientService {
 
+  /**
+   * Constructor.
+   *
+   * @param clientInfo the ClientInfo
+   */
   public ActuatorClientServiceImpl(ClientInfo clientInfo) {
     super(clientInfo);
   }

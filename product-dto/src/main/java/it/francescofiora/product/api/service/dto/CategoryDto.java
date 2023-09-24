@@ -20,6 +20,9 @@ public class CategoryDto extends NewCategoryDto implements DtoIdentifier {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * The id.
+   */
   @Schema(description = "Unique identifier", example = "1", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("id")
   @NotNull

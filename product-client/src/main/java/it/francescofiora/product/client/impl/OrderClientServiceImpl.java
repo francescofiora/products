@@ -24,6 +24,11 @@ public class OrderClientServiceImpl extends AbtractClient implements OrderClient
   private static final String ORDERS_ITEMS_ID_URI =
       "/api/v1/orders/{order_id}/items/{order_item_id}";
 
+  /**
+   * Constructor.
+   *
+   * @param clientInfo the ClientInfo
+   */
   public OrderClientServiceImpl(ClientInfo clientInfo) {
     super(clientInfo);
   }

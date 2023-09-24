@@ -19,6 +19,11 @@ public class CategoryClientServiceImpl extends AbtractClient implements Category
   private static final String CATEGORIES_URI = "/api/v1/categories";
   private static final String CATEGORIES_ID_URI = "/api/v1/categories/{id}";
 
+  /**
+   * Constructor.
+   *
+   * @param clientInfo the ClientInfo
+   */
   public CategoryClientServiceImpl(ClientInfo clientInfo) {
     super(clientInfo);
   }

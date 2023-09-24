@@ -21,6 +21,9 @@ public class UpdatebleOrderDto extends BaseOrderDto implements DtoIdentifier, Se
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * the id.
+   */
   @Schema(description = "Unique Order identifier", example = "1",
       requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("id")

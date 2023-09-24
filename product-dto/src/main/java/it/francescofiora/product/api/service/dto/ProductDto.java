@@ -21,11 +21,17 @@ public class ProductDto extends BaseProductDto  implements DtoIdentifier, Serial
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * The id.
+   */
   @Schema(description = "Unique identifier", example = "1", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("id")
   @NotNull
   private Long id;
 
+  /**
+   * The category.
+   */
   @Schema(requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("category")
   @NotNull

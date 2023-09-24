@@ -22,12 +22,18 @@ public class NewOrderItemDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * The quantity.
+   */
   @Schema(description = "Quantity", example = "10", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("quantity")
   @NotNull
   @Positive
   private Integer quantity;
 
+  /**
+   * The product.
+   */
   @Schema(requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("product")
   @NotNull

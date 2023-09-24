@@ -25,22 +25,34 @@ public class OrderDto extends BaseOrderDto implements DtoIdentifier, Serializabl
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * The id.
+   */
   @Schema(description = "Unique Order identifier", example = "1",
       requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("id")
   @NotNull
   private Long id;
 
+  /**
+   * The total price.
+   */
   @Schema(description = "Total Price", example = "10", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("totalPrice")
   @NotNull
   private BigDecimal totalPrice;
 
+  /**
+   * The status.
+   */
   @Schema(description = "Status", example = "", requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("status")
   @NotNull
   private OrderStatus status;
 
+  /**
+   * The items.
+   */
   @Schema(requiredMode = RequiredMode.REQUIRED)
   @JsonProperty("items")
   @NotNull
