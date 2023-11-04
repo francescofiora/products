@@ -1,7 +1,7 @@
 package it.francescofiora.product.itt;
 
 import it.francescofiora.product.client.ClientInfo;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**

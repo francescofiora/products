@@ -28,7 +28,7 @@ spring:
       maxLifetime: 1800000
       maximumPoolSize: 10
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL82Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 #    hibernate.ddl-auto: create
     properties:
       hibernate:

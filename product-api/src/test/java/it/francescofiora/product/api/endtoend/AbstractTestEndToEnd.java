@@ -6,7 +6,7 @@ import it.francescofiora.product.api.repository.UserRepository;
 import it.francescofiora.product.api.util.TestUtils;
 import it.francescofiora.product.api.web.api.AbstractApi;
 import it.francescofiora.product.api.web.util.HeaderUtil;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
