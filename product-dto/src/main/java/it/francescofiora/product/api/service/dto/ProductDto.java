@@ -1,8 +1,9 @@
 package it.francescofiora.product.api.service.dto;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import it.francescofiora.product.api.service.util.DtoUtils;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -24,7 +25,7 @@ public class ProductDto extends BaseProductDto  implements DtoIdentifier, Serial
   /**
    * The id.
    */
-  @Schema(description = "Unique identifier", example = "1", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Unique identifier", example = "1", requiredMode = REQUIRED)
   @JsonProperty("id")
   @NotNull
   private Long id;
@@ -32,7 +33,7 @@ public class ProductDto extends BaseProductDto  implements DtoIdentifier, Serial
   /**
    * The category.
    */
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(requiredMode = REQUIRED)
   @JsonProperty("category")
   @NotNull
   private CategoryDto category;

@@ -1,8 +1,9 @@
 package it.francescofiora.product.api.service.dto;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import it.francescofiora.product.api.service.util.DtoUtils;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -27,7 +28,7 @@ public class OrderItemDto implements DtoIdentifier, Serializable {
   /**
    * The id.
    */
-  @Schema(description = "Unique identifier", example = "1", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Unique identifier", example = "1", requiredMode = REQUIRED)
   @JsonProperty("id")
   @NotNull
   private Long id;
@@ -35,7 +36,7 @@ public class OrderItemDto implements DtoIdentifier, Serializable {
   /**
    * The quantity.
    */
-  @Schema(description = "Quantity", example = "10", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Quantity", example = "10", requiredMode = REQUIRED)
   @JsonProperty("quantity")
   @NotNull
   @Positive
@@ -44,7 +45,7 @@ public class OrderItemDto implements DtoIdentifier, Serializable {
   /**
    * The total price.
    */
-  @Schema(description = "Total Price", example = "10", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Total Price", example = "10", requiredMode = REQUIRED)
   @JsonProperty("totalPrice")
   @NotNull
   @DecimalMin(value = "0")
@@ -53,7 +54,7 @@ public class OrderItemDto implements DtoIdentifier, Serializable {
   /**
    * The product.
    */
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(requiredMode = REQUIRED)
   @JsonProperty("product")
   @NotNull
   private ProductDto product;

@@ -1,8 +1,9 @@
 package it.francescofiora.product.api.service.dto;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import it.francescofiora.product.api.service.dto.enumeration.Size;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +22,7 @@ public abstract class BaseProductDto {
   /**
    * The name.
    */
-  @Schema(description = "Name", example = "SHIRTM01", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Name", example = "SHIRTM01", requiredMode = REQUIRED)
   @JsonProperty("name")
   @NotBlank
   private String name;
@@ -34,13 +35,13 @@ public abstract class BaseProductDto {
   @NotBlank
   private String description;
 
-  @Schema(description = "Price", example = "10", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Price", example = "10", requiredMode = REQUIRED)
   @JsonProperty("price")
   @NotNull
   @DecimalMin(value = "0")
   private BigDecimal price;
 
-  @Schema(description = "Size", example = "L", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Size", example = "L", requiredMode = REQUIRED)
   @JsonProperty("size")
   @NotNull
   private Size size;

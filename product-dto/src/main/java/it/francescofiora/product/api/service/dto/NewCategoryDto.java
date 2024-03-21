@@ -1,8 +1,9 @@
 package it.francescofiora.product.api.service.dto;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class NewCategoryDto implements Serializable {
   /**
    * The name.
    */
-  @Schema(description = "Name", example = "Shirt", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Name", example = "Shirt", requiredMode = REQUIRED)
   @JsonProperty("name")
   @NotBlank
   private String name;
@@ -31,8 +32,7 @@ public class NewCategoryDto implements Serializable {
   /**
    * The description.
    */
-  @Schema(description = "Description of the category", example = "Shirt",
-      requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Description of the category", example = "Shirt", requiredMode = REQUIRED)
   @JsonProperty("description")
   @NotBlank
   private String description;
