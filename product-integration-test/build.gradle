@@ -1,8 +1,8 @@
 plugins {
   id 'java'
   id 'eclipse-wtp'
-  id 'org.springframework.boot' version '3.1.0'
-  id 'io.spring.dependency-management' version '1.1.3'
+  id 'org.springframework.boot' version '3.2.3'
+  id 'io.spring.dependency-management' version '1.1.4'
   id 'checkstyle'
   id 'jacoco'
   id 'org.owasp.dependencycheck' version '7.4.4'
@@ -25,6 +25,7 @@ def lombok_version = property('lombok.version')
 def logback_version = property('logback.version')
 def openpojo_version = property('openpojo.version')
 def apache_httpclient_version = property('apache-httpclient.version')
+def testcontainers_version = property('testcontainers.version')
 
 dependencies {
 
@@ -43,7 +44,7 @@ dependencies {
   implementation 'it.francescofiora:product-dto:1.0-SNAPSHOT'
   implementation 'it.francescofiora:product-client:1.0-SNAPSHOT'
 
-  implementation platform('org.testcontainers:testcontainers-bom:1.19.1')
+  implementation platform("org.testcontainers:testcontainers-bom:${testcontainers_version}")
 
   implementation "org.projectlombok:lombok:${lombok_version}"
   annotationProcessor "org.projectlombok:lombok:${lombok_version}"
@@ -105,8 +106,8 @@ checkstyle {
 }
 tasks.withType(Checkstyle) {
   reports {
-    xml.enabled = false
-    html.enabled = true
+    xml.required = false
+    html.required = true
   }
 }
 checkstyleMain {
@@ -121,13 +122,14 @@ test {
 jacocoTestReport {
   dependsOn test
   reports {
-    xml.enabled true
-    csv.enabled false
-    html.destination file("${buildDir}/reports/jacoco/test")
-    xml.destination  file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    xml.required = true
+    csv.required = false
+    html.required = true
+    html.outputLocation = file("${buildDir}/reports/jacoco/test")
+    xml.outputLocation = file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
   }
 }
 
 wrapper {
-    gradleVersion = "7.4"
+    gradleVersion = "7.5"
 }

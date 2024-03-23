@@ -74,15 +74,15 @@ SpringBoot Rest Api tutorial with OpenApi 3.0 and PostgreSql.
 
 
 # Technologies used
-- [Gradle 7.4](https://gradle.org)
+- [Gradle 7.5](https://gradle.org)
 - [Java 17](https://openjdk.java.net/projects/jdk/17)
-- [Spring Boot 3.1](https://spring.io/projects/spring-boot)
+- [Spring Boot 3.2](https://spring.io/projects/spring-boot)
 - [Spring Security](https://spring.io/projects/spring-security)
 - [Swagger OpeApi 3.0](https://swagger.io/specification)
 - [Mapstruct 1.5](https://mapstruct.org)
 - [Lombok 1.18](https://projectlombok.org)
 - [Spring Data JPA](https://projects.spring.io/spring-data-jpa)
-- [org.postgresql 42.6](https://jdbc.postgresql.org)
+- [org.postgresql 42.7](https://jdbc.postgresql.org)
 - [HsqlDb](http://hsqldb.org)
 - [LogBack 1.4](https://logback.qos.ch)
 - [Mockito](https://site.mockito.org)
@@ -91,5 +91,5 @@ SpringBoot Rest Api tutorial with OpenApi 3.0 and PostgreSql.
 - [CheckStyle 8.44](https://checkstyle.sourceforge.io)
 - [Owasp Dependency Check 7.4](https://owasp.org/www-project-dependency-check)
 - [Jacoco 0.8](https://www.jacoco.org)
-- [Pitest 1.7](https://pitest.org)
+- [Pitest 1.15](https://pitest.org)
 - [TestContainers 1.19](https://www.testcontainers.org)
