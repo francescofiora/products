@@ -3,7 +3,6 @@ package it.francescofiora.product.api.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -79,7 +78,7 @@ class OrderServiceTest {
     order.setId(ID);
     order.setStatus(OrderStatus.COMPLETED);
     var orderRepository = mock(OrderRepository.class);
-    when(orderRepository.findById(eq(ID))).thenReturn(Optional.of(order));
+    when(orderRepository.findById(ID)).thenReturn(Optional.of(order));
 
     var orderDto = new UpdatebleOrderDto();
     orderDto.setId(ID);
@@ -92,7 +91,7 @@ class OrderServiceTest {
   void testPatch() {
     var order = TestUtils.createPendingOrder(ID);
     var orderRepository = mock(OrderRepository.class);
-    when(orderRepository.findById(eq(ID))).thenReturn(Optional.of(order));
+    when(orderRepository.findById(ID)).thenReturn(Optional.of(order));
 
     var orderDto = new UpdatebleOrderDto();
     orderDto.setId(ID);
@@ -138,7 +137,7 @@ class OrderServiceTest {
     var order = new Order();
     order.setId(ID);
     var orderRepository = mock(OrderRepository.class);
-    when(orderRepository.findById(eq(order.getId()))).thenReturn(Optional.of(order));
+    when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
 
     var expected = new OrderDto();
     var orderMapper = mock(OrderMapper.class);
@@ -157,18 +156,19 @@ class OrderServiceTest {
   void testDelete() {
     var order = TestUtils.createOrder(ID);
     var orderRepository = mock(OrderRepository.class);
-    when(orderRepository.findById(eq(ID))).thenReturn(Optional.of(order));
+    when(orderRepository.findById(ID)).thenReturn(Optional.of(order));
 
     var orderService = new OrderServiceImpl(orderRepository, mock(ProductRepository.class),
         mock(OrderItemRepository.class), mock(OrderMapper.class), mock(OrderItemMapper.class));
     orderService.delete(ID);
+    verify(orderRepository).deleteById(ID);
   }
 
   @Test
   void testAddOrderItem() {
     var order = TestUtils.createPendingOrder(ID);
     var orderRepository = mock(OrderRepository.class);
-    when(orderRepository.findById(eq(ID))).thenReturn(Optional.of(order));
+    when(orderRepository.findById(ID)).thenReturn(Optional.of(order));
 
     var orderItem = new OrderItem();
     orderItem.setId(ID);
@@ -181,7 +181,7 @@ class OrderServiceTest {
     var product = new Product();
     product.setPrice(BigDecimal.TEN);
     var productRepository = mock(ProductRepository.class);
-    when(productRepository.findById(eq(ID_PRODUCT))).thenReturn(Optional.of(product));
+    when(productRepository.findById(ID_PRODUCT)).thenReturn(Optional.of(product));
 
     var orderItemRepository = mock(OrderItemRepository.class);
     when(orderItemRepository.save(any(OrderItem.class))).thenReturn(orderItem);
@@ -202,7 +202,7 @@ class OrderServiceTest {
   void testDeleteOrderItem() {
     var order = TestUtils.createPendingOrder(ID);
     var orderRepository = mock(OrderRepository.class);
-    when(orderRepository.findById(eq(ID))).thenReturn(Optional.of(order));
+    when(orderRepository.findById(ID)).thenReturn(Optional.of(order));
 
     var orderItemRepository = mock(OrderItemRepository.class);
     var orderService = new OrderServiceImpl(orderRepository, mock(ProductRepository.class),

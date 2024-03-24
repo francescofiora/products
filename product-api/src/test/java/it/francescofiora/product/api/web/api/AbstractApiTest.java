@@ -1,6 +1,5 @@
 package it.francescofiora.product.api.web.api;
 
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -51,13 +50,13 @@ public abstract class AbstractApiTest {
 
   @BeforeEach
   void setUp() {
-    given(userDetailsService.loadUserByUsername(eq(USER)))
+    given(userDetailsService.loadUserByUsername(USER))
         .willReturn(TestUtils.createUser(USER, PASSWORD, ROLE_USER));
 
-    given(userDetailsService.loadUserByUsername(eq(ADMIN)))
+    given(userDetailsService.loadUserByUsername(ADMIN))
         .willReturn(TestUtils.createUser(ADMIN, PASSWORD, ROLE_ADMIN));
 
-    given(userDetailsService.loadUserByUsername(eq(USER_WITH_WRONG_ROLE)))
+    given(userDetailsService.loadUserByUsername(USER_WITH_WRONG_ROLE))
         .willReturn(TestUtils.createUser(USER_WITH_WRONG_ROLE, PASSWORD, ROLE_NOT_EXIST));
   }
 

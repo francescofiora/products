@@ -3,7 +3,6 @@ package it.francescofiora.product.api.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -60,12 +59,13 @@ class CategoryServiceTest {
   void testUpdate() {
     var category = new Category();
     var categoryRepository = mock(CategoryRepository.class);
-    when(categoryRepository.findById(eq(ID))).thenReturn(Optional.of(category));
+    when(categoryRepository.findById(ID)).thenReturn(Optional.of(category));
 
     var categoryDto = new CategoryDto();
     categoryDto.setId(ID);
     var categoryService = new CategoryServiceImpl(categoryRepository, mock(CategoryMapper.class));
     categoryService.update(categoryDto);
+    verify(categoryRepository).save(category);
   }
 
   @Test
@@ -97,7 +97,7 @@ class CategoryServiceTest {
     var category = new Category();
     category.setId(ID);
     var categoryRepository = mock(CategoryRepository.class);
-    when(categoryRepository.findById(eq(category.getId()))).thenReturn(Optional.of(category));
+    when(categoryRepository.findById(category.getId())).thenReturn(Optional.of(category));
     var expected = new CategoryDto();
     var categoryMapper = mock(CategoryMapper.class);
     when(categoryMapper.toDto(any(Category.class))).thenReturn(expected);

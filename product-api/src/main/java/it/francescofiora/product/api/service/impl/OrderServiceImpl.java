@@ -6,6 +6,7 @@ import it.francescofiora.product.api.repository.OrderItemRepository;
 import it.francescofiora.product.api.repository.OrderRepository;
 import it.francescofiora.product.api.repository.ProductRepository;
 import it.francescofiora.product.api.service.OrderService;
+import it.francescofiora.product.api.service.ProductService;
 import it.francescofiora.product.api.service.dto.NewOrderDto;
 import it.francescofiora.product.api.service.dto.NewOrderItemDto;
 import it.francescofiora.product.api.service.dto.OrderDto;
@@ -76,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
     var productOpt = productRepository.findById(item.getProduct().getId());
     if (!productOpt.isPresent()) {
       var id = String.valueOf(item.getProduct().getId());
-      throw new NotFoundAlertException(ProductServiceImpl.ENTITY_NAME, id, PRODUCT_NOT_FOUND);
+      throw new NotFoundAlertException(ProductService.ENTITY_NAME, id, PRODUCT_NOT_FOUND);
     }
     item.setProduct(productOpt.get());
     item.setTotalPrice(item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity())));

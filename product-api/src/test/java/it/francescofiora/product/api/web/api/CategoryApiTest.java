@@ -2,7 +2,6 @@ package it.francescofiora.product.api.web.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -150,7 +149,7 @@ class CategoryApiTest extends AbstractApiTest {
   void testGet() throws Exception {
     var expected = new CategoryDto();
     expected.setId(ID);
-    given(categoryService.findOne(eq(ID))).willReturn(Optional.of(expected));
+    given(categoryService.findOne(ID)).willReturn(Optional.of(expected));
     var result = performGet(USER, CATEGORIES_ID_URI, ID).andExpect(status().isOk()).andReturn();
     var actual = readValue(result, new TypeReference<CategoryDto>() {});
     assertThat(actual).isNotNull().isEqualTo(expected);

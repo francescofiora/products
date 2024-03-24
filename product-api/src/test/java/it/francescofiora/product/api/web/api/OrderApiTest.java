@@ -216,7 +216,7 @@ class OrderApiTest extends AbstractApiTest {
   void testGetOrder() throws Exception {
     OrderDto expected = new OrderDto();
     expected.setId(ID);
-    given(orderService.findOne(eq(ID))).willReturn(Optional.of(expected));
+    given(orderService.findOne(ID)).willReturn(Optional.of(expected));
     MvcResult result = performGet(USER, ORDERS_ID_URI, ID).andExpect(status().isOk()).andReturn();
     OrderDto actual = readValue(result, new TypeReference<OrderDto>() {});
     assertThat(actual).isNotNull().isEqualTo(expected);

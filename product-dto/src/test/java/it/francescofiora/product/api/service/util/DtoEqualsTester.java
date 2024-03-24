@@ -18,6 +18,7 @@ public class DtoEqualsTester implements Rule {
       try {
         equalsVerifier(pojoClass.getClazz());
         if (pojoClass.extendz(DtoIdentifier.class)) {
+          dtoObjectVerifier(pojoClass.getClazz());
           dtoIdentifierVerifier(pojoClass.getClazz());
         }
       } catch (Exception e) {
@@ -27,38 +28,42 @@ public class DtoEqualsTester implements Rule {
   }
 
   private <T> void equalsVerifier(Class<T> clazz) throws Exception {
-    var dtoObj1 = clazz.getConstructor().newInstance();
-    var dtoObj2 = clazz.getConstructor().newInstance();
+    var dtoObj1 = (Object) clazz.getConstructor().newInstance();
+    var dtoObj2 = (Object) clazz.getConstructor().newInstance();
+    Object dtoObj3 = null;
 
     // Test equals
-    assertThat(dtoObj1.equals(dtoObj2)).isTrue();
-    assertThat(dtoObj1.equals(dtoObj1)).isTrue();
-    assertThat(dtoObj1.equals(null)).isFalse();
-    assertThat(dtoObj1.equals(new Object())).isFalse();
+    assertThat(dtoObj1).isEqualTo(dtoObj2);
+    assertThat(dtoObj1).isEqualTo(dtoObj1);
+    assertThat(dtoObj1).isNotEqualTo(dtoObj3);
+    assertThat(dtoObj1).isNotEqualTo(new Object());
 
     // Test toString
     assertThat(dtoObj1.toString()).isNotNull();
 
     // Test hashCode
-    assertThat(dtoObj1.hashCode()).isEqualTo(dtoObj2.hashCode());
+    assertThat(dtoObj1).hasSameHashCodeAs(dtoObj2.hashCode());
+  }
+
+  private <T> void dtoObjectVerifier(Class<T> clazz) throws Exception {
+    Object dtoObj1 = TestUtils.createNewDtoIdentifier(clazz, 1L);
+    Object dtoObj2 = null;
+    assertThat(dtoObj1).isNotEqualTo(dtoObj2);
+    assertThat(dtoObj1).isNotEqualTo(new Object());
   }
 
   private <T> void dtoIdentifierVerifier(Class<T> clazz) throws Exception {
-    var dtoObj1 = (DtoIdentifier) clazz.getConstructor().newInstance();
-    dtoObj1.setId(1L);
-    assertThat(dtoObj1.equals(null)).isFalse();
-    assertThat(dtoObj1.equals(new Object())).isFalse();
+    var dtoObj1 = TestUtils.createNewDtoIdentifier(clazz, 1L);
+    var dtoObj2 = TestUtils.createNewDtoIdentifier(clazz, null);
 
-    var dtoObj2 = (DtoIdentifier) clazz.getConstructor().newInstance();
-    assertThat(dtoObj1.equals(dtoObj2)).isFalse();
+    assertThat(dtoObj1).isNotEqualTo(dtoObj2);
+    TestUtils.checkNotEqualHashAndToString(dtoObj2, dtoObj1);
 
-    dtoObj2.setId(2L);
+    dtoObj2 = TestUtils.createNewDtoIdentifier(clazz, 2L);
     TestUtils.checkNotEqualHashAndToString(dtoObj1, dtoObj2);
 
-    dtoObj2.setId(dtoObj1.getId());
+    dtoObj2 = TestUtils.createNewDtoIdentifier(clazz, 1L);
     TestUtils.checkEqualHashAndToString(dtoObj1, dtoObj2);
-
-    dtoObj1.setId(null);
-    TestUtils.checkNotEqualHashAndToString(dtoObj1, dtoObj2);
   }
 }
+

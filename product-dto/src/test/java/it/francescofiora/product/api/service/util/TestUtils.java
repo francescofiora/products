@@ -2,6 +2,7 @@ package it.francescofiora.product.api.service.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import it.francescofiora.product.api.service.dto.DtoIdentifier;
 import it.francescofiora.product.api.service.dto.NewCategoryDto;
 import it.francescofiora.product.api.service.dto.NewOrderDto;
 import it.francescofiora.product.api.service.dto.NewOrderItemDto;
@@ -79,22 +80,17 @@ public interface TestUtils {
   }
 
   /**
-   * Verifies the equals/hashcode contract on the domain object.
+   * Create new DtoIdentifier.
+   *
+   * @param clazz the DtoIdentifier class.
+   * @param id the id
+   * @return a new DtoIdentifier
+   * @throws Exception if error occurs
    */
-  static <T> void equalsVerifier(Class<T> clazz) throws Exception {
-    var domainObject1 = clazz.getConstructor().newInstance();
-    assertThat(domainObject1.toString()).isNotNull();
-    assertThat(domainObject1).isEqualTo(domainObject1);
-    assertThat(domainObject1.hashCode()).isEqualTo(domainObject1.hashCode());
-    // Test with an instance of another class
-    var testOtherObject = new Object();
-    assertThat(domainObject1).isNotEqualTo(testOtherObject);
-    assertThat(domainObject1).isNotEqualTo(null);
-    // Test with an instance of the same class
-    var domainObject2 = clazz.getConstructor().newInstance();
-    assertThat(domainObject1).isNotEqualTo(domainObject2);
-    // HashCodes are equals because the objects are not persisted yet
-    assertThat(domainObject1.hashCode()).isEqualTo(domainObject2.hashCode());
+  public static <T> DtoIdentifier createNewDtoIdentifier(Class<T> clazz, Long id) throws Exception {
+    var dtoObj = (DtoIdentifier) clazz.getConstructor().newInstance();
+    dtoObj.setId(id);
+    return dtoObj;
   }
 
   /**
@@ -105,8 +101,8 @@ public interface TestUtils {
    */
   static void checkEqualHashAndToString(final Object obj1, final Object obj2) {
     assertThat(obj1.equals(obj2)).isTrue();
-    assertThat(obj1.hashCode()).isEqualTo(obj2.hashCode());
-    assertThat(obj1.toString()).isEqualTo(obj2.toString());
+    assertThat(obj1).hasSameHashCodeAs(obj2.hashCode());
+    assertThat(obj1).hasToString(obj2.toString());
   }
 
   /**

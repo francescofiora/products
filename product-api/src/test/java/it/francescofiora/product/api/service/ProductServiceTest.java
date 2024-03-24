@@ -3,7 +3,6 @@ package it.francescofiora.product.api.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,7 +46,7 @@ class ProductServiceTest {
 
     var productDto = TestUtils.createNewProductDto();
     var categoryRepository = mock(CategoryRepository.class);
-    when(categoryRepository.findById(eq(productDto.getCategory().getId())))
+    when(categoryRepository.findById(productDto.getCategory().getId()))
         .thenReturn(Optional.of(new Category()));
 
     var productService =
@@ -69,7 +68,7 @@ class ProductServiceTest {
   void testUpdate() {
     var product = new Product();
     var productRepository = mock(ProductRepository.class);
-    when(productRepository.findById(eq(ID))).thenReturn(Optional.of(product));
+    when(productRepository.findById(ID)).thenReturn(Optional.of(product));
 
     var productDto = new UpdatebleProductDto();
     productDto.setId(ID);
@@ -112,7 +111,7 @@ class ProductServiceTest {
     var product = new Product();
     product.setId(ID);
     var productRepository = mock(ProductRepository.class);
-    when(productRepository.findById(eq(product.getId()))).thenReturn(Optional.of(product));
+    when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
 
     var expected = new ProductDto();
     var productMapper = mock(ProductMapper.class);
