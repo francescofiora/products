@@ -28,6 +28,21 @@ SpringBoot Rest Api tutorial with OpenApi 3.0 and PostgreSql.
 ### Pitest
     ./gradlew pitest
 
+### SonarQube
+Run SonarQube
+
+    docker-compose -f docker/docker-compose-sonar.yml up
+
+ - Sonarqube (http://localhost:9000/)
+
+For SonarQube configuration follow this link: [Try Out SonarQube](https://docs.sonarqube.org/latest/setup/get-started-2-minutes/)
+
+Scan project
+
+    ./gradlew sonarqube \
+    -Dsonar.projectKey=yourProjectKey \
+    -Dsonar.token=yourAuthenticationToken
+
 ### Reports
     product-api/build/reports/checkstyle/main.html
     product-api/build/reports/checkstyle/test.html
@@ -44,7 +59,7 @@ SpringBoot Rest Api tutorial with OpenApi 3.0 and PostgreSql.
     product-dto/build/reports/dependency-check-report.html
 
 ### How to execute
-    docker-compose -f docker_dev/docker-compose.yml up
+    docker-compose -f docker/docker-compose.yml up
     java -jar ./product-api/build/libs/product-api-1.0-SNAPSHOT.jar
 
 **Links**
