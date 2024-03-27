@@ -22,14 +22,17 @@ import lombok.NoArgsConstructor;
 public final class TestUtils {
 
   /**
-   * Create an example of NewCategoryDto.
+   * Create a new NewCategoryDto.
+   *
+   * @param name the name
+   * @param description the description
    *
    * @return NewCategoryDto
    */
-  public static NewCategoryDto createNewCategoryDto() {
+  public static NewCategoryDto createNewCategoryDto(String name, String description) {
     var category = new NewCategoryDto();
-    category.setName("New Name");
-    category.setDescription("New Description");
+    category.setName(name);
+    category.setDescription(description);
     return category;
   }
 
@@ -37,13 +40,15 @@ public final class TestUtils {
    * Create an example of CategoryDto.
    *
    * @param id the id of the category
+   * @param name the Name
+   * @param description the Description
    * @return CategoryDto
    */
-  public static CategoryDto createCategoryDto(Long id) {
+  public static CategoryDto createCategoryDto(Long id, String name, String description) {
     var category = new CategoryDto();
     category.setId(id);
-    category.setName("Name");
-    category.setDescription("Description");
+    category.setName(name);
+    category.setDescription(description);
     return category;
   }
 
@@ -51,41 +56,30 @@ public final class TestUtils {
    * Create an example of NewOrderItemDto.
    *
    * @param id the id of the product
+   * @param quantity the Quantity
    * @return NewOrderItemDto
    */
-  public static NewOrderItemDto createNewOrderItemDto(Long id) {
+  public static NewOrderItemDto createNewOrderItemDto(Long id, String quantity) {
     var item = new NewOrderItemDto();
     var product = new RefProductDto();
     product.setId(id);
     item.setProduct(product);
-    item.setQuantity(10);
+    item.setQuantity(Integer.valueOf(quantity));
     return item;
   }
 
   /**
    * Create an example of NewOrderDto.
    *
+   * @param code the Code
+   * @param customer the Customer
    * @param productId the id of the product
    * @return NewOrderDto
    */
-  public static NewOrderDto createNewOrderDto(Long productId) {
+  public static NewOrderDto createNewOrderDto(String code, String customer) {
     var order = new NewOrderDto();
-    order.setCode("New CODE");
-    order.setCustomer("New Customer");
-    order.setPlacedDate(Instant.now());
-    order.getItems().add(createNewOrderItemDto(productId));
-    return order;
-  }
-
-  /**
-   * Create an example of NewOrderDto.
-   *
-   * @return NewOrderDto
-   */
-  public static NewOrderDto createNewSimpleOrderDto() {
-    var order = new NewOrderDto();
-    order.setCode("New CODE");
-    order.setCustomer("New Customer");
+    order.setCode(code);
+    order.setCustomer(customer);
     order.setPlacedDate(Instant.now());
     return order;
   }
@@ -93,35 +87,24 @@ public final class TestUtils {
   /**
    * Create an example of NewProductDto.
    *
+   * @param name the Name
+   * @param description the Description
+   * @param image the Image
+   * @param imageType the ImageContentType
+   * @param price the Price
+   * @param size the Size
    * @param categoryId the id of the category
    * @return NewProductDto
    */
-  public static NewProductDto createNewProductDto(Long categoryId) {
+  public static NewProductDto createNewProductDto(String name, String description, String image,
+      String imageType, String price, String size, Long categoryId) {
     var product = new NewProductDto();
-    product.setDescription("New Description");
-    product.setImage("New Image");
-    product.setImageContentType("JPG");
-    product.setName("New Name");
-    product.setPrice(BigDecimal.TEN);
-    product.setSize(Size.L);
-    product.setCategory(TestUtils.createRefCategoryDto(categoryId));
-    return product;
-  }
-
-  /**
-   * Create a second example of NewProductDto.
-   *
-   * @param categoryId the id of the category
-   * @return NewProductDto
-   */
-  public static NewProductDto createNewProductDto2(Long categoryId) {
-    var product = new NewProductDto();
-    product.setDescription("New second Description");
-    product.setImage("New second Image");
-    product.setImageContentType("JPG");
-    product.setName("New second Name");
-    product.setPrice(BigDecimal.TEN);
-    product.setSize(Size.L);
+    product.setName(name);
+    product.setDescription(description);
+    product.setImage(image);
+    product.setImageContentType(imageType);
+    product.setPrice(BigDecimal.valueOf(Double.valueOf(price)));
+    product.setSize(Size.valueOf(size));
     product.setCategory(TestUtils.createRefCategoryDto(categoryId));
     return product;
   }
@@ -142,18 +125,26 @@ public final class TestUtils {
    * Create an example of UpdatebleProductDto.
    *
    * @param productId the id of the product
+   * @param name the Name
+   * @param description the Description
+   * @param image the Image
+   * @param imageType the ImageContentType
+   * @param price the Price
+   * @param size the Size
    * @param categoryId the id of the category
    * @return UpdatebleProductDto
    */
-  public static UpdatebleProductDto createUpdatebleProductDto(Long productId, Long categoryId) {
+  public static UpdatebleProductDto createUpdatebleProductDto(Long productId, String name,
+      String description, String image, String imageType, String price, String size,
+      Long categoryId) {
     var product = new UpdatebleProductDto();
     product.setId(productId);
-    product.setDescription("Description updated");
-    product.setImage("Image updated");
-    product.setImageContentType("GIF");
-    product.setName("Name updated");
-    product.setPrice(BigDecimal.valueOf(5L));
-    product.setSize(Size.M);
+    product.setName(name);
+    product.setDescription(description);
+    product.setImage(image);
+    product.setImageContentType(imageType);
+    product.setPrice(BigDecimal.valueOf(Double.valueOf(price)));
+    product.setSize(Size.valueOf(size));
     product.setCategory(TestUtils.createRefCategoryDto(categoryId));
     return product;
   }
@@ -162,13 +153,15 @@ public final class TestUtils {
    * Create an example of UpdatebleOrderDto.
    *
    * @param id the id
+   * @param code the Code
+   * @param customer the Customer
    * @return UpdatebleOrderDto
    */
-  public static UpdatebleOrderDto createUpdatebleOrderDto(Long id) {
+  public static UpdatebleOrderDto createUpdatebleOrderDto(Long id, String code, String customer) {
     var order = new UpdatebleOrderDto();
     order.setId(id);
-    order.setCode("CODE updated");
-    order.setCustomer("Customer updated");
+    order.setCode(code);
+    order.setCustomer(customer);
     order.setPlacedDate(Instant.now());
     return order;
   }
