@@ -71,9 +71,10 @@ Scan project
    - USER: (user/password)
    - ADMIN: (admin/password)
 
-##Actuator
+## Actuator
     curl -u user:password 'http://localhost:8081/actuator/info' -i -X GET
     curl -u user:password 'http://localhost:8081/actuator/health' -i -X GET
+    curl -u user:password 'http://localhost:8081/actuator/prometheus' -i -X GET
 
 ### Create docker image
     ./gradlew jibDockerBuild
@@ -94,6 +95,7 @@ Scan project
 - [Spring Boot 3.2](https://spring.io/projects/spring-boot)
 - [Spring Security](https://spring.io/projects/spring-security)
 - [Swagger OpeApi 3.0](https://swagger.io/specification)
+- [Micrometer Prometheus 1.12](https://micrometer.io/docs/registry/prometheus)
 - [Mapstruct 1.5](https://mapstruct.org)
 - [Lombok 1.18](https://projectlombok.org)
 - [Spring Data JPA](https://projects.spring.io/spring-data-jpa)

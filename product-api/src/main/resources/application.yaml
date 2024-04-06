@@ -14,8 +14,6 @@ server:
 spring:
   profiles:
     active: Logging
-  batch:
-    job.enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/db_product}
@@ -28,8 +26,6 @@ spring:
       maxLifetime: 1800000
       maximumPoolSize: 10
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#    hibernate.ddl-auto: create
     properties:
       hibernate:
         format_sql: true
@@ -44,13 +40,7 @@ spring:
 
 management:
   endpoints:
-    enabled-by-default: false
     web:
      base-path: /actuator
      exposure:
-       include: info,health
-  endpoint:
-    info:
-      enabled: true
-    health:
-      enabled: true
+       include: info,health,prometheus
