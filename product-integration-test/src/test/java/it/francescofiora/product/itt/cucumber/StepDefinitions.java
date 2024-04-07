@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.AfterAll;
-import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -34,8 +33,6 @@ import it.francescofiora.product.itt.api.AbstractTestContainer;
 import it.francescofiora.product.itt.api.util.ContainerGenerator;
 import it.francescofiora.product.itt.api.util.TestUtils;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;

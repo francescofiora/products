@@ -73,7 +73,6 @@ public final class TestUtils {
    *
    * @param code the Code
    * @param customer the Customer
-   * @param productId the id of the product
    * @return NewOrderDto
    */
   public static NewOrderDto createNewOrderDto(String code, String customer) {

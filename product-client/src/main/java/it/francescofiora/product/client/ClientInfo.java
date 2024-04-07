@@ -25,25 +25,4 @@ public interface ClientInfo {
    * @return the Password
    */
   String getPassword();
-
-  /**
-   * Get KeyStoreFile.
-   *
-   * @return the KeyStoreFile
-   */
-  String getKeyStoreFile();
-
-  /**
-   * Get KeyStorePassword.
-   *
-   * @return the KeyStorePassword
-   */
-  String getKeyStorePassword();
-
-  /**
-   * get true if SSL is Enabled.
-   *
-   * @return true if SSL enabled
-   */
-  boolean isSslEnabled();
 }

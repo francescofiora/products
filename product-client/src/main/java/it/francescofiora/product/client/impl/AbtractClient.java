@@ -1,20 +1,14 @@
 package it.francescofiora.product.client.impl;
 
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
 import it.francescofiora.product.api.service.dto.DtoIdentifier;
 import it.francescofiora.product.client.ClientInfo;
-import java.security.KeyStore;
-import javax.net.ssl.KeyManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClient;
 
 /**
  * Abtract Http Client.
@@ -23,27 +17,6 @@ import reactor.netty.http.client.HttpClient;
 public abstract class AbtractClient {
 
   private final ClientInfo clientInfo;
-
-  /**
-   * Create SSL Context.
-   *
-   * @return the SslContext
-   */
-  protected SslContext createSslContext() {
-    try {
-      var keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-      keyStore.load(getClass().getClassLoader().getResourceAsStream(clientInfo.getKeyStoreFile()),
-          clientInfo.getKeyStorePassword().toCharArray());
-
-      var keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
-      keyManagerFactory.init(keyStore, clientInfo.getKeyStorePassword().toCharArray());
-
-      return SslContextBuilder.forClient().keyManager(keyManagerFactory).build();
-
-    } catch (Exception e) {
-      throw new RuntimeException("Error creating SSL context.");
-    }
-  }
 
   /**
    * Build WebClient.
@@ -59,10 +32,6 @@ public abstract class AbtractClient {
           header.setContentType(MediaType.APPLICATION_JSON);
         });
     // @formatter:on
-    if (clientInfo.isSslEnabled()) {
-      var httpClient = HttpClient.create().secure(t -> t.sslContext(createSslContext()));
-      builder.clientConnector(new ReactorClientHttpConnector(httpClient));
-    }
     return builder.build();
   }
 
