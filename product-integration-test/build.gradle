@@ -41,6 +41,7 @@ dependencies {
 
   implementation "org.postgresql:postgresql:${postgresql_version}"
 
+  implementation 'it.francescofiora:product-common:1.0-SNAPSHOT'
   implementation 'it.francescofiora:product-dto:1.0-SNAPSHOT'
   implementation 'it.francescofiora:product-client:1.0-SNAPSHOT'
 
@@ -91,16 +92,6 @@ sourceSets {
     java {
       srcDirs 'java'
     }
-  }
-}
-
-eclipse {
-  sourceSets {
-     main {
-         java {
-             srcDirs += ["build/generated/sources/annotationProcessor/java/main"]
-         }
-     }
   }
 }
 

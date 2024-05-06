@@ -2,7 +2,6 @@ package it.francescofiora.product.api.service.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import it.francescofiora.product.api.service.dto.DtoIdentifier;
 import it.francescofiora.product.api.service.dto.NewCategoryDto;
 import it.francescofiora.product.api.service.dto.NewOrderDto;
 import it.francescofiora.product.api.service.dto.NewOrderItemDto;
@@ -10,6 +9,7 @@ import it.francescofiora.product.api.service.dto.NewProductDto;
 import it.francescofiora.product.api.service.dto.RefCategoryDto;
 import it.francescofiora.product.api.service.dto.RefProductDto;
 import it.francescofiora.product.api.service.dto.enumeration.Size;
+import it.francescofiora.product.common.dto.DtoIdentifier;
 import java.math.BigDecimal;
 import java.time.Instant;
 

@@ -1,4 +1,4 @@
-package it.francescofiora.product.api.service.dto;
+package it.francescofiora.product.common.dto;
 
 import jakarta.validation.constraints.NotNull;
 

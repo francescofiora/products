@@ -1,5 +1,6 @@
 package it.francescofiora.product.api.service.dto;
 
+import it.francescofiora.product.common.dto.RefDto;
 import java.io.Serializable;
 
 /**

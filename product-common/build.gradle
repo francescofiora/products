@@ -7,37 +7,29 @@ plugins {
 
 def springdoc_openapi_version = parent.property('springdoc-openapi.version')
 def lombok_version = parent.property('lombok.version')
+def openpojo_version = parent.property('openpojo.version')
 def jakarta_validation_version = parent.property('jakarta-validation.version')
 def unit_test_version = parent.property('unit-test.version')
 def assertj_version = parent.property('assertj.version')
 
 dependencies {
   implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc_openapi_version}"
-  implementation "org.springframework.data:spring-data-commons:3.1.0"
   implementation "jakarta.validation:jakarta.validation-api:${jakarta_validation_version}"
 
   implementation "org.projectlombok:lombok:${lombok_version}"
   annotationProcessor "org.projectlombok:lombok:${lombok_version}"
 
-  implementation project(':product-common')
-  implementation project(':product-dto')
-
-  implementation 'io.projectreactor.netty:reactor-netty:1.1.12'
-  implementation 'org.springframework:spring-webflux:6.0.13'
-
   testImplementation "org.junit.jupiter:junit-jupiter-api:${unit_test_version}"
   testImplementation "org.junit.jupiter:junit-jupiter-engine:${unit_test_version}"
   testImplementation "org.assertj:assertj-core:${assertj_version}"
-  testImplementation "io.projectreactor.netty:reactor-netty-http:1.1.12"
-  testImplementation "com.squareup.okhttp3:mockwebserver:4.12.0"
+  testImplementation "com.openpojo:openpojo:${openpojo_version}"
   testImplementation "org.projectlombok:lombok:${lombok_version}"
-
   testAnnotationProcessor "org.projectlombok:lombok:${lombok_version}"
 }
 
 java {
-  withJavadocJar()
-  withSourcesJar()
+    withJavadocJar()
+    withSourcesJar()
 }
 
 pitest {

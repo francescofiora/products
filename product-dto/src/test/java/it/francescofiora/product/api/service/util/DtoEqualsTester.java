@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.validation.rule.Rule;
-import it.francescofiora.product.api.service.dto.DtoIdentifier;
+import it.francescofiora.product.common.dto.DtoIdentifier;
 
 /**
  * Dto Equals Tester Rule.

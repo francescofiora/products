@@ -1,7 +1,7 @@
 package it.francescofiora.product.client.impl;
 
-import it.francescofiora.product.api.service.dto.DtoIdentifier;
 import it.francescofiora.product.client.ClientInfo;
+import it.francescofiora.product.common.dto.DtoIdentifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;

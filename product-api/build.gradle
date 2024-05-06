@@ -37,6 +37,7 @@ dependencies {
   annotationProcessor "org.projectlombok:lombok:${lombok_version}"
   annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
 
+  implementation project(':product-common')
   implementation project(':product-dto')
 
   implementation "org.postgresql:postgresql:${postgresql_version}"

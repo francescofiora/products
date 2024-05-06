@@ -1,9 +1,9 @@
-package it.francescofiora.product.api.service.util;
+package it.francescofiora.product.common.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import it.francescofiora.product.api.service.dto.DtoIdentifier;
+import it.francescofiora.product.common.dto.DtoIdentifier;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import org.junit.jupiter.api.Test;

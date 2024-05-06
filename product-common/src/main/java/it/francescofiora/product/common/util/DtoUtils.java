@@ -1,6 +1,6 @@
-package it.francescofiora.product.api.service.util;
+package it.francescofiora.product.common.util;
 
-import it.francescofiora.product.api.service.dto.DtoIdentifier;
+import it.francescofiora.product.common.dto.DtoIdentifier;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
