@@ -1,4 +1,3 @@
-version: '3'
 services:
 
   product-postgresql:
@@ -13,7 +12,7 @@ services:
       - "./postgresql:/docker-entrypoint-initdb.d"
 
   product-myadmin:
-    image:  bitnami/phppgadmin:7
+    image:  bitnami/phppgadmin-archived
     environment:
       - DATABASE_HOST=product-postgresql
     ports:

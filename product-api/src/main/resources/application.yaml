@@ -6,10 +6,6 @@ server:
     context-path: /
   error:
     path: errorPath
-  ssl:
-    key-store: file:${KEYSTORE_FILE}
-    key-store-password: ${KEYSTORE_PASSWORD}
-    enabled: ${SSL_ENABLED:false}
 
 spring:
   profiles:

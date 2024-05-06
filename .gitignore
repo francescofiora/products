@@ -4,6 +4,7 @@ build/
 .classpath
 .gradle/
 .settings/
+.idea/
 gradle/
 /.gitattributes
 logs/

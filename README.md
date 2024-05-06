@@ -16,7 +16,6 @@ SpringBoot Rest Api tutorial with OpenApi 3.0 and PostgreSql.
     - Pojos and Dtos using OpenPojo
     - End to End Test with TestRestTemplate
     - Integration test using TestContainers and Cucumber
-- Eclipse support
 
 # Getting Started
 ### Compile
