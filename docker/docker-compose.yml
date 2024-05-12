@@ -18,3 +18,10 @@ services:
     ports:
       - '8080:80'
       - '443:8443'
+
+  product-eureka:
+    image: francescofiora-product-eureka
+    environment:
+      - "EUREKA_SERVER=product-eureka"
+    ports:
+      - "8761:8761"

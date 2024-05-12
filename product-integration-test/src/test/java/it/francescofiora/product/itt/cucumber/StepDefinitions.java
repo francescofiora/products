@@ -55,6 +55,7 @@ public class StepDefinitions extends AbstractTestContainer {
 
   private static PostgreSQLContainer<?> postgreContainer;
   private static GenericContainer<?> product;
+  private static GenericContainer<?> eureka;
 
   private static ActuatorClientService actuatorClientService;
   private static CategoryClientService categoryClientService;
@@ -98,6 +99,14 @@ public class StepDefinitions extends AbstractTestContainer {
     try (var ds = createHikariDataSource(postgreContainer)) {
       executeQuery(ds, "CREATE SCHEMA IF NOT EXISTS STORE");
     }
+
+    // @formatter:off
+    eureka = containerGenerator.createContainer("francescofiora-product-eureka")
+        .withLogConsumer(new Slf4jLogConsumer(log))
+        .withNetworkAliases(ContainerGenerator.PRODUCT_EUREKA)
+        .withExposedPorts(8761);
+    // @formatter:on
+    containers.add(eureka);
 
     // @formatter:off
     product = containerGenerator.createContainer("francescofiora-product")

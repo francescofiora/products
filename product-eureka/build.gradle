@@ -1,0 +1,52 @@
+plugins {
+  id 'org.springframework.boot' version '3.2.3'
+  id 'io.spring.dependency-management' version '1.1.4'
+  id 'org.owasp.dependencycheck' version '7.4.4'
+  id 'com.google.cloud.tools.jib' version '3.3.1'
+}
+
+def main_class = 'it.francescofiora.product.eureka.TaskEurekaApplication'
+
+def micrometer_prometheus_version = parent.property('micrometer-prometheus.version')
+
+ext {
+  set('springCloudVersion', "2023.0.1")
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+  }
+}
+
+dependencies {
+  implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+  implementation "io.micrometer:micrometer-registry-prometheus:${micrometer_prometheus_version}"
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+springBoot {
+  mainClass.set("${main_class}")
+  buildInfo()
+}
+
+jib {
+  container {
+    mainClass = "${main_class}"
+  }
+  from {
+    image = 'azul/zulu-openjdk-alpine:17'
+  }
+  to {
+    image = 'francescofiora-product-eureka'
+    tags = ['latest']
+  }
+  container {
+    creationTime = 'USE_CURRENT_TIMESTAMP'
+    workingDirectory = '/workspace'
+  }
+}

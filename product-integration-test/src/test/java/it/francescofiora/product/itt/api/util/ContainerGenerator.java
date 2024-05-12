@@ -13,6 +13,7 @@ public class ContainerGenerator {
 
   public static final String PRODUCT_POSTGRESQL = "product-postgresql";
   public static final String PRODUCT_API = "product";
+  public static final String PRODUCT_EUREKA = "product-eureka";
 
   private Network network = Network.newNetwork();
 

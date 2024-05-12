@@ -46,16 +46,29 @@ Scan project
     product-api/build/reports/checkstyle/main.html
     product-api/build/reports/checkstyle/test.html
     product-api/build/reports/tests/test/index.html
-    product-api/build/reports/jacoco/test/html/index.html
+    product-api/build/reports/jacoco/test/index.html
     product-api/build/reports/pitest/index.html
     product-api/build/reports/dependency-check-report.html
 
     product-dto/build/reports/checkstyle/main.html
     product-dto/build/reports/checkstyle/test.html
     product-dto/build/reports/tests/test/index.html
-    product-dto/build/reports/jacoco/test/html/index.html
+    product-dto/build/reports/jacoco/test/index.html
     product-dto/build/reports/pitest/index.html
     product-dto/build/reports/dependency-check-report.html
+
+    product-common/build/reports/checkstyle/main.html
+    product-common/build/reports/checkstyle/test.html
+    product-common/build/reports/tests/test/index.html
+    product-common/build/reports/jacoco/test/index.html
+    product-common/build/reports/pitest/index.html
+    product-common/build/reports/dependency-check-report.html
+
+    product-eureka/build/reports/checkstyle/main.html
+    product-eureka/build/reports/checkstyle/test.html
+    product-eureka/build/reports/tests/test/index.html
+    product-eureka/build/reports/jacoco/test/index.html
+    product-eureka/build/reports/dependency-check-report.html
 
 ### How to execute
     docker-compose -f docker/docker-compose.yml up
@@ -64,6 +77,7 @@ Scan project
 **Links**
  - http://localhost:8081/swagger-ui.html (Api Doc)
  - https://localhost/ (phpPgAdmin)
+ - http://localhost:8761/ (Eureka)
 
 ## Security
  - Basic Authentication with roles
