@@ -74,16 +74,6 @@ jib {
 	}
 }
 
-eclipse {
-  sourceSets {
-     main {
-         java {
-             srcDirs += ["build/generated/sources/annotationProcessor/java/main"]
-         }
-     }
-  }
-}
-
 pitest {
   junit5PluginVersion = '1.2.1'
   pitestVersion = '1.15.2'
