@@ -6,7 +6,6 @@ import it.francescofiora.product.api.domain.Category;
 import it.francescofiora.product.api.domain.DomainIdentifier;
 import it.francescofiora.product.api.domain.Order;
 import it.francescofiora.product.api.domain.Product;
-import it.francescofiora.product.api.domain.User;
 import it.francescofiora.product.api.service.dto.CategoryDto;
 import it.francescofiora.product.api.service.dto.NewCategoryDto;
 import it.francescofiora.product.api.service.dto.NewOrderDto;
@@ -22,33 +21,12 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Utility for testing.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestUtils {
-
-  /**
-   * Create User.
-   *
-   * @param username the username
-   * @param role the role
-   * @return the User
-   */
-  public static User createUser(String username, String password, String role) {
-    var user = new User();
-    user.setPassword(new BCryptPasswordEncoder().encode(password));
-    user.setAccountNonExpired(true);
-    user.setAccountNonLocked(true);
-    user.setCredentialsNonExpired(true);
-    user.setEnabled(true);
-    user.setRole(role);
-    user.setUsername(username);
-    return user;
-  }
-
 
   /**
    * Create an example of Category.

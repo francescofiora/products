@@ -23,8 +23,6 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
   private static final String PRODUCTS_URI = "/api/v1/products";
   private static final String ORDERS_URI = "/api/v1/orders";
   private static final String ORDERS_ID_URI = "/api/v1/orders/%d";
-  private static final String ORDER_ITEMS_URI = "/orders/{id}/items";
-  private static final String ORDER_ITEMS_ID_URI = "/orders/{order_id}/items/{order_item_id}";
 
   private static final String ALERT_CATEGORY_CREATED = "CategoryDto.created";
   private static final String ALERT_PRODUCT_CREATED = "ProductDto.created";
@@ -54,113 +52,113 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
 
   @Test
   void testCreate() {
-    var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
+    var categoryId = createAndReturnId(CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
 
     var newProductDto = TestUtils.createNewProductDto();
     newProductDto.setCategory(TestUtils.createRefCategoryDto(categoryId));
-    var productId = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_PRODUCT_CREATED);
+    var productId = createAndReturnId(PRODUCTS_URI, newProductDto, ALERT_PRODUCT_CREATED);
 
     var newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
-    var orderId = createAndReturnId(USER, ORDERS_URI, newOrderDto, ALERT_CREATED);
+    var orderId = createAndReturnId(ORDERS_URI, newOrderDto, ALERT_CREATED);
 
     final var orderIdUri = String.format(ORDERS_ID_URI, orderId);
 
-    var actual = get(USER, orderIdUri, OrderDto.class, ALERT_GET, String.valueOf(orderId));
+    var actual = get(orderIdUri, OrderDto.class, ALERT_GET, String.valueOf(orderId));
     assertThat(actual.getCode()).isEqualTo(newOrderDto.getCode());
     assertThat(actual.getCustomer()).isEqualTo(newOrderDto.getCustomer());
     assertThat(actual.getPlacedDate().truncatedTo(ChronoUnit.DAYS))
         .isEqualTo(newOrderDto.getPlacedDate().truncatedTo(ChronoUnit.DAYS));
 
     var orderDto = TestUtils.createUpdatebleOrderDto(orderId);
-    patch(USER, orderIdUri, orderDto, ALERT_PATCHED, String.valueOf(orderId));
+    patch(orderIdUri, orderDto, ALERT_PATCHED, String.valueOf(orderId));
 
-    actual = get(USER, orderIdUri, OrderDto.class, ALERT_GET, String.valueOf(orderId));
+    actual = get(orderIdUri, OrderDto.class, ALERT_GET, String.valueOf(orderId));
     assertThat(actual.getCode()).isEqualTo(orderDto.getCode());
     assertThat(actual.getCustomer()).isEqualTo(orderDto.getCustomer());
     assertThat(actual.getPlacedDate().truncatedTo(ChronoUnit.DAYS))
         .isEqualTo(orderDto.getPlacedDate().truncatedTo(ChronoUnit.DAYS));
 
     var orders =
-        get(USER, ORDERS_URI, PageRequest.of(1, 1), OrderDto[].class, ALERT_GET, PARAM_PAGE_20);
+        get(ORDERS_URI, PageRequest.of(1, 1), OrderDto[].class, ALERT_GET, PARAM_PAGE_20);
     assertThat(orders).isNotEmpty();
     var option = Stream.of(orders).filter(order -> order.getId().equals(orderId)).findAny();
     assertThat(option).isPresent().contains(actual);
 
-    delete(USER, orderIdUri, ALERT_DELETED, String.valueOf(orderId));
+    delete(orderIdUri, ALERT_DELETED, String.valueOf(orderId));
 
-    assertGetNotFound(USER, orderIdUri, OrderDto.class, ALERT_NOT_FOUND, String.valueOf(orderId));
+    assertGetNotFound(orderIdUri, OrderDto.class, ALERT_NOT_FOUND, String.valueOf(orderId));
   }
 
   @Test
   void testCreateBadRequest() {
     var newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(100L));
-    assertCreateNotFound(USER, ORDERS_URI, newOrderDto, ALERT_PRODUCT_NOT_FOUND,
+    assertCreateNotFound(ORDERS_URI, newOrderDto, ALERT_PRODUCT_NOT_FOUND,
         String.valueOf(newOrderDto.getItems().get(0).getProduct().getId()));
 
-    var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
+    var categoryId = createAndReturnId(CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
     var newProductDto = TestUtils.createNewProductDto();
     newProductDto.setCategory(TestUtils.createRefCategoryDto(categoryId));
-    var productId = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_PRODUCT_CREATED);
+    var productId = createAndReturnId(PRODUCTS_URI, newProductDto, ALERT_PRODUCT_CREATED);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
     newOrderDto.setCode(null);
-    assertCreateBadRequest(USER, ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
+    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
         PARAM_CODE_NOT_BLANK);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
     newOrderDto.setCode("");
-    assertCreateBadRequest(USER, ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
+    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
         PARAM_CODE_NOT_BLANK);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
     newOrderDto.setCode("  ");
-    assertCreateBadRequest(USER, ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
+    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
         PARAM_CODE_NOT_BLANK);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
     newOrderDto.setCustomer(null);
-    assertCreateBadRequest(USER, ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
+    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
         PARAM_CUSTOMER_NOT_BLANK);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
     newOrderDto.setCustomer("");
-    assertCreateBadRequest(USER, ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
+    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
         PARAM_CUSTOMER_NOT_BLANK);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
     newOrderDto.setCustomer("  ");
-    assertCreateBadRequest(USER, ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
+    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
         PARAM_CUSTOMER_NOT_BLANK);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
     newOrderDto.setPlacedDate(null);
-    assertCreateBadRequest(USER, ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
+    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
         PARAM_DATA_NOT_BLANK);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
-    assertCreateBadRequest(USER, ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
+    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
         PARAM_ITEMS_NOT_EMPTY);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(null);
-    assertCreateBadRequest(USER, ORDERS_URI, newOrderDto, ALERT_CREATE_ITEM_BAD_REQUEST,
+    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_ITEM_BAD_REQUEST,
         PARAM_ITEM_NOT_NULL);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
     newOrderDto.getItems().get(0).setQuantity(0);
-    assertCreateBadRequest(USER, ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
+    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
         PARAM_QUANTITY_NULL);
   }
 
@@ -168,23 +166,23 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
   void testPatchBadRequest() {
     var orderDto = TestUtils.createUpdatebleOrderDto(1L);
     final var orderIdUri = String.format(ORDERS_ID_URI, 2L);
-    assertPatchBadRequest(USER, orderIdUri, orderDto, ALERT_PATCH_BAD_REQUEST, "1");
+    assertPatchBadRequest(orderIdUri, orderDto, ALERT_PATCH_BAD_REQUEST, "1");
   }
 
   @Test
   void testUnauthorized() {
-    testPostUnauthorized(ORDERS_URI, TestUtils.createNewOrderDto(), true);
+    testPostUnauthorized(ORDERS_URI, TestUtils.createNewOrderDto());
 
     testGetUnauthorized(ORDERS_URI);
 
     testGetUnauthorized(String.format(ORDERS_ID_URI, 1L));
 
-    testDeleteUnauthorized(String.format(ORDERS_ID_URI, 1L), true);
+    testDeleteUnauthorized(String.format(ORDERS_ID_URI, 1L));
   }
 
   @Test
   void testGetBadRequest() {
-    assertGetBadRequest(ADMIN, ORDERS_URI + "/999999999999999999999999", String.class,
+    assertGetBadRequest(ORDERS_URI + "/999999999999999999999999", String.class,
         "id.badRequest", PARAM_NOT_VALID_LONG);
   }
 }

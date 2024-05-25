@@ -17,7 +17,6 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * REST controller for managing {@link it.francescofiora.product.domain.Product}.
+ * REST controller for managing Product.
  */
 @RestController
 @RequestMapping("/api/v1")
@@ -57,7 +56,6 @@ public class ProductApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized")})
   @PostMapping("/products")
-  @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> createProduct(
       @Parameter(description = "Add new Product") @Valid @RequestBody NewProductDto productDto) {
     var result = productService.create(productDto);
@@ -77,7 +75,6 @@ public class ProductApi extends AbstractApi {
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @PutMapping("/products/{id}")
-  @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> updateProduct(
       @Parameter(
           description = "Product to update") @Valid @RequestBody UpdatebleProductDto productDto,
@@ -110,7 +107,6 @@ public class ProductApi extends AbstractApi {
               array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/products")
-  @PreAuthorize(AUTHORIZE_ALL)
   public ResponseEntity<List<ProductDto>> getAllProducts(
       @Parameter(description = "Name", example = "SHIRTM01",
           in = ParameterIn.QUERY) @RequestParam(required = false) String name,
@@ -137,7 +133,6 @@ public class ProductApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @GetMapping("/products/{id}")
-  @PreAuthorize(AUTHORIZE_ALL)
   public ResponseEntity<ProductDto> getProduct(@Parameter(description = "Id of the Product to get",
       required = true, example = "1") @PathVariable Long id) {
     return getResponse(productService.findOne(id), id);
@@ -156,7 +151,6 @@ public class ProductApi extends AbstractApi {
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/products/{id}")
-  @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> deleteProduct(@Parameter(description = "Id of the Product to delete",
       required = true, example = "1") @PathVariable Long id) {
     productService.delete(id);

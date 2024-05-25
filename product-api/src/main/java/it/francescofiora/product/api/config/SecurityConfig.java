@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -13,11 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 public class SecurityConfig {
-
-  @Bean
-  public BCryptPasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
 
   /**
    * Configure Basic authentication.
@@ -30,7 +24,7 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     // @formatter:off
     http.httpBasic(Customizer.withDefaults())
-      .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+        .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
         .csrf(AbstractHttpConfigurer::disable);
     // @formatter:on
     return http.build();

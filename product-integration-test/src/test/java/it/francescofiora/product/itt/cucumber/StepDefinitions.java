@@ -110,19 +110,14 @@ public class StepDefinitions extends AbstractTestContainer {
     // @formatter:on
     containers.add(product);
 
-    var adminProp = new ProductClientProperties();
-    adminProp.setBaseUrl("http://" + product.getHost() + ":" + product.getFirstMappedPort());
-    adminProp.setUserName("admin");
-    adminProp.setPassword("password");
-
     var userProp = new ProductClientProperties();
     userProp.setBaseUrl("http://" + product.getHost() + ":" + product.getFirstMappedPort());
     userProp.setUserName("user");
     userProp.setPassword("password");
 
     actuatorClientService = new ActuatorClientServiceImpl(userProp);
-    categoryClientService = new CategoryClientServiceImpl(adminProp);
-    productClientService = new ProductClientServiceImpl(adminProp);
+    categoryClientService = new CategoryClientServiceImpl(userProp);
+    productClientService = new ProductClientServiceImpl(userProp);
     orderClientService = new OrderClientServiceImpl(userProp);
   }
 

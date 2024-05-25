@@ -6,7 +6,6 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import it.francescofiora.product.api.config.MethodSecurityConfig;
 import it.francescofiora.product.api.config.SecurityConfig;
 import it.francescofiora.product.api.service.CategoryService;
 import it.francescofiora.product.api.service.dto.CategoryDto;
@@ -28,7 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = CategoryApi.class)
-@Import({BuildProperties.class, SecurityConfig.class, MethodSecurityConfig.class})
+@Import({BuildProperties.class, SecurityConfig.class})
 class CategoryApiTest extends AbstractApiTest {
 
   private static final Long ID = 1L;
@@ -47,7 +46,7 @@ class CategoryApiTest extends AbstractApiTest {
     categoryDto.setId(ID);
     given(categoryService.create(any(NewCategoryDto.class))).willReturn(categoryDto);
 
-    var result = performPost(ADMIN, CATEGORIES_URI, newCategoryDto).andExpect(status().isCreated())
+    var result = performPost(CATEGORIES_URI, newCategoryDto).andExpect(status().isCreated())
         .andReturn();
 
     assertThat(result.getResponse().getHeaderValue(HttpHeaders.LOCATION))
@@ -58,13 +57,7 @@ class CategoryApiTest extends AbstractApiTest {
   void testCreateForbidden() throws Exception {
     var newCategoryDto = TestUtils.createNewCategoryDto();
 
-    performPost(USER, CATEGORIES_URI, newCategoryDto).andExpect(status().isForbidden());
-
-    performPost(USER_NOT_EXIST, CATEGORIES_URI, newCategoryDto)
-        .andExpect(status().isUnauthorized());
-
-    performPost(USER_WITH_WRONG_ROLE, CATEGORIES_URI, newCategoryDto)
-        .andExpect(status().isForbidden());
+    performPostForbidden(CATEGORIES_URI, newCategoryDto).andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -72,54 +65,48 @@ class CategoryApiTest extends AbstractApiTest {
     // Name
     var categoryDto = TestUtils.createNewCategoryDto();
     categoryDto.setName(null);
-    performPost(ADMIN, CATEGORIES_URI, categoryDto).andExpect(status().isBadRequest());
+    performPost(CATEGORIES_URI, categoryDto).andExpect(status().isBadRequest());
 
     categoryDto = TestUtils.createNewCategoryDto();
     categoryDto.setName("");
-    performPost(ADMIN, CATEGORIES_URI, categoryDto).andExpect(status().isBadRequest());
+    performPost(CATEGORIES_URI, categoryDto).andExpect(status().isBadRequest());
 
     categoryDto = TestUtils.createNewCategoryDto();
     categoryDto.setName("  ");
-    performPost(ADMIN, CATEGORIES_URI, categoryDto).andExpect(status().isBadRequest());
+    performPost(CATEGORIES_URI, categoryDto).andExpect(status().isBadRequest());
   }
 
   @Test
   void testUpdateBadRequest() throws Exception {
     // id
     var categoryDto = TestUtils.createCategoryDto(null);
-    performPut(ADMIN, CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isBadRequest());
+    performPut(CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isBadRequest());
 
     // Name
     categoryDto = TestUtils.createCategoryDto(ID);
     categoryDto.setName(null);
-    performPut(ADMIN, CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isBadRequest());
+    performPut(CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isBadRequest());
 
     categoryDto = TestUtils.createCategoryDto(ID);
     categoryDto.setName("");
-    performPut(ADMIN, CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isBadRequest());
+    performPut(CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isBadRequest());
 
     categoryDto = TestUtils.createCategoryDto(ID);
     categoryDto.setName("  ");
-    performPut(ADMIN, CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isBadRequest());
+    performPut(CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isBadRequest());
   }
 
   @Test
   void testUpdate() throws Exception {
     var categoryDto = TestUtils.createCategoryDto(ID);
-    performPut(ADMIN, CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isOk());
+    performPut(CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isOk());
   }
 
   @Test
   void testUpdateForbidden() throws Exception {
     var categoryDto = TestUtils.createCategoryDto(ID);
 
-    performPut(USER, CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isForbidden());
-
-    performPut(USER_NOT_EXIST, CATEGORIES_ID_URI, ID, categoryDto)
-        .andExpect(status().isUnauthorized());
-
-    performPut(USER_WITH_WRONG_ROLE, CATEGORIES_ID_URI, ID, categoryDto)
-        .andExpect(status().isForbidden());
+    performPutForbidden(CATEGORIES_ID_URI, ID, categoryDto).andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -130,7 +117,7 @@ class CategoryApiTest extends AbstractApiTest {
     given(categoryService.findAll(any(), any(), any(Pageable.class)))
         .willReturn(new PageImpl<CategoryDto>(List.of(expected)));
 
-    var result = performGet(USER, CATEGORIES_URI, pageable).andExpect(status().isOk()).andReturn();
+    var result = performGet(CATEGORIES_URI, pageable).andExpect(status().isOk()).andReturn();
     var list = readValue(result, new TypeReference<List<CategoryDto>>() {});
     assertThat(list).isNotNull().isNotEmpty();
     assertThat(list.get(0)).isEqualTo(expected);
@@ -139,10 +126,7 @@ class CategoryApiTest extends AbstractApiTest {
   @Test
   void testGetAllForbidden() throws Exception {
     var pageable = PageRequest.of(1, 1);
-
-    performGet(USER_NOT_EXIST, CATEGORIES_URI, pageable).andExpect(status().isUnauthorized());
-
-    performGet(USER_WITH_WRONG_ROLE, CATEGORIES_URI, pageable).andExpect(status().isForbidden());
+    performGetForbidden(CATEGORIES_URI, pageable).andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -150,36 +134,28 @@ class CategoryApiTest extends AbstractApiTest {
     var expected = new CategoryDto();
     expected.setId(ID);
     given(categoryService.findOne(ID)).willReturn(Optional.of(expected));
-    var result = performGet(USER, CATEGORIES_ID_URI, ID).andExpect(status().isOk()).andReturn();
+    var result = performGet(CATEGORIES_ID_URI, ID).andExpect(status().isOk()).andReturn();
     var actual = readValue(result, new TypeReference<CategoryDto>() {});
     assertThat(actual).isNotNull().isEqualTo(expected);
   }
 
   @Test
   void testGetForbidden() throws Exception {
-    performGet(USER_NOT_EXIST, CATEGORIES_ID_URI, ID).andExpect(status().isUnauthorized());
-
-    performGet(USER_WITH_WRONG_ROLE, CATEGORIES_ID_URI, ID).andExpect(status().isForbidden());
+    performGetForbidden(CATEGORIES_ID_URI, ID).andExpect(status().isUnauthorized());
   }
 
   @Test
   void testDelete() throws Exception {
-    performDelete(ADMIN, CATEGORIES_ID_URI, ID).andExpect(status().isNoContent()).andReturn();
+    performDelete(CATEGORIES_ID_URI, ID).andExpect(status().isNoContent()).andReturn();
   }
 
   @Test
   void testDeleteForbidden() throws Exception {
-    performDelete(USER, CATEGORIES_ID_URI, ID).andExpect(status().isForbidden()).andReturn();
-
-    performDelete(USER_NOT_EXIST, CATEGORIES_ID_URI, ID).andExpect(status().isUnauthorized())
-        .andReturn();
-
-    performDelete(USER_WITH_WRONG_ROLE, CATEGORIES_ID_URI, ID).andExpect(status().isForbidden())
-        .andReturn();
+    performDeleteForbidden(CATEGORIES_ID_URI, ID).andExpect(status().isUnauthorized()).andReturn();
   }
 
   @Test
   void testWrongUri() throws Exception {
-    performGet(ADMIN, WRONG_URI).andExpect(status().isNotFound()).andReturn();
+    performGet(WRONG_URI).andExpect(status().isNotFound()).andReturn();
   }
 }

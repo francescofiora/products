@@ -35,6 +35,10 @@ spring:
     user: ${DATASOURCE_ADMIN_USERNAME:product}
     password: ${DATASOURCE_ADMIN_PASSWORD:secret}
     change-log: classpath:changelog/db.changelog.yaml
+  security:
+    user:
+      name: ${APP_USER:user}
+      password: ${APP_PASSWORD:password}
 
 management:
   endpoints:

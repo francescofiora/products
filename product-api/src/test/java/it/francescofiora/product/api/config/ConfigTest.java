@@ -21,13 +21,6 @@ class ConfigTest {
   }
 
   @Test
-  void testPasswordEncoder() {
-    var securityConfig = new SecurityConfig();
-    var bce = securityConfig.passwordEncoder();
-    assertThat(bce).isNotNull();
-  }
-
-  @Test
   void testOpenApiConfig() {
     var openApi = new OpenApiConfig().customOpenApi();
 

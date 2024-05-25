@@ -17,9 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
  */
 public abstract class AbstractApi {
 
-  protected static final String AUTHORIZE_ALL = "hasAnyRole('ADMIN', 'USER')";
-  protected static final String AUTHORIZE_ADMIN = "hasRole('ADMIN')";
-
   private final String entityName;
 
   protected AbstractApi(String entityName) {

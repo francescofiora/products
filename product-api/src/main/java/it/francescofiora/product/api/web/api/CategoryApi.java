@@ -16,7 +16,6 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * REST controller for managing {@link it.francescofiora.product.domain.Category}.
+ * REST controller for managing Category.
  */
 @RestController
 @RequestMapping("/api/v1")
@@ -56,7 +55,6 @@ public class CategoryApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized")})
   @PostMapping("/categories")
-  @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> createCategory(
       @Parameter(description = "Add new Category") @Valid @RequestBody NewCategoryDto categoryDto) {
     var result = categoryService.create(categoryDto);
@@ -77,7 +75,6 @@ public class CategoryApi extends AbstractApi {
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @PutMapping("/categories/{id}")
-  @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> updateCategory(
       @Parameter(description = "Category to update") @Valid @RequestBody CategoryDto categoryDto,
       @Parameter(description = "The id of the category to update", required = true,
@@ -108,7 +105,6 @@ public class CategoryApi extends AbstractApi {
               array = @ArraySchema(schema = @Schema(implementation = CategoryDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/categories")
-  @PreAuthorize(AUTHORIZE_ALL)
   public ResponseEntity<List<CategoryDto>> getAllProductCategories(
       @Parameter(description = "Name", example = "Shirt",
           in = ParameterIn.QUERY) @RequestParam(required = false) String name,
@@ -133,7 +129,6 @@ public class CategoryApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @GetMapping("/categories/{id}")
-  @PreAuthorize(AUTHORIZE_ALL)
   public ResponseEntity<CategoryDto> getCategory(
       @Parameter(description = "Id of the Category to get", required = true,
           example = "1") @PathVariable Long id) {
@@ -153,7 +148,6 @@ public class CategoryApi extends AbstractApi {
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/categories/{id}")
-  @PreAuthorize(AUTHORIZE_ADMIN)
   public ResponseEntity<Void> deleteCategory(
       @Parameter(description = "Id of the Category to delete", required = true,
           example = "1") @PathVariable Long id) {

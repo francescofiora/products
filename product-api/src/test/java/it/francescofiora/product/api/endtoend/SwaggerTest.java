@@ -24,13 +24,13 @@ class SwaggerTest extends AbstractApiTest {
 
   @Test
   void testSwaggerUiPage() throws Exception {
-    performGet(USER, "/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config")
+    performGet("/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config")
         .andExpect(status().isOk()).andExpect(content().string(containsString("Swagger UI")));
   }
 
   @Test
   void testJsonSwagger() throws Exception {
-    performGet(USER, "/v3/api-docs").andExpect(status().isOk())
+    performGet("/v3/api-docs").andExpect(status().isOk())
         .andExpect(content().string(containsString("Product Demo App")));
   }
 }

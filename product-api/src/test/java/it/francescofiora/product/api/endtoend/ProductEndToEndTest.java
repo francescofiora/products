@@ -47,23 +47,23 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
 
   @Test
   void testCreate() {
-    var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
+    var categoryId = createAndReturnId(CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
 
     var newProductDto = TestUtils.createNewProductDto();
     newProductDto.setCategory(TestUtils.createRefCategoryDto(categoryId));
-    var productId = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_CREATED);
+    var productId = createAndReturnId(PRODUCTS_URI, newProductDto, ALERT_CREATED);
 
     final var productIdUri = String.format(PRODUCTS_ID_URI, productId);
 
-    categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
+    categoryId = createAndReturnId(CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
     var productDto = TestUtils.createUpdatebleProductDto(productId);
     productDto.setCategory(TestUtils.createRefCategoryDto(categoryId));
-    update(ADMIN, productIdUri, productDto, ALERT_UPDATED, String.valueOf(productId));
+    update(productIdUri, productDto, ALERT_UPDATED, String.valueOf(productId));
 
     var actual =
-        get(ADMIN, productIdUri, ProductDto.class, ALERT_GET, String.valueOf(productId));
+        get(productIdUri, ProductDto.class, ALERT_GET, String.valueOf(productId));
     assertThat(actual.getId()).isEqualTo(productDto.getId());
     assertThat(actual.getCategory().getId()).isEqualTo(productDto.getCategory().getId());
     assertThat(actual.getName()).isEqualTo(productDto.getName());
@@ -73,16 +73,16 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
     assertThat(actual.getPrice().toBigInteger()).isEqualTo(productDto.getPrice().toBigInteger());
     assertThat(actual.getSize()).isEqualTo(productDto.getSize());
 
-    var products = get(ADMIN, PRODUCTS_URI, PageRequest.of(1, 1), ProductDto[].class,
+    var products = get(PRODUCTS_URI, PageRequest.of(1, 1), ProductDto[].class,
         ALERT_GET, PARAM_PAGE_20);
     assertThat(products).isNotEmpty();
     var option =
         Stream.of(products).filter(product -> product.getId().equals(productId)).findAny();
     assertThat(option).isPresent().contains(actual);
 
-    delete(ADMIN, productIdUri, ALERT_DELETED, String.valueOf(productId));
+    delete(productIdUri, ALERT_DELETED, String.valueOf(productId));
 
-    assertGetNotFound(ADMIN, productIdUri, ProductDto.class, ALERT_NOT_FOUND,
+    assertGetNotFound(productIdUri, ProductDto.class, ALERT_NOT_FOUND,
         String.valueOf(productId));
   }
 
@@ -90,7 +90,7 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
   void testCreateBadRequest() {
     var newProductDto = TestUtils.createNewProductDto();
     newProductDto.setCategory(TestUtils.createRefCategoryDto(100L));
-    assertCreateNotFound(ADMIN, PRODUCTS_URI, newProductDto, ALERT_CATEGORY_NOT_FOUND,
+    assertCreateNotFound(PRODUCTS_URI, newProductDto, ALERT_CATEGORY_NOT_FOUND,
         String.valueOf(newProductDto.getCategory().getId()));
   }
 
@@ -110,23 +110,23 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
 
   @Test
   void testGetBadRequest() {
-    assertGetBadRequest(ADMIN, PRODUCTS_URI + "/999999999999999999999999", String.class,
+    assertGetBadRequest(PRODUCTS_URI + "/999999999999999999999999", String.class,
         "id.badRequest", PARAM_NOT_VALID_LONG);
   }
 
   @Test
   void testUpdateBadRequest() {
     // id
-    assertUpdateBadRequest(ADMIN, String.format(PRODUCTS_ID_URI, 1L),
+    assertUpdateBadRequest(String.format(PRODUCTS_ID_URI, 1L),
         TestUtils.createUpdatebleProductDto(null), ALERT_UPDATE_BAD_REQUEST, PARAM_ID_NOT_NULL);
 
-    var categoryId = createAndReturnId(ADMIN, CATEGORIES_URI, TestUtils.createNewCategoryDto(),
+    var categoryId = createAndReturnId(CATEGORIES_URI, TestUtils.createNewCategoryDto(),
         ALERT_CATEGORY_CREATED);
     var newProductDto = TestUtils.createNewProductDto();
     newProductDto.setCategory(TestUtils.createRefCategoryDto(categoryId));
-    var id = createAndReturnId(ADMIN, PRODUCTS_URI, newProductDto, ALERT_CREATED);
+    var id = createAndReturnId(PRODUCTS_URI, newProductDto, ALERT_CREATED);
 
-    assertUpdateBadRequest(ADMIN, String.format(PRODUCTS_ID_URI, (id + 1)),
+    assertUpdateBadRequest(String.format(PRODUCTS_ID_URI, (id + 1)),
         TestUtils.createUpdatebleProductDto(id), ALERT_UPDATE_BAD_REQUEST, String.valueOf(id));
 
     final var path = String.format(PRODUCTS_ID_URI, id);
@@ -134,44 +134,44 @@ class ProductEndToEndTest extends AbstractTestEndToEnd {
     // Name
     var productDto = TestUtils.createUpdatebleProductDto(id);
     productDto.setName(null);
-    assertUpdateBadRequest(ADMIN, path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_NAME_NOT_BLANK);
+    assertUpdateBadRequest(path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_NAME_NOT_BLANK);
 
     productDto = TestUtils.createUpdatebleProductDto(id);
     productDto.setName("");
-    assertUpdateBadRequest(ADMIN, path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_NAME_NOT_BLANK);
+    assertUpdateBadRequest(path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_NAME_NOT_BLANK);
 
     productDto = TestUtils.createUpdatebleProductDto(id);
     productDto.setName("  ");
-    assertUpdateBadRequest(ADMIN, path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_NAME_NOT_BLANK);
+    assertUpdateBadRequest(path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_NAME_NOT_BLANK);
 
     // description
     productDto = TestUtils.createUpdatebleProductDto(id);
     productDto.setDescription(null);
-    assertUpdateBadRequest(ADMIN, path, productDto, ALERT_UPDATE_BAD_REQUEST,
+    assertUpdateBadRequest(path, productDto, ALERT_UPDATE_BAD_REQUEST,
         PARAM_DESCRIPTION_NOT_BLANK);
 
     productDto = TestUtils.createUpdatebleProductDto(id);
     productDto.setDescription("");
-    assertUpdateBadRequest(ADMIN, path, productDto, ALERT_UPDATE_BAD_REQUEST,
+    assertUpdateBadRequest(path, productDto, ALERT_UPDATE_BAD_REQUEST,
         PARAM_DESCRIPTION_NOT_BLANK);
 
     productDto = TestUtils.createUpdatebleProductDto(id);
     productDto.setDescription("  ");
-    assertUpdateBadRequest(ADMIN, path, productDto, ALERT_UPDATE_BAD_REQUEST,
+    assertUpdateBadRequest(path, productDto, ALERT_UPDATE_BAD_REQUEST,
         PARAM_DESCRIPTION_NOT_BLANK);
 
     // price
     productDto = TestUtils.createUpdatebleProductDto(id);
     productDto.setPrice(null);
-    assertUpdateBadRequest(ADMIN, path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_PRICE_NOT_NULL);
+    assertUpdateBadRequest(path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_PRICE_NOT_NULL);
 
     productDto = TestUtils.createUpdatebleProductDto(id);
     productDto.setPrice(BigDecimal.valueOf(-1L));
-    assertUpdateBadRequest(ADMIN, path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_PRICE_MIN);
+    assertUpdateBadRequest(path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_PRICE_MIN);
 
     // size
     productDto = TestUtils.createUpdatebleProductDto(id);
     productDto.setSize(null);
-    assertUpdateBadRequest(ADMIN, path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_SIZE_NOT_NULL);
+    assertUpdateBadRequest(path, productDto, ALERT_UPDATE_BAD_REQUEST, PARAM_SIZE_NOT_NULL);
   }
 }

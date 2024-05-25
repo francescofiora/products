@@ -5,7 +5,7 @@ SpringBoot Rest Api tutorial with OpenApi 3.0 and PostgreSql.
 - Spring Boot Rest Api
 - Swagger UI for visualizing APIs
 - Error Handling
-- Basic Authentication with roles
+- Basic Authentication
 - Mapper for POJO<->DTO
 - Actuator
 - Logging
