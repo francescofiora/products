@@ -40,8 +40,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 
 /**
@@ -52,10 +50,6 @@ public class StepDefinitions extends AbstractTestContainer {
 
   private static final String DATASOURCE_URL =
       "jdbc:postgresql://product-postgresql:5432/db_product";
-
-  private static PostgreSQLContainer<?> postgreContainer;
-  private static GenericContainer<?> product;
-  private static GenericContainer<?> eureka;
 
   private static ActuatorClientService actuatorClientService;
   private static CategoryClientService categoryClientService;
@@ -88,11 +82,10 @@ public class StepDefinitions extends AbstractTestContainer {
   /**
    * Start all containers.
    *
-   * @throws JSONException if errors occur
    * @throws SQLException if errors occur
    */
   @BeforeAll
-  public static void init() throws JSONException, SQLException {
+  public static void init() throws SQLException {
     postgreContainer = containerGenerator.createPostgreSqlContainer();
     containers.add(postgreContainer);
 
@@ -101,7 +94,7 @@ public class StepDefinitions extends AbstractTestContainer {
     }
 
     // @formatter:off
-    eureka = containerGenerator.createContainer("francescofiora-product-eureka")
+    var eureka = containerGenerator.createContainer("francescofiora-product-eureka")
         .withLogConsumer(new Slf4jLogConsumer(log))
         .withNetworkAliases(ContainerGenerator.PRODUCT_EUREKA)
         .withExposedPorts(8761);
@@ -109,7 +102,7 @@ public class StepDefinitions extends AbstractTestContainer {
     containers.add(eureka);
 
     // @formatter:off
-    product = containerGenerator.createContainer("francescofiora-product")
+    var product = containerGenerator.createContainer("francescofiora-product")
         .withEnv("DATASOURCE_URL", DATASOURCE_URL)
         .withLogConsumer(new Slf4jLogConsumer(log))
         .withNetworkAliases(ContainerGenerator.PRODUCT_API)

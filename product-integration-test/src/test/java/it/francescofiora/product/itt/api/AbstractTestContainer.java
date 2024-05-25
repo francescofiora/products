@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import it.francescofiora.product.itt.cucumber.SpringGlue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +16,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 /**
  * Abstract TestContainer.
  */
-public class AbstractTestContainer {
+public class AbstractTestContainer extends SpringGlue {
 
   protected static HikariDataSource createHikariDataSource(PostgreSQLContainer<?> container) {
     var hikariConfig = new HikariConfig();
@@ -28,16 +29,18 @@ public class AbstractTestContainer {
   }
 
   protected static void executeQuery(HikariDataSource ds, String sql) throws SQLException {
-    var statement = ds.getConnection().createStatement();
-    statement.execute(sql);
+    try (var statement = ds.getConnection().createStatement()) {
+      statement.execute(sql);
+    }
   }
 
   protected static ResultSet performQuery(HikariDataSource ds, String sql) throws SQLException {
-    var statement = ds.getConnection().createStatement();
-    statement.execute(sql);
-    var resultSet = statement.getResultSet();
-    resultSet.next();
-    return resultSet;
+    try (var statement = ds.getConnection().createStatement()) {
+      statement.execute(sql);
+      var resultSet = statement.getResultSet();
+      resultSet.next();
+      return resultSet;
+    }
   }
 
   protected Long validateResponseAndGetId(ResponseEntity<Void> result) {
