@@ -19,23 +19,18 @@ import it.francescofiora.product.api.service.dto.OrderDto;
 import it.francescofiora.product.api.service.dto.ProductDto;
 import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;
 import it.francescofiora.product.api.service.dto.UpdatebleProductDto;
-import it.francescofiora.product.client.ActuatorClientService;
-import it.francescofiora.product.client.CategoryClientService;
-import it.francescofiora.product.client.OrderClientService;
-import it.francescofiora.product.client.ProductClientService;
-import it.francescofiora.product.client.impl.ActuatorClientServiceImpl;
-import it.francescofiora.product.client.impl.CategoryClientServiceImpl;
-import it.francescofiora.product.client.impl.OrderClientServiceImpl;
-import it.francescofiora.product.client.impl.ProductClientServiceImpl;
-import it.francescofiora.product.itt.ProductClientProperties;
+import it.francescofiora.product.client.ProductApiService;
 import it.francescofiora.product.itt.StartStopContainers;
 import it.francescofiora.product.itt.api.AbstractTestContainer;
 import it.francescofiora.product.itt.api.util.ContainerGenerator;
 import it.francescofiora.product.itt.api.util.TestUtils;
 import java.sql.SQLException;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -51,11 +46,6 @@ public class StepDefinitions extends AbstractTestContainer {
   private static final String DATASOURCE_URL =
       "jdbc:postgresql://product-postgresql:5432/db_product";
 
-  private static ActuatorClientService actuatorClientService;
-  private static CategoryClientService categoryClientService;
-  private static ProductClientService productClientService;
-  private static OrderClientService orderClientService;
-
   private static StartStopContainers containers = new StartStopContainers();
   private static ContainerGenerator containerGenerator = new ContainerGenerator();
 
@@ -70,14 +60,20 @@ public class StepDefinitions extends AbstractTestContainer {
   private static ResponseEntity<CategoryDto> resultCategory;
   private static ResponseEntity<ProductDto> resultProduct;
   private static ResponseEntity<OrderDto> resultOrder;
-  private static Stream<CategoryDto> resultCategories;
-  private static Stream<ProductDto> resultProducts;
-  private static Stream<OrderDto> resultOrders;
+  private static List<CategoryDto> resultCategories;
+  private static List<ProductDto> resultProducts;
+  private static List<OrderDto> resultOrders;
   private static Long categoryId;
   private static Long productId;
   private static Long orderId;
   private static Long itemId;
   private static HttpStatusCode lastStatusCode;
+
+  @Autowired
+  private DiscoveryClient discoveryClient;
+
+  @Autowired
+  private ProductApiService productApiService;
 
   /**
    * Start all containers.
@@ -94,36 +90,41 @@ public class StepDefinitions extends AbstractTestContainer {
     }
 
     // @formatter:off
-    var eureka = containerGenerator.createContainer("francescofiora-product-eureka")
+    eureka = containerGenerator.createContainer("francescofiora-product-eureka")
         .withLogConsumer(new Slf4jLogConsumer(log))
         .withNetworkAliases(ContainerGenerator.PRODUCT_EUREKA)
         .withExposedPorts(8761);
     // @formatter:on
     containers.add(eureka);
 
+    var eurekaHttp = "http://user:password@" + ContainerGenerator.PRODUCT_EUREKA + ":8761/eureka";
+
     // @formatter:off
     var product = containerGenerator.createContainer("francescofiora-product")
-        .withEnv("DATASOURCE_URL", DATASOURCE_URL)
+        .withEnv(Map.of(
+            "DATASOURCE_URL", DATASOURCE_URL,
+            "EUREKA_URI", eurekaHttp,
+            "eureka.instance.prefer-ip-address", "true"))
         .withLogConsumer(new Slf4jLogConsumer(log))
         .withNetworkAliases(ContainerGenerator.PRODUCT_API)
         .withExposedPorts(8081);
     // @formatter:on
     containers.add(product);
-
-    var userProp = new ProductClientProperties();
-    userProp.setBaseUrl("http://" + product.getHost() + ":" + product.getFirstMappedPort());
-    userProp.setUserName("user");
-    userProp.setPassword("password");
-
-    actuatorClientService = new ActuatorClientServiceImpl(userProp);
-    categoryClientService = new CategoryClientServiceImpl(userProp);
-    productClientService = new ProductClientServiceImpl(userProp);
-    orderClientService = new OrderClientServiceImpl(userProp);
   }
 
+  /**
+   * Given the system up and running.
+   */
   @Given("the system up and running")
   public void givenSystemUp() {
     assertTrue(containers.areRunning());
+    while (discoveryClient.getInstances("PRODUCT-API").isEmpty()) {
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
   /**
@@ -134,8 +135,8 @@ public class StepDefinitions extends AbstractTestContainer {
   @When("^GET the Application (\\w+)$")
   public void whenGetApplication(final String op) {
     var resultString = switch (op) {
-      case "Health" -> actuatorClientService.getHealth().block();
-      case "Info" -> actuatorClientService.getInfo().block();
+      case "Health" -> productApiService.getHealth();
+      case "Info" -> productApiService.getInfo();
       default -> throw new IllegalArgumentException("Unexpected value: " + op);
     };
     lastStatusCode = resultString.getStatusCode();
@@ -156,7 +157,7 @@ public class StepDefinitions extends AbstractTestContainer {
         break;
 
       case "Product":
-        var resultCat = categoryClientService.create(newCategoryDto).block();
+        var resultCat = productApiService.createCategory(newCategoryDto);
         categoryId = validateResponseAndGetId(resultCat);
         newProductDto = TestUtils.createNewProductDto(rows.get(0), rows.get(1), rows.get(2),
             rows.get(3), rows.get(4), rows.get(5), categoryId);
@@ -168,7 +169,7 @@ public class StepDefinitions extends AbstractTestContainer {
         break;
 
       case "OrderItem":
-        var resultPr = productClientService.create(newProductDto).block();
+        var resultPr = productApiService.createProduct(newProductDto);
         productId = validateResponseAndGetId(resultPr);
         newOrderItemDto = TestUtils.createNewOrderItemDto(productId, rows.get(0));
         break;
@@ -187,22 +188,22 @@ public class StepDefinitions extends AbstractTestContainer {
   public void whenCreate(final String entity) {
     switch (entity) {
       case "Category":
-        resultVoid = categoryClientService.create(newCategoryDto).block();
+        resultVoid = productApiService.createCategory(newCategoryDto);
         categoryId = validateResponseAndGetId(resultVoid);
         break;
 
       case "Product":
-        resultVoid = productClientService.create(newProductDto).block();
+        resultVoid = productApiService.createProduct(newProductDto);
         productId = validateResponseAndGetId(resultVoid);
         break;
 
       case "Order":
-        resultVoid = orderClientService.create(newOrderDto).block();
+        resultVoid = productApiService.createOrder(newOrderDto);
         orderId = validateResponseAndGetId(resultVoid);
         break;
 
       case "OrderItem":
-        resultVoid = orderClientService.addOrderItem(orderId, newOrderItemDto).block();
+        resultVoid = productApiService.addOrderItem(orderId, newOrderItemDto);
         itemId = validateResponseAndGetId(resultVoid);
         break;
 
@@ -221,17 +222,17 @@ public class StepDefinitions extends AbstractTestContainer {
     switch (entity) {
 
       case "Category":
-        resultCategory = categoryClientService.findOne(categoryId).block();
+        resultCategory = productApiService.getCategoryById(categoryId);
         lastStatusCode = resultCategory.getStatusCode();
         break;
 
       case "Product":
-        resultProduct = productClientService.findOne(productId).block();
+        resultProduct = productApiService.getProductById(productId);
         lastStatusCode = resultProduct.getStatusCode();
         break;
 
       case "Order":
-        resultOrder = orderClientService.findOne(orderId).block();
+        resultOrder = productApiService.getOrderById(orderId);
         lastStatusCode = resultOrder.getStatusCode();
         break;
 
@@ -279,7 +280,8 @@ public class StepDefinitions extends AbstractTestContainer {
           execution = true;
         }
         if ("PUT".equals(op1) && "GET_ALL".equals(op2)) {
-          var opt = resultCategories.filter(cat -> categoryId.equals(cat.getId())).findAny();
+          var opt = resultCategories.stream()
+              .filter(cat -> categoryId.equals(cat.getId())).findAny();
           assertThat(opt).hasValue(categoryDto);
           execution = true;
         }
@@ -294,7 +296,8 @@ public class StepDefinitions extends AbstractTestContainer {
           execution = true;
         }
         if ("PUT".equals(op1) && "GET_ALL".equals(op2)) {
-          var opt = resultProducts.filter(prod -> productId.equals(prod.getId())).findAny();
+          var opt = resultProducts.stream()
+              .filter(prod -> productId.equals(prod.getId())).findAny();
           assertThat(opt).isNotEmpty();
           assertThat(opt.get().getName()).isEqualTo(upProductDto.getName());
           assertThat(opt.get().getDescription()).isEqualTo(upProductDto.getDescription());
@@ -311,7 +314,7 @@ public class StepDefinitions extends AbstractTestContainer {
           execution = true;
         }
         if ("PUT".equals(op1) && "GET_ALL".equals(op2)) {
-          var opt = resultOrders.filter(order -> orderId.equals(order.getId())).findAny();
+          var opt = resultOrders.stream().filter(order -> orderId.equals(order.getId())).findAny();
           assertThat(opt).isNotEmpty();
           assertThat(opt.get().getCode()).isEqualTo(upOrderDto.getCode());
           assertThat(opt.get().getCustomer()).isEqualTo(upOrderDto.getCustomer());
@@ -346,18 +349,18 @@ public class StepDefinitions extends AbstractTestContainer {
 
       case "Category":
         categoryDto = TestUtils.createCategoryDto(categoryId, rows.get(0), rows.get(1));
-        resultVoid = categoryClientService.update(categoryDto).block();
+        resultVoid = productApiService.updateCategory(categoryDto, categoryId);
         break;
 
       case "Product":
         upProductDto = TestUtils.createUpdatebleProductDto(productId, rows.get(0), rows.get(1),
             rows.get(2), rows.get(3), rows.get(4), rows.get(5), categoryId);
-        resultVoid = productClientService.update(upProductDto).block();
+        resultVoid = productApiService.updateProduct(upProductDto, productId);
         break;
 
       case "Order":
         upOrderDto = TestUtils.createUpdatebleOrderDto(orderId, rows.get(0), rows.get(1));
-        resultVoid = orderClientService.patch(upOrderDto).block();
+        resultVoid = productApiService.patchOrder(upOrderDto, orderId);
         break;
 
       default:
@@ -373,10 +376,10 @@ public class StepDefinitions extends AbstractTestContainer {
   @When("^delete the (\\w+)$")
   public void thenDelete(final String entity) {
     resultVoid = switch (entity) {
-      case "Category" -> categoryClientService.delete(categoryId).block();
-      case "Product" -> productClientService.delete(productId).block();
-      case "Order" -> orderClientService.delete(orderId).block();
-      case "OrderItem" -> orderClientService.deleteOrderItem(orderId, itemId).block();
+      case "Category" -> productApiService.deleteCategoryById(categoryId);
+      case "Product" -> productApiService.deleteProductById(productId);
+      case "Order" -> productApiService.deleteOrderById(orderId);
+      case "OrderItem" -> productApiService.deleteOrderItemById(orderId, itemId);
       default -> throw new IllegalArgumentException("Unexpected value: " + entity);
     };
   }
@@ -391,15 +394,21 @@ public class StepDefinitions extends AbstractTestContainer {
     switch (entity) {
 
       case "Category":
-        resultCategories = categoryClientService.findAll(Pageable.unpaged()).toStream();
+        var resultCat = productApiService.findCategories(null, null, Pageable.unpaged());
+        assertThat(resultCat.getBody()).isNotEmpty();
+        resultCategories = resultCat.getBody();
         break;
 
       case "Product":
-        resultProducts = productClientService.findAll(Pageable.unpaged()).toStream();
+        var resultPr = productApiService.findProducts(null, null, null, Pageable.unpaged());
+        assertThat(resultPr.getBody()).isNotEmpty();
+        resultProducts = resultPr.getBody();
         break;
 
       case "Order":
-        resultOrders = orderClientService.findAll(Pageable.unpaged()).toStream();
+        var resultOrd = productApiService.findOrders(null, null, null, Pageable.unpaged());
+        assertThat(resultOrd.getBody()).isNotEmpty();
+        resultOrders = resultOrd.getBody();
         break;
 
       default:
@@ -417,20 +426,28 @@ public class StepDefinitions extends AbstractTestContainer {
     switch (entity) {
 
       case "Category":
-        resultCategories = categoryClientService.findAll(Pageable.unpaged()).toStream();
-        var optCat = resultCategories.filter(cat -> categoryId.equals(cat.getId())).findAny();
+        var resultCat = productApiService.findCategories(null, null, Pageable.unpaged());
+        assertThat(resultCat.getBody()).isNotNull();
+        resultCategories = resultCat.getBody();
+        var optCat = resultCategories.stream()
+            .filter(cat -> categoryId.equals(cat.getId())).findAny();
         assertThat(optCat).isEmpty();
         break;
 
       case "Product":
-        resultProducts = productClientService.findAll(Pageable.unpaged()).toStream();
-        var optPr = resultProducts.filter(prod -> productId.equals(prod.getId())).findAny();
+        var resultPr = productApiService.findProducts(null, null, null, Pageable.unpaged());
+        assertThat(resultPr.getBody()).isNotNull();
+        resultProducts = resultPr.getBody();
+        var optPr = resultProducts.stream()
+            .filter(prod -> productId.equals(prod.getId())).findAny();
         assertThat(optPr).isEmpty();
         break;
 
       case "Order":
-        resultOrders = orderClientService.findAll(Pageable.unpaged()).toStream();
-        var optOr = resultOrders.filter(order -> orderId.equals(order.getId())).findAny();
+        var resultOr = productApiService.findOrders(null, null, null, Pageable.unpaged());
+        assertThat(resultOr.getBody()).isNotNull();
+        resultOrders = resultOr.getBody();
+        var optOr = resultOrders.stream().filter(order -> orderId.equals(order.getId())).findAny();
         assertThat(optOr).isEmpty();
         break;
 

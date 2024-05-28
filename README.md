@@ -8,6 +8,7 @@ SpringBoot Rest Api tutorial with OpenApi 3.0 and PostgreSql.
 - Basic Authentication
 - Mapper for POJO<->DTO
 - Actuator
+- Eureka server and Open Feign
 - Logging
 - Testing
     - Repositories using DataJpaTest

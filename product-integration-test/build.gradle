@@ -23,9 +23,18 @@ def postgresql_version = property('postgresql.version')
 def lombok_version = property('lombok.version')
 def logback_version = property('logback.version')
 def openpojo_version = property('openpojo.version')
-def apache_httpclient_version = property('apache-httpclient.version')
 def testcontainers_version = property('testcontainers.version')
 def cucumber_version = property('cucumber.version')
+
+ext {
+  set('springCloudVersion', "2023.0.1")
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+  }
+}
 
 dependencies {
 
@@ -33,7 +42,10 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'org.springframework.boot:spring-boot-starter-security'
-  implementation 'org.springframework.boot:spring-boot-starter-webflux'
+  implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+  implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+  implementation 'io.github.openfeign:feign-hc5:13.2.1'
 
   implementation "ch.qos.logback:logback-classic:${logback_version}"
 
@@ -64,8 +76,7 @@ dependencies {
 
   testImplementation "org.testcontainers:junit-jupiter"
   testImplementation 'org.testcontainers:postgresql'
-  implementation "org.apache.httpcomponents.client5:httpclient5:${apache_httpclient_version}"
-  
+
   testAnnotationProcessor "org.projectlombok:lombok:${lombok_version}"
 }
 
