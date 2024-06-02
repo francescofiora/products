@@ -1,4 +1,4 @@
-package it.francescofiora.product.itt.api.util;
+package it.francescofiora.product.itt.util;
 
 import it.francescofiora.product.api.service.dto.CategoryDto;
 import it.francescofiora.product.api.service.dto.NewCategoryDto;
