@@ -1,4 +1,4 @@
-package it.francescofiora.product.itt.api.util;
+package it.francescofiora.product.itt.util;
 
 import lombok.RequiredArgsConstructor;
 import org.testcontainers.containers.GenericContainer;
@@ -15,12 +15,12 @@ public class ContainerGenerator {
   public static final String PRODUCT_API = "product";
   public static final String PRODUCT_EUREKA = "product-eureka";
 
-  private Network network = Network.newNetwork();
+  private final Network network = Network.newNetwork();
 
   /**
    * Create PostgreSql Container.
    *
-   * @return PostgreSQLContainer
+   * @return the PostgreSQLContainer
    */
   public PostgreSQLContainer<?> createPostgreSqlContainer() {
     // @formatter:off
@@ -31,6 +31,20 @@ public class ContainerGenerator {
         .withDatabaseName("db_product");
     // @formatter:on
     return postgres;
+  }
+
+  /**
+   * Create EurekaServer Container.
+   *
+   * @return the EurekaServer Container
+   */
+  public GenericContainer<?> createEurekaServerContainer() {
+    // @formatter:off
+    var eureka = createContainer("francescofiora-product-eureka")
+        .withNetworkAliases(PRODUCT_EUREKA)
+        .withExposedPorts(8761);
+    // @formatter:on
+    return eureka;
   }
 
   public GenericContainer<?> createContainer(String dockerImageName) {

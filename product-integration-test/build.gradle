@@ -63,6 +63,7 @@ dependencies {
   annotationProcessor "org.projectlombok:lombok:${lombok_version}"
 
   implementation 'org.testcontainers:testcontainers'
+  implementation 'org.testcontainers:postgresql'
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
@@ -75,7 +76,6 @@ dependencies {
   testImplementation 'org.junit.platform:junit-platform-suite:1.10.2'
 
   testImplementation "org.testcontainers:junit-jupiter"
-  testImplementation 'org.testcontainers:postgresql'
 
   testAnnotationProcessor "org.projectlombok:lombok:${lombok_version}"
 }

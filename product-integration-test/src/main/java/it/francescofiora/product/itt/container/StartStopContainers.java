@@ -1,4 +1,4 @@
-package it.francescofiora.product.itt;
+package it.francescofiora.product.itt.container;
 
 import java.util.ArrayList;
 import java.util.Collections;

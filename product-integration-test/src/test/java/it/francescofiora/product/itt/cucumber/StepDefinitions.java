@@ -10,12 +10,12 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import it.francescofiora.product.client.ProductApiService;
-import it.francescofiora.product.itt.StartStopContainers;
-import it.francescofiora.product.itt.api.AbstractTestContainer;
-import it.francescofiora.product.itt.api.util.ContainerGenerator;
 import it.francescofiora.product.itt.component.CategoryComponent;
 import it.francescofiora.product.itt.component.OrderComponent;
 import it.francescofiora.product.itt.component.ProductComponent;
+import it.francescofiora.product.itt.container.StartStopContainers;
+import it.francescofiora.product.itt.util.ContainerGenerator;
+import it.francescofiora.product.itt.util.DataSourceUtils;
 import java.sql.SQLException;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
  * Cucumber Step Definitions.
  */
 @Slf4j
-public class StepDefinitions extends AbstractTestContainer {
+public class StepDefinitions extends SpringGlue {
 
   private static final String DATASOURCE_URL =
       "jdbc:postgresql://product-postgresql:5432/db_product";
@@ -64,16 +64,11 @@ public class StepDefinitions extends AbstractTestContainer {
     postgreContainer = containerGenerator.createPostgreSqlContainer();
     containers.add(postgreContainer);
 
-    try (var ds = createHikariDataSource(postgreContainer)) {
-      executeQuery(ds, "CREATE SCHEMA IF NOT EXISTS STORE");
+    try (var ds = DataSourceUtils.createHikariDataSource(postgreContainer)) {
+      DataSourceUtils.executeQuery(ds, "CREATE SCHEMA IF NOT EXISTS STORE");
     }
 
-    // @formatter:off
-    eureka = containerGenerator.createContainer("francescofiora-product-eureka")
-        .withLogConsumer(new Slf4jLogConsumer(log))
-        .withNetworkAliases(ContainerGenerator.PRODUCT_EUREKA)
-        .withExposedPorts(8761);
-    // @formatter:on
+    eureka = containerGenerator.createEurekaServerContainer();
     containers.add(eureka);
 
     var eurekaHttp = "http://user:password@" + ContainerGenerator.PRODUCT_EUREKA + ":8761/eureka";
