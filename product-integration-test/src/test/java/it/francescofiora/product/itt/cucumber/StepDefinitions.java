@@ -1,6 +1,5 @@
 package it.francescofiora.product.itt.cucumber;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.cucumber.datatable.DataTable;
@@ -9,11 +8,8 @@ import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import it.francescofiora.product.client.ProductApiService;
-import it.francescofiora.product.itt.component.CategoryComponent;
-import it.francescofiora.product.itt.component.OrderComponent;
-import it.francescofiora.product.itt.component.ProductComponent;
 import it.francescofiora.product.itt.container.StartStopContainers;
+import it.francescofiora.product.itt.service.ApplicationService;
 import it.francescofiora.product.itt.util.ContainerGenerator;
 import it.francescofiora.product.itt.util.DataSourceUtils;
 import java.sql.SQLException;
@@ -21,8 +17,6 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 
 /**
@@ -37,22 +31,11 @@ public class StepDefinitions extends SpringGlue {
   private static StartStopContainers containers = new StartStopContainers();
   private static ContainerGenerator containerGenerator = new ContainerGenerator();
 
-  private static ResponseEntity<String> resultString;
-
   @Autowired
   private DiscoveryClient discoveryClient;
 
   @Autowired
-  private ProductApiService productApiService;
-
-  @Autowired
-  private CategoryComponent categoryComponent;
-
-  @Autowired
-  private ProductComponent productComponent;
-
-  @Autowired
-  private OrderComponent orderComponent;
+  private ApplicationService applicationService;
 
   /**
    * Start all containers.
@@ -108,12 +91,7 @@ public class StepDefinitions extends SpringGlue {
    */
   @When("^GET the Application (\\w+)$")
   public void whenGetApplication(final String op) {
-    resultString = switch (op) {
-      case "Health" -> productApiService.getHealth();
-      case "Info" -> productApiService.getInfo();
-      default -> throw new IllegalArgumentException("Unexpected value: " + op);
-    };
-    assertThat(resultString.getStatusCode()).isEqualTo(HttpStatus.OK);
+    applicationService.whenGetApplication(op);
   }
 
   /**
@@ -123,7 +101,7 @@ public class StepDefinitions extends SpringGlue {
    */
   @Then("the result should contain {string}")
   public void thenResultContains(final String expected) {
-    assertThat(resultString.getBody()).contains(expected);
+    applicationService.thenResultContains(expected);
   }
 
   /**
@@ -135,14 +113,7 @@ public class StepDefinitions extends SpringGlue {
   @Given("^a new (\\w+)$")
   public void givenNew(final String entity, final DataTable dataTable) {
     var rows = dataTable.transpose().asList(String.class);
-    switch (entity) {
-      case "Category" -> categoryComponent.createNewCategoryDto(rows.get(0), rows.get(1));
-      case "Product" -> productComponent.createNewProductDto(rows.get(0), rows.get(1), rows.get(2),
-          rows.get(3), rows.get(4), rows.get(5));
-      case "Order" -> orderComponent.createNewOrderDto(rows.get(0), rows.get(1));
-      case "OrderItem" -> orderComponent.createNewOrderItemDto(rows.get(0));
-      default -> throw new IllegalArgumentException("Unexpected value: " + entity);
-    }
+    applicationService.givenNew(entity, rows);
   }
 
   /**
@@ -152,13 +123,7 @@ public class StepDefinitions extends SpringGlue {
    */
   @When("^create that (\\w+)$")
   public void whenCreate(final String entity) {
-    switch (entity) {
-      case "Category" -> categoryComponent.createCategory();
-      case "Product" -> productComponent.createProduct();
-      case "Order" -> orderComponent.createOrder();
-      case "OrderItem" -> orderComponent.createItem();
-      default -> throw new IllegalArgumentException("Unexpected value: " + entity);
-    }
+    applicationService.whenCreate(entity);
   }
 
   /**
@@ -168,12 +133,7 @@ public class StepDefinitions extends SpringGlue {
    */
   @Then("^should be able to get that (\\w+)$")
   public void thenGetCategory(final String entity) {
-    switch (entity) {
-      case "Category" -> categoryComponent.fetchCategory();
-      case "Product" -> productComponent.fetchProduct();
-      case "Order" -> orderComponent.fetchOrder();
-      default -> throw new IllegalArgumentException("Unexpected value: " + entity);
-    }
+    applicationService.thenGetCategory(entity);
   }
 
   /**
@@ -185,32 +145,12 @@ public class StepDefinitions extends SpringGlue {
    */
   @Then("^the (\\w+) from (\\w+) should the same as from (\\w+)$")
   public void thenCompareObject(final String entity, final String op1, final String op2) {
-    if ("POST".equals(op1) && "GET".equals(op2)) {
-
-      switch (entity) {
-        case "Category" -> categoryComponent.compareCategoryWithNewCategory();
-        case "Product" -> productComponent.compareProductWithNewProduct();
-        case "Order" -> orderComponent.compareOrderWithNewOrder();
-        default -> throw new IllegalArgumentException("Unexpected value: " + entity);
-      }
-
-    } else if ("PUT".equals(op1) && "GET_ALL".equals(op2)) {
-
-      switch (entity) {
-        case "Category" -> categoryComponent.compareUpdatebleCategoryIntoCategories();
-        case "Product" -> productComponent.compareUpdatebleProductIntoProducts();
-        case "Order" -> orderComponent.compareUpdatebleOrderIntoOrders();
-        default -> throw new IllegalArgumentException("Unexpected value: " + entity);
-      }
-
-    } else {
-      throw new IllegalArgumentException("Unexpected value: " + op1 + " and " + op2);
-    }
+    applicationService.thenCompareObject(entity, op1, op2);
   }
 
   @Then("that Order should have {int} items")
   public void checkItems(int size) {
-    orderComponent.checkSizeItems(size);
+    applicationService.checkItems(size);
   }
 
   /**
@@ -222,13 +162,7 @@ public class StepDefinitions extends SpringGlue {
   @When("^update the (\\w+)$")
   public void whenUpdate(final String entity, final DataTable dataTable) {
     var rows = dataTable.transpose().asList(String.class);
-    switch (entity) {
-      case "Category" -> categoryComponent.updateCategory(rows.get(0), rows.get(1));
-      case "Product" -> productComponent.updateProduct(
-          rows.get(0), rows.get(1), rows.get(2), rows.get(3), rows.get(4), rows.get(5));
-      case "Order" -> orderComponent.updateOrder(rows.get(0), rows.get(1));
-      default -> throw new IllegalArgumentException("Unexpected value: " + entity);
-    }
+    applicationService.whenUpdate(entity, rows);
   }
 
   /**
@@ -238,13 +172,7 @@ public class StepDefinitions extends SpringGlue {
    */
   @When("^delete the (\\w+)$")
   public void thenDelete(final String entity) {
-    switch (entity) {
-      case "Category" -> categoryComponent.deleteCategory();
-      case "Product" -> productComponent.deleteProduct();
-      case "Order" -> orderComponent.deleteOrder();
-      case "OrderItem" -> orderComponent.deleteItem();
-      default -> throw new IllegalArgumentException("Unexpected value: " + entity);
-    }
+    applicationService.thenDelete(entity);
   }
 
   /**
@@ -254,12 +182,7 @@ public class StepDefinitions extends SpringGlue {
    */
   @When("^get all (\\w+)$")
   public void whenGetAll(final String entity) {
-    switch (entity) {
-      case "Categories" -> categoryComponent.fetchAllCategories();
-      case "Products" -> productComponent.fetchAllProducts();
-      case "Orders" -> orderComponent.fetchAllOrders();
-      default -> throw new IllegalArgumentException("Unexpected value: " + entity);
-    }
+    applicationService.whenGetAll(entity);
   }
 
   /**
@@ -269,12 +192,7 @@ public class StepDefinitions extends SpringGlue {
    */
   @Then("^that (\\w+) should be not present$")
   public void thenNotExist(final String entity) {
-    switch (entity) {
-      case "Category" -> categoryComponent.checkCategoryNotExist();
-      case "Product" -> productComponent.checkProductNotExist();
-      case "Order" -> orderComponent.checkOrderNotExist();
-      default -> throw new IllegalArgumentException("Unexpected value: " + entity);
-    }
+    applicationService.thenNotExist(entity);
   }
 
   /**
