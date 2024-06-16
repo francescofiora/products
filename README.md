@@ -58,6 +58,13 @@ Scan project
     product-dto/build/reports/pitest/index.html
     product-dto/build/reports/dependency-check-report.html
 
+    company-dto/build/reports/checkstyle/main.html
+    company-dto/build/reports/checkstyle/test.html
+    company-dto/build/reports/tests/test/index.html
+    company-dto/build/reports/jacoco/test/index.html
+    company-dto/build/reports/pitest/index.html
+    company-dto/build/reports/dependency-check-report.html
+
     product-common/build/reports/checkstyle/main.html
     product-common/build/reports/checkstyle/test.html
     product-common/build/reports/tests/test/index.html
