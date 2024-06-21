@@ -1,0 +1,158 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024040701
+      author: Francesco
+      changes:
+        - createSequence:  
+            schemaName: COMPANY
+            sequenceName: SEQ_COMPANY
+            startValue: 1
+        - createTable:
+            schemaName: COMPANY
+            tableName: COMPANY
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: web
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2024040702
+      author: Francesco
+      changes:
+        - createSequence:  
+            schemaName: COMPANY
+            sequenceName: SEQ_ADDRESS
+            startValue: 1
+        - createTable:
+            schemaName: COMPANY
+            tableName: ADDRESS
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: zipcode
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tax_number
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: company_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: FK1_ADDRESS
+            baseTableSchemaName: COMPANY
+            baseTableName: ADDRESS
+            baseColumnNames: company_id
+            referencedTableSchemaName: COMPANY
+            referencedTableName: COMPANY
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 2024040703
+      author: Francesco
+      changes:
+        - createSequence:  
+            schemaName: COMPANY
+            sequenceName: SEQ_CONTACT
+            startValue: 1
+        - createTable:
+            schemaName: COMPANY
+            tableName: CONTACT
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: FK1_CONTACT
+            baseTableSchemaName: COMPANY
+            baseTableName: CONTACT
+            baseColumnNames: address_id
+            referencedTableSchemaName: COMPANY
+            referencedTableName: ADDRESS
+            referencedColumnNames: id

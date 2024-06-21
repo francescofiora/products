@@ -44,19 +44,12 @@ Scan project
     -Dsonar.token=yourAuthenticationToken
 
 ### Reports
-    product-api/build/reports/checkstyle/main.html
-    product-api/build/reports/checkstyle/test.html
-    product-api/build/reports/tests/test/index.html
-    product-api/build/reports/jacoco/test/index.html
-    product-api/build/reports/pitest/index.html
-    product-api/build/reports/dependency-check-report.html
-
-    product-dto/build/reports/checkstyle/main.html
-    product-dto/build/reports/checkstyle/test.html
-    product-dto/build/reports/tests/test/index.html
-    product-dto/build/reports/jacoco/test/index.html
-    product-dto/build/reports/pitest/index.html
-    product-dto/build/reports/dependency-check-report.html
+    company-api/build/reports/checkstyle/main.html
+    company-api/build/reports/checkstyle/test.html
+    company-api/build/reports/tests/test/index.html
+    company-api/build/reports/jacoco/test/index.html
+    company-api/build/reports/pitest/index.html
+    company-api/build/reports/dependency-check-report.html
 
     company-dto/build/reports/checkstyle/main.html
     company-dto/build/reports/checkstyle/test.html
@@ -65,12 +58,26 @@ Scan project
     company-dto/build/reports/pitest/index.html
     company-dto/build/reports/dependency-check-report.html
 
+    product-api/build/reports/checkstyle/main.html
+    product-api/build/reports/checkstyle/test.html
+    product-api/build/reports/tests/test/index.html
+    product-api/build/reports/jacoco/test/index.html
+    product-api/build/reports/pitest/index.html
+    product-api/build/reports/dependency-check-report.html
+
     product-common/build/reports/checkstyle/main.html
     product-common/build/reports/checkstyle/test.html
     product-common/build/reports/tests/test/index.html
     product-common/build/reports/jacoco/test/index.html
     product-common/build/reports/pitest/index.html
     product-common/build/reports/dependency-check-report.html
+
+    product-dto/build/reports/checkstyle/main.html
+    product-dto/build/reports/checkstyle/test.html
+    product-dto/build/reports/tests/test/index.html
+    product-dto/build/reports/jacoco/test/index.html
+    product-dto/build/reports/pitest/index.html
+    product-dto/build/reports/dependency-check-report.html
 
     product-eureka/build/reports/checkstyle/main.html
     product-eureka/build/reports/checkstyle/test.html
@@ -81,18 +88,23 @@ Scan project
 ### How to execute
     docker-compose -f docker/docker-compose.yml up
     java -jar ./product-api/build/libs/product-api-1.0-SNAPSHOT.jar
+    java -jar ./company-api/build/libs/company-api-1.0-SNAPSHOT.jar
 
 **Links**
- - http://localhost:8081/swagger-ui.html (Api Doc)
+ - http://localhost:8082/swagger-ui.html (Company Api Swagger)
+ - http://localhost:8081/swagger-ui.html (Product Api Swagger)
  - https://localhost/ (phpPgAdmin)
  - http://localhost:8761/ (Eureka)
 
 ## Security
- - Basic Authentication with roles
-   - USER: (user/password)
-   - ADMIN: (admin/password)
+ - Basic Authentication
+   - Company Api: (user/password)
+   - Product Api: (user/password)
 
 ## Actuator
+    curl -u user:password 'http://localhost:8082/actuator/info' -i -X GET
+    curl -u user:password 'http://localhost:8082/actuator/health' -i -X GET
+    curl -u user:password 'http://localhost:8082/actuator/prometheus' -i -X GET
     curl -u user:password 'http://localhost:8081/actuator/info' -i -X GET
     curl -u user:password 'http://localhost:8081/actuator/health' -i -X GET
     curl -u user:password 'http://localhost:8081/actuator/prometheus' -i -X GET

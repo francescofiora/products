@@ -1,0 +1,62 @@
+errorPath: /error
+
+server:
+  port: 8082
+  servlet:
+    context-path: /
+  error:
+    path: errorPath
+
+spring:
+  application:
+    name: company-api
+  profiles:
+    active: Logging
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/db_product}
+    username: ${DATASOURCE_USERNAME:product}
+    password: ${DATASOURCE_PASSWORD:secret}
+    hikari:
+      poolName: Hikari
+      connectionTimeout: 30000
+      idleTimeout: 600000
+      maxLifetime: 1800000
+      maximumPoolSize: 10
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        id:
+          new_generator_mappings: true
+        jdbc:
+          time_zone: UTC
+  liquibase:
+    user: ${DATASOURCE_ADMIN_USERNAME:product}
+    password: ${DATASOURCE_ADMIN_PASSWORD:secret}
+    change-log: classpath:changelog/db.changelog.yaml
+  security:
+    user:
+      name: ${APP_USER:user}
+      password: ${APP_PASSWORD:password}
+
+management:
+  endpoints:
+    web:
+     base-path: /actuator
+     exposure:
+       include: info,health,prometheus
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://user:password@localhost:8761/eureka}
+    healthcheck:
+      enabled: true
+  instance:
+    secure-port-enabled: ${EUREKA_SECURE:false}
+    non-secure-port-enabled: ${EUREKA_NOSECURE:true}
+    metadata-map:
+      metrics.path: /actuator/prometheus
+      health.path: /actuator/health
+      management.context-path: /actuator
