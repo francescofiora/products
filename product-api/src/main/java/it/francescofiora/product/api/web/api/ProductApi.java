@@ -45,10 +45,10 @@ public class ProductApi extends AbstractApi {
   }
 
   /**
-   * {@code POST  /products} : Create a new product.
+   * Create a new product.
    *
    * @param productDto the Product to create
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Add new Product", description = "Add a new Product to the system",
       tags = {TAG})
@@ -63,10 +63,10 @@ public class ProductApi extends AbstractApi {
   }
 
   /**
-   * {@code PUT  /products} : Updates an existing product.
+   * Updates an existing product.
    *
    * @param productDto the product to update
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Update Product", description = "Update an Product to the system",
       tags = {TAG})
@@ -89,13 +89,13 @@ public class ProductApi extends AbstractApi {
   }
 
   /**
-   * {@code GET  /products} : get all the products.
+   * Find products by name, description and category id.
    *
    * @param name the name
    * @param description the description
    * @param categoryId the id of the category
    * @param pageable the pagination information
-   * @return the {@link ResponseEntity} with the list of products
+   * @return the list of products
    */
   @Operation(summary = "Searches Products",
       description = "By passing in the appropriate options, "
@@ -107,7 +107,7 @@ public class ProductApi extends AbstractApi {
               array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/products")
-  public ResponseEntity<List<ProductDto>> getAllProducts(
+  public ResponseEntity<List<ProductDto>> findProducts(
       @Parameter(description = "Name", example = "SHIRTM01",
           in = ParameterIn.QUERY) @RequestParam(required = false) String name,
       @Parameter(description = "Description of the product", example = "Shirt for Men",
@@ -120,10 +120,10 @@ public class ProductApi extends AbstractApi {
   }
 
   /**
-   * {@code GET  /products/:id} : get the "id" product.
+   * Get the product by id.
    *
    * @param id the id of the product to retrieve
-   * @return the {@link ResponseEntity} with the product
+   * @return the product
    */
   @Operation(summary = "Searches Product by 'id'", description = "Searches Product by 'id'",
       tags = {TAG})
@@ -133,16 +133,17 @@ public class ProductApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @GetMapping("/products/{id}")
-  public ResponseEntity<ProductDto> getProduct(@Parameter(description = "Id of the Product to get",
-      required = true, example = "1") @PathVariable Long id) {
+  public ResponseEntity<ProductDto> getProductById(
+      @Parameter(description = "Id of the Product to get", required = true, example = "1")
+      @PathVariable("id") Long id) {
     return getResponse(productService.findOne(id), id);
   }
 
   /**
-   * {@code DELETE  /products/:id} : delete the "id" product.
+   * Delete the product by id.
    *
    * @param id the id of the product to delete
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Delete Product", description = "Delete an Product to the system",
       tags = {TAG})
@@ -151,8 +152,8 @@ public class ProductApi extends AbstractApi {
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/products/{id}")
-  public ResponseEntity<Void> deleteProduct(@Parameter(description = "Id of the Product to delete",
-      required = true, example = "1") @PathVariable Long id) {
+  public ResponseEntity<Void> deleteProductById(@Parameter(description = "Id of the Product to delete",
+      required = true, example = "1") @PathVariable("id") Long id) {
     productService.delete(id);
     return deleteResponse(id);
   }

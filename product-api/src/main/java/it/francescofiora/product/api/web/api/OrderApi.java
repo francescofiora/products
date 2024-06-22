@@ -48,10 +48,10 @@ public class OrderApi extends AbstractApi {
   }
 
   /**
-   * {@code POST  /orders} : Create a new order.
+   * Create a new order.
    *
    * @param orderDto the order to create
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Add new Order", description = "Add a new Order to the system", tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Order created"),
@@ -64,10 +64,10 @@ public class OrderApi extends AbstractApi {
   }
 
   /**
-   * {@code PATCH  /orders} : Patches an existing order.
+   * Patches an existing order.
    *
    * @param orderDto the order to patch
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Patch Order", description = "Patch an Order to the system", tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Order patched"),
@@ -87,13 +87,13 @@ public class OrderApi extends AbstractApi {
   }
 
   /**
-   * {@code GET  /orders} : get all the orders.
+   * Find orders by code, customer and status.
    *
    * @param code the code
    * @param customer the customer
    * @param status the order status
    * @param pageable the pagination information
-   * @return the {@link ResponseEntity} with the list of orders
+   * @return the list of orders
    */
   @Operation(summary = "Searches Orders",
       description = "By passing in the appropriate options, "
@@ -105,7 +105,7 @@ public class OrderApi extends AbstractApi {
               array = @ArraySchema(schema = @Schema(implementation = OrderDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/orders")
-  public ResponseEntity<List<OrderDto>> getAllOrders(
+  public ResponseEntity<List<OrderDto>> findOrders(
       @Parameter(description = "Order code", example = "ORD_1",
           in = ParameterIn.QUERY) @RequestParam(required = false) String code,
       @Parameter(description = "Customer", example = "Some Company Ltd",
@@ -118,10 +118,10 @@ public class OrderApi extends AbstractApi {
   }
 
   /**
-   * {@code GET  /orders/:id} : get the "id" order.
+   * Get the order by id.
    *
    * @param id the id of the order to retrieve
-   * @return the {@link ResponseEntity} with the order
+   * @return the order
    */
   @Operation(summary = "Searches Order by 'id'", description = "Searches Order by 'id'",
       tags = {TAG})
@@ -131,34 +131,34 @@ public class OrderApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @GetMapping("/orders/{id}")
-  public ResponseEntity<OrderDto> getOrder(@Parameter(description = "Id of the Order to get",
-      required = true, example = "1") @PathVariable Long id) {
+  public ResponseEntity<OrderDto> getOrderById(@Parameter(description = "Id of the Order to get",
+      required = true, example = "1") @PathVariable("id") Long id) {
     return getResponse(orderService.findOne(id), id);
   }
 
   /**
-   * {@code DELETE  /orders/:id} : delete the "id" order.
+   * Delete the order by id.
    *
    * @param id the id of the order to delete
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Delete Order", description = "Delete an Order to the system", tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Order deleted"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/orders/{id}")
-  public ResponseEntity<Void> deleteOrder(@Parameter(description = "The id of the Order to delete",
-      required = true, example = "1") @PathVariable Long id) {
+  public ResponseEntity<Void> deleteOrderById(@Parameter(description = "The id of the Order to delete",
+      required = true, example = "1") @PathVariable("id") Long id) {
     orderService.delete(id);
     return deleteResponse(id);
   }
 
   /**
-   * Add Item to the Order.
+   * Add an Item to the Order.
    *
    * @param id Order id
    * @param orderItemDto the new item to add
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Add OrderItem", description = "Add a new item to an Order", tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OrderItem added"),
@@ -166,7 +166,8 @@ public class OrderApi extends AbstractApi {
       @ApiResponse(responseCode = "404", description = "Not found")})
   @PostMapping("/orders/{id}/items")
   public ResponseEntity<Void> addOrderItem(
-      @Parameter(description = "Order id", required = true, example = "1") @PathVariable Long id,
+      @Parameter(description = "Order id", required = true, example = "1")
+      @PathVariable("id") Long id,
       @Parameter(description = "Item to add") @Valid @RequestBody NewOrderItemDto orderItemDto) {
     var result = orderService.addOrderItem(id, orderItemDto);
     return postResponse(ENTITY_ORDER_ITEM, "/api/v1/orders/" + id + "/items/" + result.getId(),
@@ -174,11 +175,11 @@ public class OrderApi extends AbstractApi {
   }
 
   /**
-   * {@code DELETE  /orders/:id/items/:id} : delete the "id" item.
+   * Delete the item by id.
    *
    * @param orderId the id of the order
    * @param orderItemId the id of the item to delete
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Delete item of a Order", description = "Delete an item of a Order",
       tags = {TAG})
@@ -186,7 +187,7 @@ public class OrderApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/orders/{order_id}/items/{order_item_id}")
-  public ResponseEntity<Void> deleteOrderItem(
+  public ResponseEntity<Void> deleteOrderItemById(
       @Parameter(description = "Id of the Order", required = true,
           example = "1") @PathVariable(name = "order_id") Long orderId,
       @Parameter(description = "Id of the Item to delete", required = true,

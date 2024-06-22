@@ -44,10 +44,10 @@ public class CategoryApi extends AbstractApi {
   }
 
   /**
-   * {@code POST  /categories} : Create a new category.
+   * Create a new category.
    *
    * @param categoryDto the category to create
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Add new Category", description = "Add a new Category to the system",
       tags = {TAG})
@@ -62,11 +62,11 @@ public class CategoryApi extends AbstractApi {
   }
 
   /**
-   * {@code PUT  /categories} : Updates an existing category.
+   * Updates an existing category.
    *
    * @param categoryDto the category to update
    * @param id the id of the category to update
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Update Category", description = "Update an Category to the system",
       tags = {TAG})
@@ -88,12 +88,12 @@ public class CategoryApi extends AbstractApi {
   }
 
   /**
-   * {@code GET  /categories} : get all the categories.
+   * Find categories by name and description.
    *
    * @param name the name
    * @param description the description
    * @param pageable the pagination information
-   * @return the {@link ResponseEntity} with the list of categories
+   * @return the list of categories
    */
   @Operation(summary = "Searches Categories",
       description = "By passing in the appropriate options, "
@@ -105,7 +105,7 @@ public class CategoryApi extends AbstractApi {
               array = @ArraySchema(schema = @Schema(implementation = CategoryDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/categories")
-  public ResponseEntity<List<CategoryDto>> getAllProductCategories(
+  public ResponseEntity<List<CategoryDto>> findCategories(
       @Parameter(description = "Name", example = "Shirt",
           in = ParameterIn.QUERY) @RequestParam(required = false) String name,
       @Parameter(description = "Description of the category", example = "Shirt",
@@ -116,10 +116,10 @@ public class CategoryApi extends AbstractApi {
   }
 
   /**
-   * {@code GET  /categories/:id} : get the "id" category.
+   * Get the category by id.
    *
    * @param id the id of the category to retrieve
-   * @return the {@link ResponseEntity} with the category
+   * @return the category
    */
   @Operation(summary = "Searches Category by 'id'", description = "Searches Category by 'id'",
       tags = {TAG})
@@ -129,17 +129,17 @@ public class CategoryApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @GetMapping("/categories/{id}")
-  public ResponseEntity<CategoryDto> getCategory(
+  public ResponseEntity<CategoryDto> getCategoryById(
       @Parameter(description = "Id of the Category to get", required = true,
-          example = "1") @PathVariable Long id) {
+          example = "1") @PathVariable("id") Long id) {
     return getResponse(categoryService.findOne(id), id);
   }
 
   /**
-   * {@code DELETE  /categories/:id} : delete the "id" category.
+   * Delete a category by id.
    *
    * @param id the id of the category to delete
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Delete Category", description = "Delete an Category to the system",
       tags = {TAG})
@@ -148,9 +148,9 @@ public class CategoryApi extends AbstractApi {
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/categories/{id}")
-  public ResponseEntity<Void> deleteCategory(
+  public ResponseEntity<Void> deleteCategoryById(
       @Parameter(description = "Id of the Category to delete", required = true,
-          example = "1") @PathVariable Long id) {
+          example = "1") @PathVariable("id") Long id) {
     categoryService.delete(id);
     return deleteResponse(id);
   }

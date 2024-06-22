@@ -48,7 +48,7 @@ public interface ProductApiService {
   ResponseEntity<String> getHealth();
 
   /**
-   * Create a category.
+   * Create a new category.
    *
    * @param categoryDto the entity to create
    * @return the result
@@ -67,12 +67,12 @@ public interface ProductApiService {
   ResponseEntity<Void> updateCategory(CategoryDto categoryDto, @PathVariable("id") Long id);
 
   /**
-   * Get all the categories.
+   * Find categories by name and description.
    *
    * @param name the name
    * @param description the description
    * @param pageable the pagination information
-   * @return the list of entities
+   * @return the list of categories
    */
   @GetMapping("/api/v1/categories")
   ResponseEntity<List<CategoryDto>> findCategories(
@@ -84,7 +84,7 @@ public interface ProductApiService {
    * Get the category by id.
    *
    * @param id the id of the entity
-   * @return the entity
+   * @return the category
    */
   @GetMapping("/api/v1/categories/{id}")
   ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long id);
@@ -118,7 +118,7 @@ public interface ProductApiService {
   ResponseEntity<Void> updateProduct(UpdatebleProductDto productDto, @PathVariable("id") Long id);
 
   /**
-   * Get all the products.
+   * Find products by name, description and category id.
    *
    * @param name the name
    * @param description the description
@@ -134,7 +134,7 @@ public interface ProductApiService {
       Pageable pageable);
 
   /**
-   * Get the "id" product.
+   * Get the product by id.
    *
    * @param id the id of the product to retrieve
    * @return the product
@@ -143,7 +143,7 @@ public interface ProductApiService {
   ResponseEntity<ProductDto> getProductById(@PathVariable("id") Long id);
 
   /**
-   * Delete the "id" product.
+   * Delete the product by id.
    *
    * @param id the id of the product to delete
    * @return the result
@@ -171,7 +171,7 @@ public interface ProductApiService {
   ResponseEntity<Void> patchOrder(UpdatebleOrderDto orderDto, @PathVariable("id") Long id);
 
   /**
-   * Get all the orders.
+   * Find orders by code, customer and status.
    *
    * @param code the code
    * @param customer the customer
@@ -187,7 +187,7 @@ public interface ProductApiService {
       Pageable pageable);
 
   /**
-   * Get the "id" order.
+   * Get the order by id.
    *
    * @param id the id of the order to retrieve
    * @return the order
@@ -196,7 +196,7 @@ public interface ProductApiService {
   public ResponseEntity<OrderDto> getOrderById(@PathVariable("id") Long id);
 
   /**
-   * Delete the "id" order.
+   * Delete the order by id.
    *
    * @param id the id of the order to delete
    * @return the result
@@ -205,7 +205,7 @@ public interface ProductApiService {
   ResponseEntity<Void> deleteOrderById(@PathVariable("id") Long id);
 
   /**
-   * Add Item to the Order.
+   * Add an Item to the Order.
    *
    * @param id Order id
    * @param orderItemDto the new item to add
@@ -215,7 +215,7 @@ public interface ProductApiService {
   ResponseEntity<Void> addOrderItem(@PathVariable("id") Long id, NewOrderItemDto orderItemDto);
 
   /**
-   * Delete the "id" item.
+   * Delete the item by id.
    *
    * @param orderId the id of the order
    * @param orderItemId the id of the item to delete

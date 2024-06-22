@@ -7,6 +7,8 @@ plugins {
 def springdoc_openapi_version = parent.property('springdoc-openapi.version')
 def lombok_version = parent.property('lombok.version')
 def jakarta_validation_version = parent.property('jakarta-validation.version')
+def openfeign_version = parent.property('openfeign.version')
+def feign_hc5_version = parent.property('feign-hc5.version')
 
 ext {
   set('springCloudVersion', "2023.0.1")
@@ -17,8 +19,8 @@ dependencies {
   implementation "org.springframework.data:spring-data-commons:3.1.0"
   implementation "jakarta.validation:jakarta.validation-api:${jakarta_validation_version}"
 
-  implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1'
-  implementation 'io.github.openfeign:feign-hc5:13.2.1'
+  implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${openfeign_version}"
+  implementation "io.github.openfeign:feign-hc5:${feign_hc5_version}"
   implementation "org.projectlombok:lombok:${lombok_version}"
   annotationProcessor "org.projectlombok:lombok:${lombok_version}"
 

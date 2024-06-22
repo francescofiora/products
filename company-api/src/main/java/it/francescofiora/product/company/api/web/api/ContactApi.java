@@ -45,10 +45,10 @@ public class ContactApi extends AbstractApi {
   }
 
   /**
-   * {@code POST  /contacts} : Create a new contact.
+   * Create a new contact.
    *
    * @param contactDto the contact to create
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Add new Contact", description = "Add a new Contact to the system",
       tags = {TAG})
@@ -62,11 +62,11 @@ public class ContactApi extends AbstractApi {
   }
 
   /**
-   * {@code PUT  /contacts} : Update an existing contact.
+   * Update an existing contact.
    *
    * @param contactDto the contact to update
    * @param id the id of the entity
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Update Contact", description = "Update a Contact to the system",
       tags = {TAG})
@@ -88,11 +88,11 @@ public class ContactApi extends AbstractApi {
   }
 
   /**
-   * {@code GET  /contacts} : get all the contacts.
+   * Find contacts by name.
    *
    * @param name the name of the contact
    * @param pageable the pagination information
-   * @return the {@link ResponseEntity} with the list of contacts
+   * @return the list of contacts
    */
   @Operation(summary = "Searches Contacts",
       description = "By passing in the appropriate options, "
@@ -104,7 +104,7 @@ public class ContactApi extends AbstractApi {
               array = @ArraySchema(schema = @Schema(implementation = ContactDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/contacts")
-  public ResponseEntity<List<ContactDto>> getAllContacts(
+  public ResponseEntity<List<ContactDto>> findContacts(
       @Parameter(description = "Contact name", example = "Groupon",
           in = ParameterIn.QUERY) @RequestParam(required = false) String name,
       @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
@@ -113,10 +113,10 @@ public class ContactApi extends AbstractApi {
   }
 
   /**
-   * {@code GET  /contacts/:id} : get the "id" contact.
+   * Get the contact by id.
    *
    * @param id the id of the contact to retrieve
-   * @return the {@link ResponseEntity} with the contact
+   * @return the contact
    */
   @Operation(summary = "Searches Contact by 'id'", description = "Searches Contact by 'id'",
       tags = {TAG})
@@ -126,16 +126,16 @@ public class ContactApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @GetMapping("/contacts/{id}")
-  public ResponseEntity<ContactDto> getContact(@Parameter(description = "Id of the Contact to get",
-      required = true, example = "1") @PathVariable Long id) {
+  public ResponseEntity<ContactDto> getContactById(@Parameter(description = "Id of the Contact to get",
+      required = true, example = "1") @PathVariable("id") Long id) {
     return getResponse(contactService.findOne(id), id);
   }
 
   /**
-   * {@code DELETE  /contacts/:id} : delete the contact by id.
+   * Delete the contact by id.
    *
    * @param id the id of the contact to delete
-   * @return the {@link ResponseEntity}
+   * @return the result
    */
   @Operation(summary = "Delete Contact", description = "Delete an Contact to the system",
       tags = {TAG})
@@ -143,9 +143,9 @@ public class ContactApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/contacts/{id}")
-  public ResponseEntity<Void> deleteContact(
+  public ResponseEntity<Void> deleteContactById(
       @Parameter(description = "The id of the Contact to delete", required = true,
-          example = "1") @PathVariable Long id) {
+          example = "1") @PathVariable("id") Long id) {
     contactService.delete(id);
     return deleteResponse(id);
   }
