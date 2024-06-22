@@ -114,7 +114,7 @@ Scan project
 
 ### Integration test
 
-###Publish client and dto jars
+### Publish client and dto jars
     ./gradlew publishToMavenLocal
 
 ###Run Integration tests

@@ -152,8 +152,9 @@ public class ProductApi extends AbstractApi {
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/products/{id}")
-  public ResponseEntity<Void> deleteProductById(@Parameter(description = "Id of the Product to delete",
-      required = true, example = "1") @PathVariable("id") Long id) {
+  public ResponseEntity<Void> deleteProductById(
+      @Parameter(description = "Id of the Product to delete", required = true, example = "1")
+      @PathVariable("id") Long id) {
     productService.delete(id);
     return deleteResponse(id);
   }

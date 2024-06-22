@@ -147,8 +147,9 @@ public class OrderApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/orders/{id}")
-  public ResponseEntity<Void> deleteOrderById(@Parameter(description = "The id of the Order to delete",
-      required = true, example = "1") @PathVariable("id") Long id) {
+  public ResponseEntity<Void> deleteOrderById(
+      @Parameter(description = "The id of the Order to delete", required = true, example = "1")
+      @PathVariable("id") Long id) {
     orderService.delete(id);
     return deleteResponse(id);
   }

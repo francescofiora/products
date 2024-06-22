@@ -126,8 +126,9 @@ public class ContactApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
   @GetMapping("/contacts/{id}")
-  public ResponseEntity<ContactDto> getContactById(@Parameter(description = "Id of the Contact to get",
-      required = true, example = "1") @PathVariable("id") Long id) {
+  public ResponseEntity<ContactDto> getContactById(
+      @Parameter(description = "Id of the Contact to get", required = true, example = "1")
+      @PathVariable("id") Long id) {
     return getResponse(contactService.findOne(id), id);
   }
 
