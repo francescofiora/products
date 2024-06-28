@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import it.francescofiora.product.client.ProductApiService;
 import it.francescofiora.product.itt.context.OrderContext;
 import it.francescofiora.product.itt.context.ProductContext;
-import it.francescofiora.product.itt.util.TestUtils;
+import it.francescofiora.product.itt.util.TestProductUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class OrderComponent extends AbstractComponent {
   private final ProductApiService productApiService;
 
   public void createNewOrderDto(String code, String customer) {
-    orderContext.setNewOrderDto(TestUtils.createNewOrderDto(code, customer));
+    orderContext.setNewOrderDto(TestProductUtils.createNewOrderDto(code, customer));
     orderContext.getNewOrderDto().getItems().add(orderContext.getNewOrderItemDto());
   }
 
@@ -36,7 +36,7 @@ public class OrderComponent extends AbstractComponent {
   public void createNewOrderItemDto(String quantity) {
     var resultPr = productApiService.createProduct(productContext.getNewProductDto());
     productContext.setProductId(validateResponseAndGetId(resultPr));
-    orderContext.setNewOrderItemDto(TestUtils.createNewOrderItemDto(
+    orderContext.setNewOrderItemDto(TestProductUtils.createNewOrderItemDto(
         productContext.getProductId(), quantity));
   }
 
@@ -71,7 +71,7 @@ public class OrderComponent extends AbstractComponent {
    */
   public void updateOrder(String code, String customer) {
     orderContext.setUpdatebleOrderDto(
-        TestUtils.createUpdatebleOrderDto(orderContext.getOrderId(), code, customer));
+        TestProductUtils.createUpdatebleOrderDto(orderContext.getOrderId(), code, customer));
     var result = productApiService.patchOrder(orderContext.getUpdatebleOrderDto(),
         orderContext.getOrderId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);

@@ -1,10 +1,10 @@
-Feature: Rest Api
+Feature: Product Rest Api
 
-  Scenario: Verify Application Health
+  Scenario: Verify Product Application Health
     Given the system up and running
-    When GET the Application Health
+    When GET the Product Application Health
     Then the result should contain "UP"
-    When GET the Application Info
+    When GET the Product Application Info
     Then the result should contain "product-api"
 
   Scenario: Verify CRUD Category operation
@@ -12,11 +12,11 @@ Feature: Rest Api
     | CAT1 | Category example |
     When create that Category
     Then should be able to get that Category
-    And the Category from POST should the same as from GET
+    And the Category from POST should be the same as from GET
     When update the Category
     | CAT2 | Category updated |
     And get all Categories
-    Then the Category from PUT should the same as from GET_ALL
+    Then the Category from PUT should be the same as from GET_ALL
     When delete the Category
     Then that Category should be not present
 
@@ -27,11 +27,11 @@ Feature: Rest Api
     | PROD1 | Product description | image.jpg | JPG | 10 | L |
     When create that Product
     Then should be able to get that Product
-    And the Product from POST should the same as from GET
+    And the Product from POST should be the same as from GET
     When update the Product
     | PROD2 | Description updated | image.gif | GIF | 11 | M |
     And get all Products
-    Then the Product from PUT should the same as from GET_ALL
+    Then the Product from PUT should be the same as from GET_ALL
     When delete the Product
     Then that Product should be not present
 
@@ -47,11 +47,11 @@ Feature: Rest Api
     When create that Order
     Then should be able to get that Order
     And that Order should have 1 items
-    And the Order from POST should the same as from GET
+    And the Order from POST should be the same as from GET
     When update the Order
     | ORD2 | Customer name updated |
     And get all Orders
-    Then the Order from PUT should the same as from GET_ALL
+    Then the Order from PUT should be the same as from GET_ALL
     When delete the Order
     Then that Order should be not present
     When delete the Product

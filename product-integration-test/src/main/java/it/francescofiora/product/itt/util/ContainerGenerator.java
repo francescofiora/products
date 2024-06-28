@@ -12,7 +12,10 @@ import org.testcontainers.containers.PostgreSQLContainer;
 public class ContainerGenerator {
 
   public static final String PRODUCT_POSTGRESQL = "product-postgresql";
-  public static final String PRODUCT_API = "product";
+  public static final String NETWORK_PRODUCT_API = "product";
+  public static final String NETWORK_COMPANY_API = "company";
+  public static final String INSTANCE_PRODUCT_API = "PRODUCT-API";
+  public static final String INSTANCE_COMPANY_API = "COMPANY-API";
   public static final String PRODUCT_EUREKA = "product-eureka";
 
   private final Network network = Network.newNetwork();

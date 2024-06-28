@@ -49,6 +49,7 @@ public class StepDefinitions extends SpringGlue {
 
     try (var ds = DataSourceUtils.createHikariDataSource(postgreContainer)) {
       DataSourceUtils.executeQuery(ds, "CREATE SCHEMA IF NOT EXISTS STORE");
+      DataSourceUtils.executeQuery(ds, "CREATE SCHEMA IF NOT EXISTS COMPANY");
     }
 
     eureka = containerGenerator.createEurekaServerContainer();
@@ -63,10 +64,22 @@ public class StepDefinitions extends SpringGlue {
             "EUREKA_URI", eurekaHttp,
             "eureka.instance.prefer-ip-address", "true"))
         .withLogConsumer(new Slf4jLogConsumer(log))
-        .withNetworkAliases(ContainerGenerator.PRODUCT_API)
+        .withNetworkAliases(ContainerGenerator.NETWORK_PRODUCT_API)
         .withExposedPorts(8081);
     // @formatter:on
     containers.add(product);
+
+    // @formatter:off
+    var company = containerGenerator.createContainer("francescofiora-company")
+        .withEnv(Map.of(
+            "DATASOURCE_URL", DATASOURCE_URL,
+            "EUREKA_URI", eurekaHttp,
+            "eureka.instance.prefer-ip-address", "true"))
+        .withLogConsumer(new Slf4jLogConsumer(log))
+        .withNetworkAliases(ContainerGenerator.NETWORK_COMPANY_API)
+        .withExposedPorts(8082);
+    // @formatter:on
+    containers.add(company);
   }
 
   /**
@@ -75,9 +88,14 @@ public class StepDefinitions extends SpringGlue {
   @Given("the system up and running")
   public void givenSystemUp() {
     assertTrue(containers.areRunning());
-    while (discoveryClient.getInstances("PRODUCT-API").isEmpty()) {
+    checkInstance(ContainerGenerator.INSTANCE_PRODUCT_API);
+    checkInstance(ContainerGenerator.INSTANCE_COMPANY_API);
+  }
+
+  private void checkInstance(String name) {
+    while (discoveryClient.getInstances(name).isEmpty()) {
       try {
-        Thread.sleep(500);
+        Thread.sleep(100);
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
@@ -89,9 +107,9 @@ public class StepDefinitions extends SpringGlue {
    *
    * @param op Health or Info
    */
-  @When("^GET the Application (\\w+)$")
-  public void whenGetApplication(final String op) {
-    applicationService.whenGetApplication(op);
+  @When("^GET the (\\w+) Application (\\w+)$")
+  public void whenGetApplication(final String application, final String op) {
+    applicationService.whenGetApplication(application, op);
   }
 
   /**
@@ -132,8 +150,8 @@ public class StepDefinitions extends SpringGlue {
    * @param entity the entity
    */
   @Then("^should be able to get that (\\w+)$")
-  public void thenGetCategory(final String entity) {
-    applicationService.thenGetCategory(entity);
+  public void thenGetEntity(final String entity) {
+    applicationService.thenGetEntity(entity);
   }
 
   /**
@@ -143,7 +161,7 @@ public class StepDefinitions extends SpringGlue {
    * @param op1 POST or PUT
    * @param op2 GET or GET_ALL
    */
-  @Then("^the (\\w+) from (\\w+) should the same as from (\\w+)$")
+  @Then("^the (\\w+) from (\\w+) should be the same as from (\\w+)$")
   public void thenCompareObject(final String entity, final String op1, final String op2) {
     applicationService.thenCompareObject(entity, op1, op2);
   }

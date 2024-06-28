@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import it.francescofiora.product.client.ProductApiService;
 import it.francescofiora.product.itt.context.CategoryContext;
 import it.francescofiora.product.itt.context.ProductContext;
-import it.francescofiora.product.itt.util.TestUtils;
+import it.francescofiora.product.itt.util.TestProductUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -37,7 +37,7 @@ public class ProductComponent extends AbstractComponent {
       String price, String size) {
     var resultCat = productApiService.createCategory(categoryContext.getNewCategoryDto());
     categoryContext.setCategoryId(validateResponseAndGetId(resultCat));
-    productContext.setNewProductDto(TestUtils.createNewProductDto(name, description, image,
+    productContext.setNewProductDto(TestProductUtils.createNewProductDto(name, description, image,
         imageType, price, size, categoryContext.getCategoryId()));
   }
 
@@ -68,8 +68,8 @@ public class ProductComponent extends AbstractComponent {
   public void updateProduct(String name, String description, String image, String imageType,
       String price, String size) {
     var productId = productContext.getProductId();
-    productContext.setUpdatebleProductDto(TestUtils.createUpdatebleProductDto(productId, name,
-        description, image, imageType, price, size, categoryContext.getCategoryId()));
+    productContext.setUpdatebleProductDto(TestProductUtils.createUpdatebleProductDto(productId,
+        name, description, image, imageType, price, size, categoryContext.getCategoryId()));
     var result = productApiService.updateProduct(
         productContext.getUpdatebleProductDto(), productId);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);

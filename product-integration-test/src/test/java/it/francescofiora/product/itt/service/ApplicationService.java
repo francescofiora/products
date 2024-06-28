@@ -3,7 +3,9 @@ package it.francescofiora.product.itt.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import it.francescofiora.product.client.ProductApiService;
+import it.francescofiora.product.company.client.CompanyApiService;
 import it.francescofiora.product.itt.component.CategoryComponent;
+import it.francescofiora.product.itt.component.CompanyComponent;
 import it.francescofiora.product.itt.component.OrderComponent;
 import it.francescofiora.product.itt.component.ProductComponent;
 import java.util.List;
@@ -19,7 +21,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ApplicationService {
 
+  private static final String CATEGORY = "Category";
+  private static final String PRODUCT = "Product";
+  private static final String COMPANY = "Company";
+  private static final String ORDER = "Order";
+  private static final String ORDER_ITEM = "OrderItem";
+  private static final String ADDRESS = "Address";
+
+  private final CompanyApiService companyApiService;
   private final ProductApiService productApiService;
+
+  private final CompanyComponent companyComponent;
+
   private final CategoryComponent categoryComponent;
   private final ProductComponent productComponent;
   private final OrderComponent orderComponent;
@@ -31,10 +44,12 @@ public class ApplicationService {
    *
    * @param op Health or Info
    */
-  public void whenGetApplication(final String op) {
-    resultString = switch (op) {
-      case "Health" -> productApiService.getHealth();
-      case "Info" -> productApiService.getInfo();
+  public void whenGetApplication(final String application, final String op) {
+    resultString = switch (application + "-" + op) {
+      case "Product-Health" -> productApiService.getHealth();
+      case "Product-Info" -> productApiService.getInfo();
+      case "Company-Health" -> companyApiService.getHealth();
+      case "Company-Info" -> companyApiService.getInfo();
       default -> throw new IllegalArgumentException("Unexpected value: " + op);
     };
     assertThat(resultString.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -49,7 +64,6 @@ public class ApplicationService {
     assertThat(resultString.getBody()).contains(expected);
   }
 
-
   /**
    * Given a new entity.
    *
@@ -58,11 +72,16 @@ public class ApplicationService {
    */
   public void givenNew(final String entity, List<String> rows) {
     switch (entity) {
-      case "Category" -> categoryComponent.createNewCategoryDto(rows.get(0), rows.get(1));
-      case "Product" -> productComponent.createNewProductDto(rows.get(0), rows.get(1), rows.get(2),
+      case CATEGORY -> categoryComponent.createNewCategoryDto(rows.get(0), rows.get(1));
+      case PRODUCT -> productComponent.createNewProductDto(rows.get(0), rows.get(1), rows.get(2),
           rows.get(3), rows.get(4), rows.get(5));
-      case "Order" -> orderComponent.createNewOrderDto(rows.get(0), rows.get(1));
-      case "OrderItem" -> orderComponent.createNewOrderItemDto(rows.get(0));
+      case ORDER -> orderComponent.createNewOrderDto(rows.get(0), rows.get(1));
+      case ORDER_ITEM -> orderComponent.createNewOrderItemDto(rows.get(0));
+      case COMPANY -> companyComponent.createNewCompanyDto(rows.get(0), rows.get(1), rows.get(2),
+          rows.get(3), rows.get(4), rows.get(5), rows.get(6), rows.get(7), rows.get(8),
+          rows.get(9), rows.get(10));
+      case ADDRESS -> companyComponent.createNewAddressDto(rows.get(0), rows.get(1), rows.get(2),
+          rows.get(3), rows.get(4), rows.get(5), rows.get(6), rows.get(7));
       default -> throw new IllegalArgumentException("Unexpected value: " + entity);
     }
   }
@@ -74,10 +93,12 @@ public class ApplicationService {
    */
   public void whenCreate(final String entity) {
     switch (entity) {
-      case "Category" -> categoryComponent.createCategory();
-      case "Product" -> productComponent.createProduct();
-      case "Order" -> orderComponent.createOrder();
-      case "OrderItem" -> orderComponent.createItem();
+      case CATEGORY -> categoryComponent.createCategory();
+      case PRODUCT -> productComponent.createProduct();
+      case ORDER -> orderComponent.createOrder();
+      case ORDER_ITEM -> orderComponent.createItem();
+      case COMPANY -> companyComponent.createCompany();
+      case ADDRESS -> companyComponent.createAddress();
       default -> throw new IllegalArgumentException("Unexpected value: " + entity);
     }
   }
@@ -87,11 +108,13 @@ public class ApplicationService {
    *
    * @param entity the entity
    */
-  public void thenGetCategory(final String entity) {
+  public void thenGetEntity(final String entity) {
     switch (entity) {
-      case "Category" -> categoryComponent.fetchCategory();
-      case "Product" -> productComponent.fetchProduct();
-      case "Order" -> orderComponent.fetchOrder();
+      case CATEGORY -> categoryComponent.fetchCategory();
+      case PRODUCT -> productComponent.fetchProduct();
+      case ORDER -> orderComponent.fetchOrder();
+      case COMPANY -> companyComponent.fetchCompany();
+      case ADDRESS -> companyComponent.fetchAddress();
       default -> throw new IllegalArgumentException("Unexpected value: " + entity);
     }
   }
@@ -107,18 +130,22 @@ public class ApplicationService {
     if ("POST".equals(op1) && "GET".equals(op2)) {
 
       switch (entity) {
-        case "Category" -> categoryComponent.compareCategoryWithNewCategory();
-        case "Product" -> productComponent.compareProductWithNewProduct();
-        case "Order" -> orderComponent.compareOrderWithNewOrder();
+        case CATEGORY -> categoryComponent.compareCategoryWithNewCategory();
+        case PRODUCT -> productComponent.compareProductWithNewProduct();
+        case ORDER -> orderComponent.compareOrderWithNewOrder();
+        case COMPANY -> companyComponent.compareCompanyWithNewCompany();
+        case ADDRESS -> companyComponent.compareAddressWithNewAddress();
         default -> throw new IllegalArgumentException("Unexpected value: " + entity);
       }
 
     } else if ("PUT".equals(op1) && "GET_ALL".equals(op2)) {
 
       switch (entity) {
-        case "Category" -> categoryComponent.compareUpdatebleCategoryIntoCategories();
-        case "Product" -> productComponent.compareUpdatebleProductIntoProducts();
-        case "Order" -> orderComponent.compareUpdatebleOrderIntoOrders();
+        case CATEGORY -> categoryComponent.compareUpdatebleCategoryIntoCategories();
+        case PRODUCT -> productComponent.compareUpdatebleProductIntoProducts();
+        case ORDER -> orderComponent.compareUpdatebleOrderIntoOrders();
+        case COMPANY -> companyComponent.compareUpdatebleCompanyIntoCompanies();
+        case ADDRESS -> companyComponent.compareUpdatebleAddressIntoAddresses();
         default -> throw new IllegalArgumentException("Unexpected value: " + entity);
       }
 
@@ -139,10 +166,13 @@ public class ApplicationService {
    */
   public void whenUpdate(final String entity, final List<String> rows) {
     switch (entity) {
-      case "Category" -> categoryComponent.updateCategory(rows.get(0), rows.get(1));
-      case "Product" -> productComponent.updateProduct(
+      case CATEGORY -> categoryComponent.updateCategory(rows.get(0), rows.get(1));
+      case PRODUCT -> productComponent.updateProduct(
           rows.get(0), rows.get(1), rows.get(2), rows.get(3), rows.get(4), rows.get(5));
-      case "Order" -> orderComponent.updateOrder(rows.get(0), rows.get(1));
+      case ORDER -> orderComponent.updateOrder(rows.get(0), rows.get(1));
+      case COMPANY -> companyComponent.updateCompany(rows.get(0), rows.get(1), rows.get(2));
+      case ADDRESS -> companyComponent.updateAddress(rows.get(0), rows.get(1), rows.get(2),
+          rows.get(3), rows.get(4), rows.get(5), rows.get(6), rows.get(7));
       default -> throw new IllegalArgumentException("Unexpected value: " + entity);
     }
   }
@@ -154,10 +184,12 @@ public class ApplicationService {
    */
   public void thenDelete(final String entity) {
     switch (entity) {
-      case "Category" -> categoryComponent.deleteCategory();
-      case "Product" -> productComponent.deleteProduct();
-      case "Order" -> orderComponent.deleteOrder();
-      case "OrderItem" -> orderComponent.deleteItem();
+      case CATEGORY -> categoryComponent.deleteCategory();
+      case PRODUCT -> productComponent.deleteProduct();
+      case ORDER -> orderComponent.deleteOrder();
+      case ORDER_ITEM -> orderComponent.deleteItem();
+      case COMPANY -> companyComponent.deleteCompany();
+      case ADDRESS -> companyComponent.deleteAddress();
       default -> throw new IllegalArgumentException("Unexpected value: " + entity);
     }
   }
@@ -172,6 +204,8 @@ public class ApplicationService {
       case "Categories" -> categoryComponent.fetchAllCategories();
       case "Products" -> productComponent.fetchAllProducts();
       case "Orders" -> orderComponent.fetchAllOrders();
+      case "Companies" -> companyComponent.fetchAllCompanies();
+      case "Addresses" -> companyComponent.fetchAllAddresses();
       default -> throw new IllegalArgumentException("Unexpected value: " + entity);
     }
   }
@@ -183,9 +217,11 @@ public class ApplicationService {
    */
   public void thenNotExist(final String entity) {
     switch (entity) {
-      case "Category" -> categoryComponent.checkCategoryNotExist();
-      case "Product" -> productComponent.checkProductNotExist();
-      case "Order" -> orderComponent.checkOrderNotExist();
+      case CATEGORY -> categoryComponent.checkCategoryNotExist();
+      case PRODUCT -> productComponent.checkProductNotExist();
+      case ORDER -> orderComponent.checkOrderNotExist();
+      case COMPANY -> companyComponent.checkCompanyNotExist();
+      case ADDRESS -> companyComponent.checkAddressNotExist();
       default -> throw new IllegalArgumentException("Unexpected value: " + entity);
     }
   }

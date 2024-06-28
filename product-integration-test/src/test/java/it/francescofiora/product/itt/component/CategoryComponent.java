@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import it.francescofiora.product.client.ProductApiService;
 import it.francescofiora.product.itt.context.CategoryContext;
-import it.francescofiora.product.itt.util.TestUtils;
+import it.francescofiora.product.itt.util.TestProductUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ public class CategoryComponent extends AbstractComponent {
   private final ProductApiService productApiService;
 
   public void createNewCategoryDto(String name, String description) {
-    categoryContext.setNewCategoryDto(TestUtils.createNewCategoryDto(name, description));
+    categoryContext.setNewCategoryDto(TestProductUtils.createNewCategoryDto(name, description));
   }
 
   public void createCategory() {
@@ -48,7 +48,7 @@ public class CategoryComponent extends AbstractComponent {
   public void updateCategory(String name, String description) {
     var categoryId = categoryContext.getCategoryId();
     categoryContext.setUpdatebleCategoryDto(
-        TestUtils.createCategoryDto(categoryId, name, description));
+        TestProductUtils.createCategoryDto(categoryId, name, description));
     var result = productApiService
         .updateCategory(categoryContext.getUpdatebleCategoryDto(), categoryId);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);

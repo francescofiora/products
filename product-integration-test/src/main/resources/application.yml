@@ -22,5 +22,8 @@ eureka:
 product:
   userName: user
   password: password
+company:
+  userName: user
+  password: password
 
 feign.httpclient.enabled: true

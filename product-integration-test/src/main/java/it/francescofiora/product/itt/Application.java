@@ -10,9 +10,10 @@ import org.springframework.context.annotation.ComponentScan;
  * Application Starter.
  */
 @ComponentScan(basePackages = {"it.francescofiora.product.itt",
-    "it.francescofiora.product.client"})
+    "it.francescofiora.product.client", "it.francescofiora.product.company.client"})
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = {"it.francescofiora.product.client"})
+@EnableFeignClients(basePackages = {"it.francescofiora.product.client",
+    "it.francescofiora.product.company.client"})
 @SpringBootApplication
 public class Application {
 

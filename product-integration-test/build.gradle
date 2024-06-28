@@ -25,6 +25,7 @@ def logback_version = property('logback.version')
 def openpojo_version = property('openpojo.version')
 def testcontainers_version = property('testcontainers.version')
 def cucumber_version = property('cucumber.version')
+def feign_hc5_version = property('feign-hc5.version')
 
 ext {
   set('springCloudVersion', "2023.0.1")
@@ -45,7 +46,7 @@ dependencies {
   implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
   implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
-  implementation 'io.github.openfeign:feign-hc5:13.2.1'
+  implementation "io.github.openfeign:feign-hc5:${feign_hc5_version}"
 
   implementation "ch.qos.logback:logback-classic:${logback_version}"
 
@@ -56,6 +57,8 @@ dependencies {
   implementation 'it.francescofiora:product-common:1.0-SNAPSHOT'
   implementation 'it.francescofiora:product-dto:1.0-SNAPSHOT'
   implementation 'it.francescofiora:product-client:1.0-SNAPSHOT'
+  implementation 'it.francescofiora:company-dto:1.0-SNAPSHOT'
+  implementation 'it.francescofiora:company-client:1.0-SNAPSHOT'
 
   implementation platform("org.testcontainers:testcontainers-bom:${testcontainers_version}")
 

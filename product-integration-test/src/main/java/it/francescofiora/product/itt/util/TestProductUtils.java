@@ -16,10 +16,10 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * Utility for testing.
+ * Utility for testing product Application.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class TestUtils {
+public final class TestProductUtils {
 
   /**
    * Create a new NewCategoryDto.
@@ -104,7 +104,7 @@ public final class TestUtils {
     product.setImageContentType(imageType);
     product.setPrice(BigDecimal.valueOf(Double.valueOf(price)));
     product.setSize(Size.valueOf(size));
-    product.setCategory(TestUtils.createRefCategoryDto(categoryId));
+    product.setCategory(TestProductUtils.createRefCategoryDto(categoryId));
     return product;
   }
 
@@ -144,7 +144,7 @@ public final class TestUtils {
     product.setImageContentType(imageType);
     product.setPrice(BigDecimal.valueOf(Double.valueOf(price)));
     product.setSize(Size.valueOf(size));
-    product.setCategory(TestUtils.createRefCategoryDto(categoryId));
+    product.setCategory(TestProductUtils.createRefCategoryDto(categoryId));
     return product;
   }
 
