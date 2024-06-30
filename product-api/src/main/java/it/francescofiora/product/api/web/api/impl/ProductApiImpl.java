@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductApiImpl extends AbstractApi implements ProductApi {
 
   private static final String ENTITY_NAME = "ProductDto";
-  private static final String TAG = "product";
 
   private final ProductService productService;
 

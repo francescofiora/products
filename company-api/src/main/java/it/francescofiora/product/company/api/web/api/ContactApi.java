@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import it.francescofiora.product.company.api.service.ContactService;
-import it.francescofiora.product.company.api.web.errors.BadRequestAlertException;
 import it.francescofiora.product.company.dto.ContactDto;
 import it.francescofiora.product.company.dto.NewContactDto;
 import it.francescofiora.product.company.dto.UpdatebleContactDto;
@@ -23,26 +21,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * REST controller for managing {@link ContactDto}.
+ * REST controller for managing Contact.
  */
 @RestController
-@RequestMapping("/api/v1")
-public class ContactApi extends AbstractApi {
+public interface ContactApi {
 
-  private static final String ENTITY_NAME = "ContactDto";
-  private static final String TAG = "contact";
-
-  private final ContactService contactService;
-
-  protected ContactApi(ContactService contactService) {
-    super(ENTITY_NAME);
-    this.contactService = contactService;
-  }
+  String TAG = "contact";
 
   /**
    * Create a new contact.
@@ -54,12 +42,9 @@ public class ContactApi extends AbstractApi {
       tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Contact created"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid")})
-  @PostMapping("/contacts")
-  public ResponseEntity<Void> createContact(
-      @Parameter(description = "Add new Contact") @Valid @RequestBody NewContactDto contactDto) {
-    var result = contactService.create(contactDto);
-    return postResponse("/api/v1/contacts/" + result.getId(), result.getId());
-  }
+  @PostMapping("/api/v1/contacts")
+  ResponseEntity<Void> createContact(
+      @Parameter(description = "Add new Contact") @Valid @RequestBody NewContactDto contactDto);
 
   /**
    * Update an existing contact.
@@ -73,19 +58,12 @@ public class ContactApi extends AbstractApi {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Contact updated"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @PutMapping("/contacts/{id}")
-  public ResponseEntity<Void> updateContact(
+  @PutMapping("/api/v1/contacts/{id}")
+  ResponseEntity<Void> updateContact(
       @Parameter(
           description = "Contact to update") @Valid @RequestBody UpdatebleContactDto contactDto,
       @Parameter(description = "The id of the contact to update", required = true,
-          example = "1") @PathVariable("id") Long id) {
-    if (!id.equals(contactDto.getId())) {
-      throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(contactDto.getId()),
-          "Invalid id");
-    }
-    contactService.update(contactDto);
-    return putResponse(id);
-  }
+          example = "1") @PathVariable("id") Long id);
 
   /**
    * Find contacts by name.
@@ -103,14 +81,12 @@ public class ContactApi extends AbstractApi {
           content = @Content(
               array = @ArraySchema(schema = @Schema(implementation = ContactDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
-  @GetMapping("/contacts")
-  public ResponseEntity<List<ContactDto>> findContacts(
+  @GetMapping("/api/v1/contacts")
+  ResponseEntity<List<ContactDto>> findContacts(
       @Parameter(description = "Contact name", example = "Groupon",
           in = ParameterIn.QUERY) @RequestParam(required = false) String name,
       @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
-          in = ParameterIn.QUERY) Pageable pageable) {
-    return getResponse(contactService.findAll(name, pageable));
-  }
+          in = ParameterIn.QUERY) Pageable pageable);
 
   /**
    * Get the contact by id.
@@ -125,12 +101,10 @@ public class ContactApi extends AbstractApi {
           content = @Content(schema = @Schema(implementation = ContactDto.class))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @GetMapping("/contacts/{id}")
-  public ResponseEntity<ContactDto> getContactById(
+  @GetMapping("/api/v1/contacts/{id}")
+  ResponseEntity<ContactDto> getContactById(
       @Parameter(description = "Id of the Contact to get", required = true, example = "1")
-      @PathVariable("id") Long id) {
-    return getResponse(contactService.findOne(id), id);
-  }
+      @PathVariable("id") Long id);
 
   /**
    * Delete the contact by id.
@@ -143,11 +117,8 @@ public class ContactApi extends AbstractApi {
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Contact deleted"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @DeleteMapping("/contacts/{id}")
-  public ResponseEntity<Void> deleteContactById(
+  @DeleteMapping("/api/v1/contacts/{id}")
+  ResponseEntity<Void> deleteContactById(
       @Parameter(description = "The id of the Contact to delete", required = true,
-          example = "1") @PathVariable("id") Long id) {
-    contactService.delete(id);
-    return deleteResponse(id);
-  }
+          example = "1") @PathVariable("id") Long id);
 }

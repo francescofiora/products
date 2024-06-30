@@ -117,7 +117,7 @@ Scan project
 ### Publish client and dto jars
     ./gradlew publishToMavenLocal
 
-###Run Integration tests
+### Run Integration tests
     cd product-integration-test
     ./gradlew clean build
 

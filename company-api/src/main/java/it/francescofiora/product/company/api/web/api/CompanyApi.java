@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import it.francescofiora.product.company.api.service.CompanyService;
-import it.francescofiora.product.company.api.web.errors.BadRequestAlertException;
 import it.francescofiora.product.company.dto.AddressDto;
 import it.francescofiora.product.company.dto.CompanyDto;
 import it.francescofiora.product.company.dto.NewAddressDto;
@@ -26,27 +24,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
- * REST controller for managing {@link CompanyDto}.
+ * REST controller for managing Company.
  */
-@RestController
-@RequestMapping("/api/v1")
-public class CompanyApi extends AbstractApi {
+public interface CompanyApi {
 
-  private static final String ENTITY_NAME = "CompanyDto";
-  private static final String ENTITY_COMPANY_ADDRESS = "AddressDto";
-  private static final String TAG = "company";
-
-  private final CompanyService companyService;
-
-  protected CompanyApi(CompanyService companyService) {
-    super(ENTITY_NAME);
-    this.companyService = companyService;
-  }
+  String TAG = "company";
 
   /**
    * Create a new company.
@@ -58,12 +43,9 @@ public class CompanyApi extends AbstractApi {
       tags = {TAG})
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Company created"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid")})
-  @PostMapping("/companies")
-  public ResponseEntity<Void> createCompany(
-      @Parameter(description = "Add new Company") @Valid @RequestBody NewCompanyDto companyDto) {
-    var result = companyService.create(companyDto);
-    return postResponse("/api/v1/companies/" + result.getId(), result.getId());
-  }
+  @PostMapping("/api/v1/companies")
+  ResponseEntity<Void> createCompany(
+      @Parameter(description = "Add new Company") @Valid @RequestBody NewCompanyDto companyDto);
 
   /**
    * Update an existing company.
@@ -77,19 +59,12 @@ public class CompanyApi extends AbstractApi {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Company updated"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @PutMapping("/companies/{id}")
-  public ResponseEntity<Void> updateCompany(
+  @PutMapping("/api/v1/companies/{id}")
+  ResponseEntity<Void> updateCompany(
       @Parameter(
           description = "Company to update") @Valid @RequestBody UpdatebleCompanyDto companyDto,
       @Parameter(description = "The id of the company to update", required = true,
-          example = "1") @PathVariable("id") Long id) {
-    if (!id.equals(companyDto.getId())) {
-      throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(companyDto.getId()),
-          "Invalid id");
-    }
-    companyService.update(companyDto);
-    return putResponse(id);
-  }
+          example = "1") @PathVariable("id") Long id);
 
   /**
    * Find companies by name.
@@ -107,14 +82,12 @@ public class CompanyApi extends AbstractApi {
           content = @Content(
               array = @ArraySchema(schema = @Schema(implementation = CompanyDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
-  @GetMapping("/companies")
-  public ResponseEntity<List<CompanyDto>> findCompanies(
+  @GetMapping("/api/v1/companies")
+  ResponseEntity<List<CompanyDto>> findCompanies(
       @Parameter(description = "Company name", example = "Groupon",
           in = ParameterIn.QUERY) @RequestParam(required = false) String name,
       @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
-          in = ParameterIn.QUERY) Pageable pageable) {
-    return getResponse(companyService.findAll(name, pageable));
-  }
+          in = ParameterIn.QUERY) Pageable pageable);
 
   /**
    * Get the company by id.
@@ -129,12 +102,10 @@ public class CompanyApi extends AbstractApi {
           content = @Content(schema = @Schema(implementation = CompanyDto.class))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @GetMapping("/companies/{id}")
-  public ResponseEntity<CompanyDto> getCompanyById(
+  @GetMapping("/api/v1/companies/{id}")
+  ResponseEntity<CompanyDto> getCompanyById(
       @Parameter(description = "Id of the Company to get", required = true, example = "1")
-      @PathVariable Long id) {
-    return getResponse(companyService.findOne(id), id);
-  }
+      @PathVariable Long id);
 
   /**
    * Delete the company by id.
@@ -147,13 +118,10 @@ public class CompanyApi extends AbstractApi {
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Company deleted"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @DeleteMapping("/companies/{id}")
-  public ResponseEntity<Void> deleteCompanyById(
+  @DeleteMapping("/api/v1/companies/{id}")
+  ResponseEntity<Void> deleteCompanyById(
       @Parameter(description = "The id of the Company to delete", required = true,
-          example = "1") @PathVariable Long id) {
-    companyService.delete(id);
-    return deleteResponse(id);
-  }
+          example = "1") @PathVariable Long id);
 
   /**
    * Add un Address to the Company.
@@ -166,14 +134,10 @@ public class CompanyApi extends AbstractApi {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Address added"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @PostMapping("/companies/{id}/addresses")
-  public ResponseEntity<Void> addAddress(
+  @PostMapping("/api/v1/companies/{id}/addresses")
+  ResponseEntity<Void> addAddress(
       @Parameter(description = "Company id", required = true, example = "1") @PathVariable Long id,
-      @Parameter(description = "Address to add") @Valid @RequestBody NewAddressDto addressDto) {
-    var result = companyService.addAddress(id, addressDto);
-    return postResponse(ENTITY_COMPANY_ADDRESS,
-        "/api/v1/companies/" + id + "/addresses/" + result.getId(), result.getId());
-  }
+      @Parameter(description = "Address to add") @Valid @RequestBody NewAddressDto addressDto);
 
 
   /**
@@ -190,15 +154,12 @@ public class CompanyApi extends AbstractApi {
           content = @Content(schema = @Schema(implementation = AddressDto.class))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @GetMapping("/companies/{company_id}/addresses/{address_id}")
-  public ResponseEntity<AddressDto> getAddressById(
+  @GetMapping("/api/v1/companies/{company_id}/addresses/{address_id}")
+  ResponseEntity<AddressDto> getAddressById(
       @Parameter(description = "The id of the Company", required = true,
           example = "1") @PathVariable("company_id") Long companyId,
       @Parameter(description = "Id of the Address to get", required = true,
-          example = "1") @PathVariable("address_id") Long addressId) {
-    return getResponse(ENTITY_COMPANY_ADDRESS, companyService.findOneAddress(companyId, addressId),
-        addressId);
-  }
+          example = "1") @PathVariable("address_id") Long addressId);
 
   /**
    * Update an existing address.
@@ -213,21 +174,14 @@ public class CompanyApi extends AbstractApi {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Address updated"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @PutMapping("/companies/{company_id}/addresses/{address_id}")
-  public ResponseEntity<Void> updateAddress(
+  @PutMapping("/api/v1/companies/{company_id}/addresses/{address_id}")
+  ResponseEntity<Void> updateAddress(
       @Parameter(
           description = "Address to update") @Valid @RequestBody UpdatebleAddressDto addressDto,
       @Parameter(description = "The id of the Company", required = true,
           example = "1") @PathVariable("company_id") Long companyId,
       @Parameter(description = "The id of the Address to update", required = true,
-          example = "1") @PathVariable("address_id") Long addressId) {
-    if (!addressId.equals(addressDto.getId())) {
-      throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(addressDto.getId()),
-          "Invalid id");
-    }
-    companyService.updateAddress(companyId, addressDto);
-    return putResponse(addressId);
-  }
+          example = "1") @PathVariable("address_id") Long addressId);
 
   /**
    * Find the addresses of a company.
@@ -245,13 +199,11 @@ public class CompanyApi extends AbstractApi {
           content = @Content(
               array = @ArraySchema(schema = @Schema(implementation = CompanyDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
-  @GetMapping("/companies/{id}/addresses")
-  public ResponseEntity<List<AddressDto>> findAddresses(
+  @GetMapping("/api/v1/companies/{id}/addresses")
+  ResponseEntity<List<AddressDto>> findAddresses(
       @Parameter(description = "Company id", required = true, example = "1") @PathVariable Long id,
       @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
-          in = ParameterIn.QUERY) Pageable pageable) {
-    return getResponse(companyService.findAllAddress(id, pageable));
-  }
+          in = ParameterIn.QUERY) Pageable pageable);
 
   /**
    * Delete the address by id.
@@ -265,13 +217,10 @@ public class CompanyApi extends AbstractApi {
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Address deleted"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @DeleteMapping("/companies/{company_id}/addresses/{address_id}")
-  public ResponseEntity<Void> deleteAddressById(
+  @DeleteMapping("/api/v1/companies/{company_id}/addresses/{address_id}")
+  ResponseEntity<Void> deleteAddressById(
       @Parameter(description = "Id of the Company", required = true,
           example = "1") @PathVariable(name = "company_id") Long companyId,
       @Parameter(description = "Id of the Address to delete", required = true,
-          example = "1") @PathVariable(name = "address_id") Long addressId) {
-    companyService.deleteAddress(companyId, addressId);
-    return deleteResponse(ENTITY_COMPANY_ADDRESS, addressId);
-  }
+          example = "1") @PathVariable(name = "address_id") Long addressId);
 }
