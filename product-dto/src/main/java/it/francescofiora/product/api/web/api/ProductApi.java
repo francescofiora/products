@@ -30,6 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public interface ProductApi {
 
+  /**
+   * TAG reference.
+   */
   String TAG = "product";
 
   /**
@@ -51,6 +54,7 @@ public interface ProductApi {
    * Updates an existing product.
    *
    * @param productDto the product to update
+   * @param id the id of the product to update
    * @return the result
    */
   @Operation(summary = "Update Product", description = "Update an Product to the system",
@@ -86,12 +90,13 @@ public interface ProductApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/api/v1/products")
   ResponseEntity<List<ProductDto>> findProducts(
-      @Parameter(description = "Name", example = "SHIRTM01",
-          in = ParameterIn.QUERY) @RequestParam(required = false) String name,
+      @Parameter(description = "Name", example = "SHIRTM01", in = ParameterIn.QUERY)
+      @RequestParam(value = "name", required = false) String name,
       @Parameter(description = "Description of the product", example = "Shirt for Men",
-          in = ParameterIn.QUERY) @RequestParam(required = false) String description,
-      @Parameter(description = "ID of the Category", example = "1",
-          in = ParameterIn.QUERY) @RequestParam(required = false) Long categoryId,
+          in = ParameterIn.QUERY)
+      @RequestParam(value = "description", required = false) String description,
+      @Parameter(description = "ID of the Category", example = "1", in = ParameterIn.QUERY)
+      @RequestParam(value = "categoryId", required = false) Long categoryId,
       @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
           in = ParameterIn.QUERY) Pageable pageable);
 

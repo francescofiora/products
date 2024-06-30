@@ -15,6 +15,7 @@ def assertj_version = parent.property('assertj.version')
 dependencies {
   implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc_openapi_version}"
   implementation "jakarta.validation:jakarta.validation-api:${jakarta_validation_version}"
+  implementation "org.springframework.data:spring-data-commons:3.2.3"
 
   implementation project(':product-common')
 

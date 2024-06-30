@@ -3,6 +3,7 @@ package it.francescofiora.product.itt.component;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import it.francescofiora.product.client.CategoryApiService;
 import it.francescofiora.product.client.ProductApiService;
 import it.francescofiora.product.itt.context.CategoryContext;
 import it.francescofiora.product.itt.context.ProductContext;
@@ -22,6 +23,7 @@ public class ProductComponent extends AbstractComponent {
   private final CategoryContext categoryContext;
   private final ProductContext productContext;
   private final ProductApiService productApiService;
+  private final CategoryApiService categoryApiService;
 
   /**
    * Create NewProductDto.
@@ -35,7 +37,7 @@ public class ProductComponent extends AbstractComponent {
    */
   public void createNewProductDto(String name, String description, String image, String imageType,
       String price, String size) {
-    var resultCat = productApiService.createCategory(categoryContext.getNewCategoryDto());
+    var resultCat = categoryApiService.createCategory(categoryContext.getNewCategoryDto());
     categoryContext.setCategoryId(validateResponseAndGetId(resultCat));
     productContext.setNewProductDto(TestProductUtils.createNewProductDto(name, description, image,
         imageType, price, size, categoryContext.getCategoryId()));

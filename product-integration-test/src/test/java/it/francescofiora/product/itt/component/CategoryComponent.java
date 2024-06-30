@@ -3,7 +3,7 @@ package it.francescofiora.product.itt.component;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import it.francescofiora.product.client.ProductApiService;
+import it.francescofiora.product.client.CategoryApiService;
 import it.francescofiora.product.itt.context.CategoryContext;
 import it.francescofiora.product.itt.util.TestProductUtils;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +19,14 @@ import org.springframework.stereotype.Component;
 public class CategoryComponent extends AbstractComponent {
 
   private final CategoryContext categoryContext;
-  private final ProductApiService productApiService;
+  private final CategoryApiService categoryApiService;
 
   public void createNewCategoryDto(String name, String description) {
     categoryContext.setNewCategoryDto(TestProductUtils.createNewCategoryDto(name, description));
   }
 
   public void createCategory() {
-    var result = productApiService.createCategory(categoryContext.getNewCategoryDto());
+    var result = categoryApiService.createCategory(categoryContext.getNewCategoryDto());
     categoryContext.setCategoryId(validateResponseAndGetId(result));
   }
 
@@ -34,7 +34,7 @@ public class CategoryComponent extends AbstractComponent {
    * Fetch Category.
    */
   public void fetchCategory() {
-    var result = productApiService.getCategoryById(categoryContext.getCategoryId());
+    var result = categoryApiService.getCategoryById(categoryContext.getCategoryId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     categoryContext.setCategoryDto(result.getBody());
   }
@@ -49,13 +49,13 @@ public class CategoryComponent extends AbstractComponent {
     var categoryId = categoryContext.getCategoryId();
     categoryContext.setUpdatebleCategoryDto(
         TestProductUtils.createCategoryDto(categoryId, name, description));
-    var result = productApiService
+    var result = categoryApiService
         .updateCategory(categoryContext.getUpdatebleCategoryDto(), categoryId);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   public void deleteCategory() {
-    var result = productApiService.deleteCategoryById(categoryContext.getCategoryId());
+    var result = categoryApiService.deleteCategoryById(categoryContext.getCategoryId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
   }
 
@@ -63,7 +63,7 @@ public class CategoryComponent extends AbstractComponent {
    * Fetch all Categories.
    */
   public void fetchAllCategories() {
-    var result = productApiService.findCategories(null, null, Pageable.unpaged());
+    var result = categoryApiService.findCategories(null, null, Pageable.unpaged());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(result.getBody()).isNotEmpty();
     categoryContext.setCategories(result.getBody());
@@ -96,7 +96,7 @@ public class CategoryComponent extends AbstractComponent {
    * Check Category Not Exist.
    */
   public void checkCategoryNotExist() {
-    var resultCat = productApiService.findCategories(null, null, Pageable.unpaged());
+    var resultCat = categoryApiService.findCategories(null, null, Pageable.unpaged());
     assertThat(resultCat.getBody()).isNotNull();
     categoryContext.setCategories(resultCat.getBody());
     var categoryId = categoryContext.getCategoryId();

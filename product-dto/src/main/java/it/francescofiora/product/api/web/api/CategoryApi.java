@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 public interface CategoryApi {
 
+  /**
+   * TAG reference.
+   */
   String TAG = "category";
 
   /**
@@ -82,10 +85,11 @@ public interface CategoryApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/api/v1/categories")
   ResponseEntity<List<CategoryDto>> findCategories(
-      @Parameter(description = "Name", example = "Shirt",
-          in = ParameterIn.QUERY) @RequestParam(required = false) String name,
+      @Parameter(description = "Name", example = "Shirt", in = ParameterIn.QUERY)
+      @RequestParam(value = "name", required = false) String name,
       @Parameter(description = "Description of the category", example = "Shirt",
-          in = ParameterIn.QUERY) @RequestParam(required = false) String description,
+          in = ParameterIn.QUERY)
+      @RequestParam(value = "description", required = false) String description,
       @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
           in = ParameterIn.QUERY) Pageable pageable);
 

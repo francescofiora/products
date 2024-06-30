@@ -30,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 public interface OrderApi {
 
+  /**
+   * TAG reference.
+   */
   String TAG = "order";
 
   /**
@@ -49,6 +52,7 @@ public interface OrderApi {
    * Patches an existing order.
    *
    * @param orderDto the order to patch
+   * @param id the id of the order to update
    * @return the result
    */
   @Operation(summary = "Patch Order", description = "Patch an Order to the system", tags = {TAG})
@@ -81,12 +85,12 @@ public interface OrderApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/api/v1/orders")
   ResponseEntity<List<OrderDto>> findOrders(
-      @Parameter(description = "Order code", example = "ORD_1",
-          in = ParameterIn.QUERY) @RequestParam(required = false) String code,
-      @Parameter(description = "Customer", example = "Some Company Ltd",
-          in = ParameterIn.QUERY) @RequestParam(required = false) String customer,
-      @Parameter(description = "Status", example = "PENDING",
-          in = ParameterIn.QUERY) @RequestParam(required = false) OrderStatus status,
+      @Parameter(description = "Order code", example = "ORD_1", in = ParameterIn.QUERY)
+      @RequestParam(value = "code", required = false) String code,
+      @Parameter(description = "Customer", example = "Some Company Ltd", in = ParameterIn.QUERY)
+      @RequestParam(value = "customer", required = false) String customer,
+      @Parameter(description = "Status", example = "PENDING", in = ParameterIn.QUERY)
+      @RequestParam(value = "status", required = false) OrderStatus status,
       @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
           in = ParameterIn.QUERY) Pageable pageable);
 

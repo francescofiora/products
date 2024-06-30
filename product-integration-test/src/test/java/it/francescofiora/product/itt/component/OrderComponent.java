@@ -3,6 +3,7 @@ package it.francescofiora.product.itt.component;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import it.francescofiora.product.client.OrderApiService;
 import it.francescofiora.product.client.ProductApiService;
 import it.francescofiora.product.itt.context.OrderContext;
 import it.francescofiora.product.itt.context.ProductContext;
@@ -22,6 +23,7 @@ public class OrderComponent extends AbstractComponent {
   private final ProductContext productContext;
   private final OrderContext orderContext;
   private final ProductApiService productApiService;
+  private final OrderApiService orderApiService;
 
   public void createNewOrderDto(String code, String customer) {
     orderContext.setNewOrderDto(TestProductUtils.createNewOrderDto(code, customer));
@@ -41,7 +43,7 @@ public class OrderComponent extends AbstractComponent {
   }
 
   public void createOrder() {
-    var result = productApiService.createOrder(orderContext.getNewOrderDto());
+    var result = orderApiService.createOrder(orderContext.getNewOrderDto());
     orderContext.setOrderId(validateResponseAndGetId(result));
   }
 
@@ -49,7 +51,7 @@ public class OrderComponent extends AbstractComponent {
    * Create new Item in the order.
    */
   public void createItem() {
-    var result = productApiService
+    var result = orderApiService
         .addOrderItem(orderContext.getOrderId(), orderContext.getNewOrderItemDto());
     orderContext.setItemId(validateResponseAndGetId(result));
   }
@@ -58,7 +60,7 @@ public class OrderComponent extends AbstractComponent {
    * Fetch Order.
    */
   public void fetchOrder() {
-    var result = productApiService.getOrderById(orderContext.getOrderId());
+    var result = orderApiService.getOrderById(orderContext.getOrderId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     orderContext.setOrderDto(result.getBody());
   }
@@ -72,13 +74,13 @@ public class OrderComponent extends AbstractComponent {
   public void updateOrder(String code, String customer) {
     orderContext.setUpdatebleOrderDto(
         TestProductUtils.createUpdatebleOrderDto(orderContext.getOrderId(), code, customer));
-    var result = productApiService.patchOrder(orderContext.getUpdatebleOrderDto(),
+    var result = orderApiService.patchOrder(orderContext.getUpdatebleOrderDto(),
         orderContext.getOrderId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   public void deleteOrder() {
-    var result = productApiService.deleteOrderById(orderContext.getOrderId());
+    var result = orderApiService.deleteOrderById(orderContext.getOrderId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
   }
 
@@ -86,7 +88,7 @@ public class OrderComponent extends AbstractComponent {
    * Delete Item.
    */
   public void deleteItem() {
-    var result = productApiService
+    var result = orderApiService
         .deleteOrderItemById(orderContext.getOrderId(), orderContext.getItemId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
   }
@@ -95,7 +97,7 @@ public class OrderComponent extends AbstractComponent {
    * Fetch all Orders.
    */
   public void fetchAllOrders() {
-    var result = productApiService.findOrders(null, null, null, Pageable.unpaged());
+    var result = orderApiService.findOrders(null, null, null, Pageable.unpaged());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(result.getBody()).isNotEmpty();
     orderContext.setOrders(result.getBody());
@@ -130,7 +132,7 @@ public class OrderComponent extends AbstractComponent {
    * Check Order not Exist.
    */
   public void checkOrderNotExist() {
-    var resultOr = productApiService.findOrders(null, null, null, Pageable.unpaged());
+    var resultOr = orderApiService.findOrders(null, null, null, Pageable.unpaged());
     assertThat(resultOr.getBody()).isNotNull();
     orderContext.setOrders(resultOr.getBody());
     var orderId = orderContext.getOrderId();
