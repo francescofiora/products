@@ -31,6 +31,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 public interface CompanyApi {
 
+  /**
+   * TAG reference.
+   */
   String TAG = "company";
 
   /**
@@ -61,10 +64,10 @@ public interface CompanyApi {
       @ApiResponse(responseCode = "404", description = "Not found")})
   @PutMapping("/api/v1/companies/{id}")
   ResponseEntity<Void> updateCompany(
-      @Parameter(
-          description = "Company to update") @Valid @RequestBody UpdatebleCompanyDto companyDto,
-      @Parameter(description = "The id of the company to update", required = true,
-          example = "1") @PathVariable("id") Long id);
+      @Parameter(description = "Company to update")
+      @Valid @RequestBody UpdatebleCompanyDto companyDto,
+      @Parameter(description = "The id of the company to update", required = true, example = "1")
+      @PathVariable("id") Long id);
 
   /**
    * Find companies by name.
@@ -84,10 +87,10 @@ public interface CompanyApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/api/v1/companies")
   ResponseEntity<List<CompanyDto>> findCompanies(
-      @Parameter(description = "Company name", example = "Groupon",
-          in = ParameterIn.QUERY) @RequestParam(required = false) String name,
-      @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
-          in = ParameterIn.QUERY) Pageable pageable);
+      @Parameter(description = "Company name", example = "Groupon", in = ParameterIn.QUERY)
+      @RequestParam(value = "name", required = false) String name,
+      @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}", in = ParameterIn.QUERY)
+      Pageable pageable);
 
   /**
    * Get the company by id.
@@ -105,7 +108,7 @@ public interface CompanyApi {
   @GetMapping("/api/v1/companies/{id}")
   ResponseEntity<CompanyDto> getCompanyById(
       @Parameter(description = "Id of the Company to get", required = true, example = "1")
-      @PathVariable Long id);
+      @PathVariable("id") Long id);
 
   /**
    * Delete the company by id.
@@ -120,8 +123,8 @@ public interface CompanyApi {
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/api/v1/companies/{id}")
   ResponseEntity<Void> deleteCompanyById(
-      @Parameter(description = "The id of the Company to delete", required = true,
-          example = "1") @PathVariable Long id);
+      @Parameter(description = "The id of the Company to delete", required = true, example = "1")
+      @PathVariable("id") Long id);
 
   /**
    * Add un Address to the Company.
@@ -136,9 +139,9 @@ public interface CompanyApi {
       @ApiResponse(responseCode = "404", description = "Not found")})
   @PostMapping("/api/v1/companies/{id}/addresses")
   ResponseEntity<Void> addAddress(
-      @Parameter(description = "Company id", required = true, example = "1") @PathVariable Long id,
+      @Parameter(description = "Company id", required = true, example = "1")
+      @PathVariable("id") Long id,
       @Parameter(description = "Address to add") @Valid @RequestBody NewAddressDto addressDto);
-
 
   /**
    * Get the address by id.
@@ -156,10 +159,10 @@ public interface CompanyApi {
       @ApiResponse(responseCode = "404", description = "Not found")})
   @GetMapping("/api/v1/companies/{company_id}/addresses/{address_id}")
   ResponseEntity<AddressDto> getAddressById(
-      @Parameter(description = "The id of the Company", required = true,
-          example = "1") @PathVariable("company_id") Long companyId,
-      @Parameter(description = "Id of the Address to get", required = true,
-          example = "1") @PathVariable("address_id") Long addressId);
+      @Parameter(description = "The id of the Company", required = true, example = "1")
+      @PathVariable("company_id") Long companyId,
+      @Parameter(description = "Id of the Address to get", required = true, example = "1")
+      @PathVariable("address_id") Long addressId);
 
   /**
    * Update an existing address.
@@ -176,12 +179,12 @@ public interface CompanyApi {
       @ApiResponse(responseCode = "404", description = "Not found")})
   @PutMapping("/api/v1/companies/{company_id}/addresses/{address_id}")
   ResponseEntity<Void> updateAddress(
-      @Parameter(
-          description = "Address to update") @Valid @RequestBody UpdatebleAddressDto addressDto,
-      @Parameter(description = "The id of the Company", required = true,
-          example = "1") @PathVariable("company_id") Long companyId,
-      @Parameter(description = "The id of the Address to update", required = true,
-          example = "1") @PathVariable("address_id") Long addressId);
+      @Parameter(description = "Address to update")
+      @Valid @RequestBody UpdatebleAddressDto addressDto,
+      @Parameter(description = "The id of the Company", required = true, example = "1")
+      @PathVariable("company_id") Long companyId,
+      @Parameter(description = "The id of the Address to update", required = true, example = "1")
+      @PathVariable("address_id") Long addressId);
 
   /**
    * Find the addresses of a company.
@@ -201,9 +204,10 @@ public interface CompanyApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/api/v1/companies/{id}/addresses")
   ResponseEntity<List<AddressDto>> findAddresses(
-      @Parameter(description = "Company id", required = true, example = "1") @PathVariable Long id,
-      @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
-          in = ParameterIn.QUERY) Pageable pageable);
+      @Parameter(description = "Company id", required = true, example = "1")
+      @PathVariable("id") Long id,
+      @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}", in = ParameterIn.QUERY)
+      Pageable pageable);
 
   /**
    * Delete the address by id.
@@ -219,8 +223,8 @@ public interface CompanyApi {
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/api/v1/companies/{company_id}/addresses/{address_id}")
   ResponseEntity<Void> deleteAddressById(
-      @Parameter(description = "Id of the Company", required = true,
-          example = "1") @PathVariable(name = "company_id") Long companyId,
-      @Parameter(description = "Id of the Address to delete", required = true,
-          example = "1") @PathVariable(name = "address_id") Long addressId);
+      @Parameter(description = "Id of the Company", required = true, example = "1")
+      @PathVariable(name = "company_id") Long companyId,
+      @Parameter(description = "Id of the Address to delete", required = true, example = "1")
+      @PathVariable(name = "address_id") Long addressId);
 }

@@ -22,14 +22,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST controller for managing Contact.
  */
-@RestController
 public interface ContactApi {
 
+  /**
+   * TAG reference.
+   */
   String TAG = "contact";
 
   /**
@@ -60,10 +61,10 @@ public interface ContactApi {
       @ApiResponse(responseCode = "404", description = "Not found")})
   @PutMapping("/api/v1/contacts/{id}")
   ResponseEntity<Void> updateContact(
-      @Parameter(
-          description = "Contact to update") @Valid @RequestBody UpdatebleContactDto contactDto,
-      @Parameter(description = "The id of the contact to update", required = true,
-          example = "1") @PathVariable("id") Long id);
+      @Parameter(description = "Contact to update")
+      @Valid @RequestBody UpdatebleContactDto contactDto,
+      @Parameter(description = "The id of the contact to update", required = true, example = "1")
+      @PathVariable("id") Long id);
 
   /**
    * Find contacts by name.
@@ -83,10 +84,10 @@ public interface ContactApi {
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
   @GetMapping("/api/v1/contacts")
   ResponseEntity<List<ContactDto>> findContacts(
-      @Parameter(description = "Contact name", example = "Groupon",
-          in = ParameterIn.QUERY) @RequestParam(required = false) String name,
-      @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
-          in = ParameterIn.QUERY) Pageable pageable);
+      @Parameter(description = "Contact name", example = "Groupon", in = ParameterIn.QUERY)
+      @RequestParam(value = "name", required = false) String name,
+      @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}", in = ParameterIn.QUERY)
+      Pageable pageable);
 
   /**
    * Get the contact by id.
@@ -119,6 +120,6 @@ public interface ContactApi {
       @ApiResponse(responseCode = "404", description = "Not found")})
   @DeleteMapping("/api/v1/contacts/{id}")
   ResponseEntity<Void> deleteContactById(
-      @Parameter(description = "The id of the Contact to delete", required = true,
-          example = "1") @PathVariable("id") Long id);
+      @Parameter(description = "The id of the Contact to delete", required = true, example = "1")
+      @PathVariable("id") Long id);
 }
