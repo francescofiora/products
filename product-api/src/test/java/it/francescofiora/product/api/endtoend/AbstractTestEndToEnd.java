@@ -2,7 +2,7 @@ package it.francescofiora.product.api.endtoend;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import it.francescofiora.product.api.web.api.AbstractApi;
+import it.francescofiora.product.api.web.api.impl.AbstractApi;
 import it.francescofiora.product.api.web.util.HeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

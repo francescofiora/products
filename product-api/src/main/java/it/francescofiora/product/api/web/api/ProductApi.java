@@ -8,11 +8,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import it.francescofiora.product.api.service.ProductService;
 import it.francescofiora.product.api.service.dto.NewProductDto;
 import it.francescofiora.product.api.service.dto.ProductDto;
 import it.francescofiora.product.api.service.dto.UpdatebleProductDto;
-import it.francescofiora.product.api.web.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,18 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
  * REST controller for managing Product.
  */
 @RestController
-@RequestMapping("/api/v1")
-public class ProductApi extends AbstractApi {
+public interface ProductApi {
 
-  private static final String ENTITY_NAME = "ProductDto";
-  private static final String TAG = "product";
-
-  private final ProductService productService;
-
-  public ProductApi(ProductService productService) {
-    super(ENTITY_NAME);
-    this.productService = productService;
-  }
+  String TAG = "product";
 
   /**
    * Create a new product.
@@ -55,12 +43,9 @@ public class ProductApi extends AbstractApi {
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Product created"),
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized")})
-  @PostMapping("/products")
-  public ResponseEntity<Void> createProduct(
-      @Parameter(description = "Add new Product") @Valid @RequestBody NewProductDto productDto) {
-    var result = productService.create(productDto);
-    return postResponse("/api/v1/products/" + result.getId(), result.getId());
-  }
+  @PostMapping("/api/v1/products")
+  ResponseEntity<Void> createProduct(
+      @Parameter(description = "Add new Product") @Valid @RequestBody NewProductDto productDto);
 
   /**
    * Updates an existing product.
@@ -74,19 +59,12 @@ public class ProductApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @PutMapping("/products/{id}")
-  public ResponseEntity<Void> updateProduct(
+  @PutMapping("/api/v1/products/{id}")
+  ResponseEntity<Void> updateProduct(
       @Parameter(
           description = "Product to update") @Valid @RequestBody UpdatebleProductDto productDto,
       @Parameter(description = "The id of the category to update", required = true,
-          example = "1") @PathVariable("id") Long id) {
-    if (!id.equals(productDto.getId())) {
-      throw new BadRequestAlertException("UpdatebleProductDto", String.valueOf(productDto.getId()),
-          "Invalid id");
-    }
-    productService.update(productDto);
-    return putResponse(id);
-  }
+          example = "1") @PathVariable("id") Long id);
 
   /**
    * Find products by name, description and category id.
@@ -106,8 +84,8 @@ public class ProductApi extends AbstractApi {
           content = @Content(
               array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter")})
-  @GetMapping("/products")
-  public ResponseEntity<List<ProductDto>> findProducts(
+  @GetMapping("/api/v1/products")
+  ResponseEntity<List<ProductDto>> findProducts(
       @Parameter(description = "Name", example = "SHIRTM01",
           in = ParameterIn.QUERY) @RequestParam(required = false) String name,
       @Parameter(description = "Description of the product", example = "Shirt for Men",
@@ -115,9 +93,7 @@ public class ProductApi extends AbstractApi {
       @Parameter(description = "ID of the Category", example = "1",
           in = ParameterIn.QUERY) @RequestParam(required = false) Long categoryId,
       @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",
-          in = ParameterIn.QUERY) Pageable pageable) {
-    return getResponse(productService.findAll(name, description, categoryId, pageable));
-  }
+          in = ParameterIn.QUERY) Pageable pageable);
 
   /**
    * Get the product by id.
@@ -132,12 +108,10 @@ public class ProductApi extends AbstractApi {
           content = @Content(schema = @Schema(implementation = ProductDto.class))),
       @ApiResponse(responseCode = "400", description = "Bad input parameter"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @GetMapping("/products/{id}")
-  public ResponseEntity<ProductDto> getProductById(
+  @GetMapping("/api/v1/products/{id}")
+  ResponseEntity<ProductDto> getProductById(
       @Parameter(description = "Id of the Product to get", required = true, example = "1")
-      @PathVariable("id") Long id) {
-    return getResponse(productService.findOne(id), id);
-  }
+      @PathVariable("id") Long id);
 
   /**
    * Delete the product by id.
@@ -151,11 +125,8 @@ public class ProductApi extends AbstractApi {
       @ApiResponse(responseCode = "400", description = "Invalid input, object invalid"),
       @ApiResponse(responseCode = "403", description = "Forbidden, User not authorized"),
       @ApiResponse(responseCode = "404", description = "Not found")})
-  @DeleteMapping("/products/{id}")
-  public ResponseEntity<Void> deleteProductById(
+  @DeleteMapping("/api/v1/products/{id}")
+  ResponseEntity<Void> deleteProductById(
       @Parameter(description = "Id of the Product to delete", required = true, example = "1")
-      @PathVariable("id") Long id) {
-    productService.delete(id);
-    return deleteResponse(id);
-  }
+      @PathVariable("id") Long id);
 }

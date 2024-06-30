@@ -1,4 +1,4 @@
-package it.francescofiora.product.api.web.api;
+package it.francescofiora.product.api.web.api.impl;
 
 import it.francescofiora.product.api.web.errors.NotFoundAlertException;
 import it.francescofiora.product.api.web.util.HeaderUtil;
