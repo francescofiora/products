@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import lombok.Getter;
@@ -21,6 +22,7 @@ import lombok.ToString;
 @ToString(callSuper = true, includeFieldNames = true)
 public class NewOrderItemDto implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   /**

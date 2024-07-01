@@ -8,6 +8,7 @@ import it.francescofiora.product.api.service.dto.enumeration.OrderStatus;
 import it.francescofiora.product.common.dto.DtoIdentifier;
 import it.francescofiora.product.common.util.DtoUtils;
 import jakarta.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import lombok.ToString;
 @ToString(callSuper = true, includeFieldNames = true)
 public class OrderDto extends BaseOrderDto implements DtoIdentifier, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   /**

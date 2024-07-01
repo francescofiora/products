@@ -9,6 +9,7 @@ import it.francescofiora.product.common.util.DtoUtils;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -24,6 +25,7 @@ import lombok.ToString;
 @ToString(callSuper = true, includeFieldNames = true)
 public class OrderItemDto implements DtoIdentifier, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   /**

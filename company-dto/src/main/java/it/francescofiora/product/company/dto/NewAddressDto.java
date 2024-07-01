@@ -1,5 +1,6 @@
 package it.francescofiora.product.company.dto;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import lombok.ToString;
 @ToString(callSuper = true, includeFieldNames = true)
 public class NewAddressDto extends BaseAddressDto implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   @Override

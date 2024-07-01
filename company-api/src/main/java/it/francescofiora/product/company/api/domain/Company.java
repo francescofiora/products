@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +28,7 @@ import lombok.ToString;
 @ToString(callSuper = true, includeFieldNames = true)
 public class Company extends AbstractDomain implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   @Id

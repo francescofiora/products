@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,7 @@ import lombok.ToString;
 @ToString(callSuper = true, includeFieldNames = true)
 public class Contact extends AbstractDomain implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   @Id

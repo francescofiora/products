@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import it.francescofiora.product.common.dto.DtoIdentifier;
 import it.francescofiora.product.common.util.DtoUtils;
 import jakarta.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import lombok.Getter;
@@ -21,6 +22,7 @@ import lombok.ToString;
 @ToString(callSuper = true, includeFieldNames = true)
 public class ProductDto extends BaseProductDto  implements DtoIdentifier, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   /**
