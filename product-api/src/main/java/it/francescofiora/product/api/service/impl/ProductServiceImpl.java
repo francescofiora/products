@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link Product}.
+ * Service Implementation for managing Product.
  */
 @Slf4j
 @Service
@@ -45,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
   public ProductDto create(NewProductDto productDto) {
     log.debug("Request to create Product : {}", productDto);
 
-    if (!categoryRepository.findById(productDto.getCategory().getId()).isPresent()) {
+    if (categoryRepository.findById(productDto.getCategory().getId()).isEmpty()) {
       var id = String.valueOf(productDto.getCategory().getId());
       throw new NotFoundAlertException(CategoryService.ENTITY_NAME, id, "Category Not Found");
     }
@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
   public void update(UpdatebleProductDto productDto) {
     log.debug("Request to update Product : {}", productDto);
     var productOpt = productRepository.findById(productDto.getId());
-    if (!productOpt.isPresent()) {
+    if (productOpt.isEmpty()) {
       var id = String.valueOf(productDto.getId());
       throw new NotFoundAlertException(ENTITY_NAME, id, PRODUCT_NOT_FOUND);
     }

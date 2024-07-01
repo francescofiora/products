@@ -114,8 +114,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: customer
-                  type: varchar(255)
+                  name: customer_id
+                  type: BIGINT
                   constraints:
                     nullable: false
               - column:

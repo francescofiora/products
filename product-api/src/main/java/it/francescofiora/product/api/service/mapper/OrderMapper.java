@@ -18,6 +18,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = {OrderItemMapper.class})
 public interface OrderMapper {
 
+  @Mapping(source = "customerId", target = "customer.id")
   @Mapping(source = "orderItems", target = "items")
   @Mapping(source = "orderItems", target = "totalPrice", qualifiedByName = "getTotalPrice")
   OrderDto toDto(Order entity);
@@ -40,6 +41,7 @@ public interface OrderMapper {
     return result;
   }
 
+  @Mapping(source = "customer.id", target = "customerId")
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "status", ignore = true)
   @Mapping(source = "items", target = "orderItems")
@@ -47,6 +49,7 @@ public interface OrderMapper {
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "status", ignore = true)
+  @Mapping(source = "customer.id", target = "customerId")
   @Mapping(target = "orderItems", ignore = true)
   void updateEntityFromDto(UpdatebleOrderDto orderDto, @MappingTarget Order order);
 }

@@ -44,7 +44,7 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
       "'id' should be a valid 'Long' and '999999999999999999999999' isn't";
 
   private static final String PARAM_CODE_NOT_BLANK = "[newOrderDto.code - NotBlank]";
-  private static final String PARAM_CUSTOMER_NOT_BLANK = "[newOrderDto.customer - NotBlank]";
+  private static final String PARAM_CUSTOMER_NOT_NULL = "[newOrderDto.customer - NotNull]";
   private static final String PARAM_DATA_NOT_BLANK = "[newOrderDto.placedDate - NotNull]";
   private static final String PARAM_ITEMS_NOT_EMPTY = "[newOrderDto.items - NotEmpty]";
   private static final String PARAM_ITEM_NOT_NULL = "newOrderDto.items.item - NotNull";
@@ -126,19 +126,7 @@ class OrderEndToEndTest extends AbstractTestEndToEnd {
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
     newOrderDto.setCustomer(null);
     assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
-        PARAM_CUSTOMER_NOT_BLANK);
-
-    newOrderDto = TestUtils.createNewSimpleOrderDto();
-    newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
-    newOrderDto.setCustomer("");
-    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
-        PARAM_CUSTOMER_NOT_BLANK);
-
-    newOrderDto = TestUtils.createNewSimpleOrderDto();
-    newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));
-    newOrderDto.setCustomer("  ");
-    assertCreateBadRequest(ORDERS_URI, newOrderDto, ALERT_CREATE_BAD_REQUEST,
-        PARAM_CUSTOMER_NOT_BLANK);
+        PARAM_CUSTOMER_NOT_NULL);
 
     newOrderDto = TestUtils.createNewSimpleOrderDto();
     newOrderDto.getItems().add(TestUtils.createNewOrderItemDto(productId));

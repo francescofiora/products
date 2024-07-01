@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @ToString(callSuper = true, includeFieldNames = true)
 public class Category extends AbstractDomain implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   @Id

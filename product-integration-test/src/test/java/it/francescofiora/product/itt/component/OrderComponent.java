@@ -25,8 +25,8 @@ public class OrderComponent extends AbstractComponent {
   private final ProductApiService productApiService;
   private final OrderApiService orderApiService;
 
-  public void createNewOrderDto(String code, String customer) {
-    orderContext.setNewOrderDto(TestProductUtils.createNewOrderDto(code, customer));
+  public void createNewOrderDto(String code, String customerId) {
+    orderContext.setNewOrderDto(TestProductUtils.createNewOrderDto(code, customerId));
     orderContext.getNewOrderDto().getItems().add(orderContext.getNewOrderItemDto());
   }
 
@@ -69,11 +69,11 @@ public class OrderComponent extends AbstractComponent {
    * Update Order.
    *
    * @param code the code
-   * @param customer the customer
+   * @param customerId the customer ID
    */
-  public void updateOrder(String code, String customer) {
+  public void updateOrder(String code, String customerId) {
     orderContext.setUpdatebleOrderDto(
-        TestProductUtils.createUpdatebleOrderDto(orderContext.getOrderId(), code, customer));
+        TestProductUtils.createUpdatebleOrderDto(orderContext.getOrderId(), code, customerId));
     var result = orderApiService.patchOrder(orderContext.getUpdatebleOrderDto(),
         orderContext.getOrderId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);

@@ -12,6 +12,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -33,6 +34,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @ToString(callSuper = true, includeFieldNames = true)
 public class Order extends AbstractDomain implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -55,8 +57,8 @@ public class Order extends AbstractDomain implements Serializable {
   private String code;
 
   @NotNull
-  @Column(name = "customer", nullable = false)
-  private String customer;
+  @Column(name = "customerId", nullable = false)
+  private Long customerId;
 
   @OneToMany(mappedBy = "order")
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

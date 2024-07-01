@@ -47,8 +47,8 @@ public class OrderApiImpl extends AbstractApi implements OrderApi {
 
   @Override
   public ResponseEntity<List<OrderDto>> findOrders(
-      String code, String customer, OrderStatus status, Pageable pageable) {
-    return getResponse(orderService.findAll(code, customer, status, pageable));
+      String code, Long customerId, OrderStatus status, Pageable pageable) {
+    return getResponse(orderService.findAll(code, customerId, status, pageable));
   }
 
   @Override

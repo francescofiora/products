@@ -27,10 +27,8 @@ public abstract class BaseOrderDto {
   @NotBlank
   private String code;
 
-  @Schema(description = "Customer", example = "Some Company Ltd",
-      requiredMode = REQUIRED)
+  @Schema(description = "Customer", requiredMode = REQUIRED)
   @JsonProperty("customer")
-  @NotBlank
-  private String customer;
-
+  @NotNull
+  private RefCustomerDto customer;
 }

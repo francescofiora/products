@@ -69,7 +69,7 @@ public interface OrderApi {
    * Find orders by code, customer and status.
    *
    * @param code the code
-   * @param customer the customer
+   * @param customerId the id of customer
    * @param status the order status
    * @param pageable the pagination information
    * @return the list of orders
@@ -87,8 +87,8 @@ public interface OrderApi {
   ResponseEntity<List<OrderDto>> findOrders(
       @Parameter(description = "Order code", example = "ORD_1", in = ParameterIn.QUERY)
       @RequestParam(value = "code", required = false) String code,
-      @Parameter(description = "Customer", example = "Some Company Ltd", in = ParameterIn.QUERY)
-      @RequestParam(value = "customer", required = false) String customer,
+      @Parameter(description = "Customer Id", example = "1", in = ParameterIn.QUERY)
+      @RequestParam(value = "customerId", required = false) Long customerId,
       @Parameter(description = "Status", example = "PENDING", in = ParameterIn.QUERY)
       @RequestParam(value = "status", required = false) OrderStatus status,
       @Parameter(example = "{\n  \"page\": 0,  \"size\": 10}",

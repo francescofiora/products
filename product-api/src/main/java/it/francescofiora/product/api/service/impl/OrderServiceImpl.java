@@ -75,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
 
   private void setTotalPrice(OrderItem item) {
     var productOpt = productRepository.findById(item.getProduct().getId());
-    if (!productOpt.isPresent()) {
+    if (productOpt.isEmpty()) {
       var id = String.valueOf(item.getProduct().getId());
       throw new NotFoundAlertException(ProductService.ENTITY_NAME, id, PRODUCT_NOT_FOUND);
     }
@@ -106,16 +106,16 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<OrderDto> findAll(String code, String customer, OrderStatus status,
+  public Page<OrderDto> findAll(String code, Long customerId, OrderStatus status,
       Pageable pageable) {
     log.debug("Request to get all Orders");
     var order = new Order();
     order.setCode(code);
-    order.setCustomer(customer);
+    order.setCustomerId(customerId);
     order.setStatus(status);
     var exampleMatcher = ExampleMatcher.matchingAll()
         .withMatcher("code", PROPERTY_MATCHER_DEFAULT)
-        .withMatcher("customer", PROPERTY_MATCHER_DEFAULT)
+        .withMatcher("customerId", PROPERTY_MATCHER_DEFAULT)
         .withMatcher("status", PROPERTY_MATCHER_EXACT);
     var example = Example.of(order, exampleMatcher);
     return orderRepository.findAll(example, pageable).map(orderMapper::toDto);
@@ -133,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
     log.debug("Request to delete Order : {}", id);
     var order = findOrderById(id);
     checkOrderUpdateble(order);
-    order.getOrderItems().forEach(item -> orderItemRepository.delete(item));
+    order.getOrderItems().forEach(orderItemRepository::delete);
     orderRepository.deleteById(id);
   }
 
@@ -153,7 +153,7 @@ public class OrderServiceImpl implements OrderService {
 
   private Order findOrderById(Long id) {
     var optOrder = orderRepository.findById(id);
-    if (!optOrder.isPresent()) {
+    if (optOrder.isEmpty()) {
       throw new NotFoundAlertException(ENTITY_NAME, String.valueOf(id), ORDER_NOT_FOUND);
     }
     return optOrder.get();

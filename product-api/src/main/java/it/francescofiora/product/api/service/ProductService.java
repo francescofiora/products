@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link it.francescofiora.product.domain.Product}.
+ * Service Interface for managing Product.
  */
 public interface ProductService {
 

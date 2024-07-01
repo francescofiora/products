@@ -12,6 +12,7 @@ import it.francescofiora.product.api.service.dto.NewOrderDto;
 import it.francescofiora.product.api.service.dto.NewOrderItemDto;
 import it.francescofiora.product.api.service.dto.NewProductDto;
 import it.francescofiora.product.api.service.dto.RefCategoryDto;
+import it.francescofiora.product.api.service.dto.RefCustomerDto;
 import it.francescofiora.product.api.service.dto.RefProductDto;
 import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;
 import it.francescofiora.product.api.service.dto.UpdatebleProductDto;
@@ -50,8 +51,9 @@ public final class TestUtils {
    */
   public static Order createOrder(Long id) {
     var order = new Order();
+    order.setId(id);
     order.setCode("CODE");
-    order.setCustomer("Customer");
+    order.setCustomerId(2L);
     order.setStatus(OrderStatus.PENDING);
     return order;
   }
@@ -76,6 +78,7 @@ public final class TestUtils {
    */
   public static Product createProduct(Long id) {
     var product = new Product();
+    product.setId(id);
     product.setName("Name");
     product.setDescription("Description");
     return product;
@@ -140,21 +143,21 @@ public final class TestUtils {
   public static NewOrderDto createNewOrderDto() {
     var order = new NewOrderDto();
     order.setCode("New CODE");
-    order.setCustomer("New Customer");
+    order.setCustomer(createRefCustomerDto(1L));
     order.setPlacedDate(Instant.now());
     order.getItems().add(createNewOrderItemDto());
     return order;
   }
 
   /**
-   * Create an simle example of NewOrderDto.
+   * Create an simple example of NewOrderDto.
    *
    * @return NewOrderDto
    */
   public static NewOrderDto createNewSimpleOrderDto() {
     var order = new NewOrderDto();
     order.setCode("New CODE");
-    order.setCustomer("New Customer");
+    order.setCustomer(createRefCustomerDto(1L));
     order.setPlacedDate(Instant.now());
     return order;
   }
@@ -208,6 +211,18 @@ public final class TestUtils {
   }
 
   /**
+   * Create RefCustomerDto.
+   *
+   * @param id the id of the Customer
+   * @return RefCustomerDto
+   */
+  public static RefCustomerDto createRefCustomerDto(Long id) {
+    var customer = new RefCustomerDto();
+    customer.setId(id);
+    return customer;
+  }
+
+  /**
    * Create an example of UpdatebleOrderDto.
    *
    * @param id the id
@@ -217,7 +232,7 @@ public final class TestUtils {
     var order = new UpdatebleOrderDto();
     order.setId(id);
     order.setCode("CODE updated");
-    order.setCustomer("Customer updated");
+    order.setCustomer(createRefCustomerDto(3L));
     order.setPlacedDate(Instant.now());
     return order;
   }

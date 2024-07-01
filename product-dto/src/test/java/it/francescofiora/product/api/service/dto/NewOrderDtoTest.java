@@ -24,7 +24,7 @@ class NewOrderDtoTest {
 
     orderDto1 = TestUtils.createNewOrderDto();
     orderDto2 = TestUtils.createNewOrderDto();
-    orderDto2.setCustomer("CustomerDiff");
+    orderDto2.setCustomer(TestUtils.createRefCustomerDto(2L));
     TestUtils.checkNotEqualHashAndToString(orderDto1, orderDto2);
     orderDto1.setCustomer(null);
     TestUtils.checkNotEqualHashAndToString(orderDto1, orderDto2);

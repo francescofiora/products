@@ -5,9 +5,9 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Ref Category Dto.
+ * Ref Customer Dto.
  */
-public class RefCategoryDto extends RefDto implements Serializable {
+public class RefCustomerDto extends RefDto implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;

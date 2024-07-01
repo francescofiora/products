@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link it.francescofiora.product.domain.Order}.
+ * Service Interface for managing Order.
  */
 public interface OrderService {
 
@@ -43,12 +43,12 @@ public interface OrderService {
    * Get all the orders.
    *
    * @param code the code
-   * @param customer the customer
+   * @param customerId the customer id
    * @param status the order status
    * @param pageable the pagination information
    * @return the list of entities
    */
-  Page<OrderDto> findAll(String code, String customer, OrderStatus status, Pageable pageable);
+  Page<OrderDto> findAll(String code, Long customerId, OrderStatus status, Pageable pageable);
 
   /**
    * Get the "id" order.

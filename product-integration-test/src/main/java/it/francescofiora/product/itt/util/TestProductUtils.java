@@ -6,6 +6,7 @@ import it.francescofiora.product.api.service.dto.NewOrderDto;
 import it.francescofiora.product.api.service.dto.NewOrderItemDto;
 import it.francescofiora.product.api.service.dto.NewProductDto;
 import it.francescofiora.product.api.service.dto.RefCategoryDto;
+import it.francescofiora.product.api.service.dto.RefCustomerDto;
 import it.francescofiora.product.api.service.dto.RefProductDto;
 import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;
 import it.francescofiora.product.api.service.dto.UpdatebleProductDto;
@@ -69,16 +70,28 @@ public final class TestProductUtils {
   }
 
   /**
+   * Create RefCustomerDto.
+   *
+   * @param id the id of the Customer
+   * @return RefCustomerDto
+   */
+  public static RefCustomerDto createRefCustomerDto(String id) {
+    var customer = new RefCustomerDto();
+    customer.setId(Long.valueOf(id));
+    return customer;
+  }
+
+  /**
    * Create an example of NewOrderDto.
    *
    * @param code the Code
-   * @param customer the Customer
+   * @param customerId the Customer ID
    * @return NewOrderDto
    */
-  public static NewOrderDto createNewOrderDto(String code, String customer) {
+  public static NewOrderDto createNewOrderDto(String code, String customerId) {
     var order = new NewOrderDto();
     order.setCode(code);
-    order.setCustomer(customer);
+    order.setCustomer(createRefCustomerDto(customerId));
     order.setPlacedDate(Instant.now());
     return order;
   }
@@ -153,14 +166,14 @@ public final class TestProductUtils {
    *
    * @param id the id
    * @param code the Code
-   * @param customer the Customer
+   * @param customerId the Customer ID
    * @return UpdatebleOrderDto
    */
-  public static UpdatebleOrderDto createUpdatebleOrderDto(Long id, String code, String customer) {
+  public static UpdatebleOrderDto createUpdatebleOrderDto(Long id, String code, String customerId) {
     var order = new UpdatebleOrderDto();
     order.setId(id);
     order.setCode(code);
-    order.setCustomer(customer);
+    order.setCustomer(createRefCustomerDto(customerId));
     order.setPlacedDate(Instant.now());
     return order;
   }

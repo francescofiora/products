@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 class DtoTest {
   // Configured for expectation, so we know when a class gets added or removed.
-  private static final int EXPECTED_CLASS_COUNT = 12;
+  private static final int EXPECTED_CLASS_COUNT = 13;
 
   // The package to test
   private static final String DTO_PACKAGE = DtoTest.class.getPackage().getName();

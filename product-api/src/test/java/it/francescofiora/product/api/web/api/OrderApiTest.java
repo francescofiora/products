@@ -87,14 +87,6 @@ class OrderApiTest extends AbstractApiTest {
     newOrderDto.setCustomer(null);
     performPost(ORDERS_URI, newOrderDto).andExpect(status().isBadRequest());
 
-    newOrderDto = TestUtils.createNewOrderDto();
-    newOrderDto.setCustomer("");
-    performPost(ORDERS_URI, newOrderDto).andExpect(status().isBadRequest());
-
-    newOrderDto = TestUtils.createNewOrderDto();
-    newOrderDto.setCustomer("  ");
-    performPost(ORDERS_URI, newOrderDto).andExpect(status().isBadRequest());
-
     // PlacedDate
     newOrderDto = TestUtils.createNewOrderDto();
     newOrderDto.setPlacedDate(null);
@@ -150,14 +142,6 @@ class OrderApiTest extends AbstractApiTest {
     // Customer
     orderDto = TestUtils.createUpdatebleOrderDto(ID);
     orderDto.setCustomer(null);
-    performPatch(ORDERS_ID_URI, ID, orderDto).andExpect(status().isBadRequest());
-
-    orderDto = TestUtils.createUpdatebleOrderDto(ID);
-    orderDto.setCustomer("");
-    performPatch(ORDERS_ID_URI, ID, orderDto).andExpect(status().isBadRequest());
-
-    orderDto = TestUtils.createUpdatebleOrderDto(ID);
-    orderDto.setCustomer("  ");
     performPatch(ORDERS_ID_URI, ID, orderDto).andExpect(status().isBadRequest());
 
     // PlacedDate

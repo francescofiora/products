@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link Category}.
+ * Service Implementation for managing Category.
  */
 @Slf4j
 @Service
@@ -46,7 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
   public void update(CategoryDto categoryDto) {
     log.debug("Request to save Category : {}", categoryDto);
     var categoryOpt = categoryRepository.findById(categoryDto.getId());
-    if (!categoryOpt.isPresent()) {
+    if (categoryOpt.isEmpty()) {
       var id = String.valueOf(categoryDto.getId());
       throw new NotFoundAlertException(ENTITY_NAME, id, ENTITY_NAME + " not found with id " + id);
     }

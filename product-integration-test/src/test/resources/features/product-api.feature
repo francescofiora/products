@@ -43,13 +43,13 @@ Feature: Product Rest Api
     And a new OrderItem
     | 100 |
     And a new Order
-    | ORD1 | Customer name |
+    | ORD1 | 1 |
     When create that Order
     Then should be able to get that Order
     And that Order should have 1 items
     And the Order from POST should be the same as from GET
     When update the Order
-    | ORD2 | Customer name updated |
+    | ORD2 | 2 |
     And get all Orders
     Then the Order from PUT should be the same as from GET_ALL
     When delete the Order
@@ -67,7 +67,7 @@ Feature: Product Rest Api
     And a new OrderItem
     | 50 |
     And a new Order
-    | ORD1 | Customer name |
+    | ORD1 | 3 |
     And a new Product
     | PROD2 | Second Product description | image.gif | GIF | 12 | L |
     And a new OrderItem
