@@ -28,8 +28,8 @@ public class StepDefinitions extends SpringGlue {
   private static final String DATASOURCE_URL =
       "jdbc:postgresql://product-postgresql:5432/db_product";
 
-  private static StartStopContainers containers = new StartStopContainers();
-  private static ContainerGenerator containerGenerator = new ContainerGenerator();
+  private static final StartStopContainers containers = new StartStopContainers();
+  private static final ContainerGenerator containerGenerator = new ContainerGenerator();
 
   @Autowired
   private DiscoveryClient discoveryClient;
@@ -55,7 +55,8 @@ public class StepDefinitions extends SpringGlue {
     eureka = containerGenerator.createEurekaServerContainer();
     containers.add(eureka);
 
-    var eurekaHttp = "http://user:password@" + ContainerGenerator.PRODUCT_EUREKA + ":8761/eureka";
+    var eurekaHttp = "http://" + EUREKA_USER + ":" + EUREKA_PASSWORD + "@"
+        + ContainerGenerator.PRODUCT_EUREKA + ":8761/eureka";
 
     // @formatter:off
     var product = containerGenerator.createContainer("francescofiora-product")

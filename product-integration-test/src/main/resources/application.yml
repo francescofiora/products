@@ -9,21 +9,14 @@ spring:
         ddl-auto: none
 
 eureka:
-  password: password
   client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://user:password@localhost:8761/eureka}
-    healthcheck:
-      enabled: false
-  instance:
-    secure-port-enabled: ${EUREKA_SECURE:false}
-    non-secure-port-enabled: ${EUREKA_NOSECURE:true}
+    register-with-eureka: false
 
 product:
-  userName: user
-  password: password
+  userName: productUser
+  password: productPassword
 company:
-  userName: user
-  password: password
+  userName: companyUser
+  password: companyPassword
 
 feign.httpclient.enabled: true

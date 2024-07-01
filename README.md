@@ -98,8 +98,10 @@ Scan project
 
 ## Security
  - Basic Authentication
-   - Company Api: (user/password)
-   - Product Api: (user/password)
+   - Company Api: (companyUser/companyPassword)
+   - Product Api: (productUser/productPassword)
+   - Eureka: (eurekaUser/eurekaPassword)
+   - phpPgAdmin: (product/secret)
 
 ## Actuator
     curl -u user:password 'http://localhost:8082/actuator/info' -i -X GET

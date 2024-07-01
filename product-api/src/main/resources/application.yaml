@@ -37,8 +37,8 @@ spring:
     change-log: classpath:changelog/db.changelog.yaml
   security:
     user:
-      name: ${APP_USER:user}
-      password: ${APP_PASSWORD:password}
+      name: ${APP_USER:productUser}
+      password: ${APP_PASSWORD:productPassword}
 
 management:
   endpoints:
@@ -50,7 +50,7 @@ management:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://user:password@localhost:8761/eureka}
+      defaultZone: ${EUREKA_URI:http://eurekaUser:eurekaPassword@localhost:8761/eureka}
     healthcheck:
       enabled: true
   instance:

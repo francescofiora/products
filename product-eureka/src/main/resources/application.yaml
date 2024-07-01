@@ -2,16 +2,12 @@ server:
   port: 8761
   servlet:
     context-path: /
-  ssl:
-    key-store: file:${KEYSTORE_FILE:}
-    key-store-password: ${KEYSTORE_PASSWORD:}
-    enabled: ${SSL_ENABLED:false}
 
 spring:
   security:
     user:
-      name: ${EUREKA_USER:user}
-      password: ${EUREKA_PASSWORD:password}
+      name: ${EUREKA_USER:eurekaUser}
+      password: ${EUREKA_PASSWORD:eurekaPassword}
 
 management:
   endpoints:
