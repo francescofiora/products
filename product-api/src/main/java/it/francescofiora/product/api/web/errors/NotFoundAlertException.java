@@ -1,37 +1,33 @@
 package it.francescofiora.product.api.web.errors;
 
+import java.io.Serial;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Not Found Alert Exception.
  */
+@Getter
 public class NotFoundAlertException extends ResponseStatusException {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   private final String entityName;
 
-  private final String param;
+  private final String errorKey;
 
   /**
    * Constructor.
    *
    * @param entityName entity Name
-   * @param param the parameter
+   * @param errorKey the parameter
    * @param errorMessage message
    */
-  public NotFoundAlertException(String entityName, String param, String errorMessage) {
+  public NotFoundAlertException(String entityName, String errorKey, String errorMessage) {
     super(HttpStatus.NOT_FOUND, errorMessage);
     this.entityName = entityName;
-    this.param = param;
-  }
-
-  public String getEntityName() {
-    return entityName;
-  }
-
-  public String getErrorKey() {
-    return param;
+    this.errorKey = errorKey;
   }
 }

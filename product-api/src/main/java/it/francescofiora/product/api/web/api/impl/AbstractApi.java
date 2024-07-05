@@ -47,7 +47,7 @@ public abstract class AbstractApi {
     // @formatter:off
     return ResponseEntity
         .created(createUri(path))
-        .headers(HeaderUtil.createEntityCreationAlert(refEntityName, String.valueOf(id)))
+        .headers(HeaderUtil.createAlert(refEntityName + HeaderUtil.CREATED, String.valueOf(id)))
         .build();
     // @formatter:on
   }
@@ -76,7 +76,7 @@ public abstract class AbstractApi {
     // @formatter:off
     return ResponseEntity
         .ok()
-        .headers(HeaderUtil.createEntityUpdateAlert(entityName, String.valueOf(id)))
+        .headers(HeaderUtil.createAlert(entityName + HeaderUtil.UPDATED, String.valueOf(id)))
         .build();
     // @formatter:on
   }
@@ -92,7 +92,7 @@ public abstract class AbstractApi {
     // @formatter:off
     return ResponseEntity
         .ok()
-        .headers(HeaderUtil.createEntityPatchedAlert(entityName, String.valueOf(id)))
+        .headers(HeaderUtil.createAlert(entityName + HeaderUtil.PATCHED, String.valueOf(id)))
         .build();
     // @formatter:on
   }
@@ -141,7 +141,7 @@ public abstract class AbstractApi {
     return maybeResponse
         .map(response -> ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityGetAlert(entityName, String.valueOf(id)))
+            .headers(HeaderUtil.createAlert(entityName + HeaderUtil.GET, String.valueOf(id)))
             .body(response))
         .orElseThrow(() -> new NotFoundAlertException(entityName, String.valueOf(id),
             entityName + " not found with id " + id));
@@ -169,7 +169,7 @@ public abstract class AbstractApi {
     // @formatter:off
     return ResponseEntity
         .noContent()
-        .headers(HeaderUtil.createEntityDeletionAlert(refEntityName, String.valueOf(id)))
+        .headers(HeaderUtil.createAlert(refEntityName + HeaderUtil.DELETED, String.valueOf(id)))
         .build();
     // @formatter:on
   }
