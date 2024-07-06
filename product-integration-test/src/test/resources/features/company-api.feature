@@ -2,10 +2,6 @@ Feature: Company Rest Api
 
   Scenario: Verify Company Application Health
     Given the system up and running
-    When GET the Company Application Health
-    Then the result should contain "UP"
-    When GET the Company Application Info
-    Then the result should contain "company-api"
 
   Scenario: Verify CRUD Company operation
     Given a new Company

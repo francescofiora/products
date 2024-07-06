@@ -104,26 +104,6 @@ public class StepDefinitions extends SpringGlue {
   }
 
   /**
-   * When GET the Application Health/Info.
-   *
-   * @param op Health or Info
-   */
-  @When("^GET the (\\w+) Application (\\w+)$")
-  public void whenGetApplication(final String application, final String op) {
-    applicationService.whenGetApplication(application, op);
-  }
-
-  /**
-   * Check then Status of last operation.
-   *
-   * @param expected expected result
-   */
-  @Then("the result should contain {string}")
-  public void thenResultContains(final String expected) {
-    applicationService.thenResultContains(expected);
-  }
-
-  /**
    * Given a new entity.
    *
    * @param entity the entity

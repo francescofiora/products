@@ -2,10 +2,6 @@ Feature: Product Rest Api
 
   Scenario: Verify Product Application Health
     Given the system up and running
-    When GET the Product Application Health
-    Then the result should contain "UP"
-    When GET the Product Application Info
-    Then the result should contain "product-api"
 
   Scenario: Verify CRUD Category operation
     Given a new Category

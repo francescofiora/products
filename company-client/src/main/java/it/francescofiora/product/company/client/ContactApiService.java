@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 /**
  * Client Service for ContactApi.
  */
-@FeignClient(name = "COMPANY-API", contextId = "CONTACT-SERVICE",
+@FeignClient(name = "COMPANY-API", contextId = "CONTACT-SERVICE", path = "${company.path:}",
     configuration = FeignCompanyConfiguration.class)
 @Headers({"Content-type", "application/json"})
 public interface ContactApiService extends ContactApi {

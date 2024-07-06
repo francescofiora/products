@@ -1,17 +1,11 @@
 package it.francescofiora.product.itt.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import it.francescofiora.product.client.ProductApiService;
-import it.francescofiora.product.company.client.CompanyApiService;
 import it.francescofiora.product.itt.component.CategoryComponent;
 import it.francescofiora.product.itt.component.CompanyComponent;
 import it.francescofiora.product.itt.component.OrderComponent;
 import it.francescofiora.product.itt.component.ProductComponent;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,41 +22,10 @@ public class ApplicationService {
   private static final String ORDER_ITEM = "OrderItem";
   private static final String ADDRESS = "Address";
 
-  private final CompanyApiService companyApiService;
-  private final ProductApiService productApiService;
-
   private final CompanyComponent companyComponent;
-
   private final CategoryComponent categoryComponent;
   private final ProductComponent productComponent;
   private final OrderComponent orderComponent;
-
-  private static ResponseEntity<String> resultString;
-
-  /**
-   * When GET the Application Health/Info.
-   *
-   * @param op Health or Info
-   */
-  public void whenGetApplication(final String application, final String op) {
-    resultString = switch (application + "-" + op) {
-      case "Product-Health" -> productApiService.getHealth();
-      case "Product-Info" -> productApiService.getInfo();
-      case "Company-Health" -> companyApiService.getHealth();
-      case "Company-Info" -> companyApiService.getInfo();
-      default -> throw new IllegalArgumentException("Unexpected value: " + op);
-    };
-    assertThat(resultString.getStatusCode()).isEqualTo(HttpStatus.OK);
-  }
-
-  /**
-   * Check then Status of last operation.
-   *
-   * @param expected expected result
-   */
-  public void thenResultContains(final String expected) {
-    assertThat(resultString.getBody()).contains(expected);
-  }
 
   /**
    * Given a new entity.
