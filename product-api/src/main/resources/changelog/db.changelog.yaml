@@ -4,11 +4,9 @@ databaseChangeLog:
       author: Francesco
       changes:
         - createSequence:  
-            schemaName: STORE
             sequenceName: SEQ_CATEGORY
             startValue: 1
         - createTable:
-            schemaName: STORE
             tableName: CATEGORY
             columns:
               - column:
@@ -33,11 +31,9 @@ databaseChangeLog:
       author: Francesco
       changes:
         - createSequence:  
-            schemaName: STORE
             sequenceName: SEQ_PRODUCT
             startValue: 1
         - createTable:
-            schemaName: STORE
             tableName: PRODUCT
             columns:
               - column:
@@ -82,11 +78,9 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
-            constraintName: FK1_PRODUCT  
-            baseTableSchemaName: STORE  
+            constraintName: FK1_PRODUCT
             baseTableName: PRODUCT
             baseColumnNames: category_id
-            referencedTableSchemaName: STORE
             referencedTableName: CATEGORY
             referencedColumnNames: id
 
@@ -94,13 +88,11 @@ databaseChangeLog:
       id: 2022080904
       author: Francesco
       changes:
-        - createSequence:  
-            schemaName:  STORE  
-            sequenceName:  SEQ_ORDER  
-            startValue:  1
+        - createSequence:
+            sequenceName:  SEQ_MAIN_ORDER
+            startValue: 1
         - createTable:
-            schemaName: STORE
-            tableName: order
+            tableName: main_order
             columns:
               - column:
                   name: id
@@ -134,11 +126,9 @@ databaseChangeLog:
       author: Francesco
       changes:
         - createSequence:  
-            schemaName: STORE
             sequenceName: SEQ_ORDER_ITEM
             startValue: 1
         - createTable:
-            schemaName: STORE
             tableName: ORDER_ITEM
             columns:
               - column:
@@ -169,17 +159,13 @@ databaseChangeLog:
                     nullable: false
         - addForeignKeyConstraint:
             constraintName: FK1_ORDER_ITEM
-            baseTableSchemaName: STORE
             baseTableName: ORDER_ITEM
             baseColumnNames: product_id
-            referencedTableSchemaName: STORE
             referencedTableName: PRODUCT
             referencedColumnNames: id
         - addForeignKeyConstraint:
             constraintName: FK2_ORDER_ITEM
-            baseTableSchemaName: STORE
             baseTableName: ORDER_ITEM
             baseColumnNames: order_id
-            referencedTableSchemaName: STORE
-            referencedTableName: order
+            referencedTableName: main_order
             referencedColumnNames: id

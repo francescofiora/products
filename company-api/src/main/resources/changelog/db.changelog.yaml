@@ -4,11 +4,9 @@ databaseChangeLog:
       author: Francesco
       changes:
         - createSequence:  
-            schemaName: COMPANY
             sequenceName: SEQ_COMPANY
             startValue: 1
         - createTable:
-            schemaName: COMPANY
             tableName: COMPANY
             columns:
               - column:
@@ -38,11 +36,9 @@ databaseChangeLog:
       author: Francesco
       changes:
         - createSequence:  
-            schemaName: COMPANY
             sequenceName: SEQ_ADDRESS
             startValue: 1
         - createTable:
-            schemaName: COMPANY
             tableName: ADDRESS
             columns:
               - column:
@@ -98,10 +94,8 @@ databaseChangeLog:
                     nullable: false
         - addForeignKeyConstraint:
             constraintName: FK1_ADDRESS
-            baseTableSchemaName: COMPANY
             baseTableName: ADDRESS
             baseColumnNames: company_id
-            referencedTableSchemaName: COMPANY
             referencedTableName: COMPANY
             referencedColumnNames: id
 
@@ -110,11 +104,9 @@ databaseChangeLog:
       author: Francesco
       changes:
         - createSequence:  
-            schemaName: COMPANY
             sequenceName: SEQ_CONTACT
             startValue: 1
         - createTable:
-            schemaName: COMPANY
             tableName: CONTACT
             columns:
               - column:
@@ -150,9 +142,7 @@ databaseChangeLog:
                     nullable: false
         - addForeignKeyConstraint:
             constraintName: FK1_CONTACT
-            baseTableSchemaName: COMPANY
             baseTableName: CONTACT
             baseColumnNames: address_id
-            referencedTableSchemaName: COMPANY
             referencedTableName: ADDRESS
             referencedColumnNames: id

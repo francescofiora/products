@@ -23,8 +23,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name = "CONTACT", schema = "COMPANY")
-@ToString(callSuper = true, includeFieldNames = true)
+@Table(name = "CONTACT")
+@ToString(callSuper = true)
 public class Contact extends AbstractDomain implements Serializable {
 
   @Serial
@@ -32,8 +32,7 @@ public class Contact extends AbstractDomain implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqContact")
-  @SequenceGenerator(name = "seqContact", sequenceName = "SEQ_CONTACT",
-      schema = "COMPANY", allocationSize = 1)
+  @SequenceGenerator(name = "seqContact", sequenceName = "SEQ_CONTACT", allocationSize = 1)
   private Long id;
 
   @NotNull

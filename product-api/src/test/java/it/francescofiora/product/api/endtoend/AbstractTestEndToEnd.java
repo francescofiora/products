@@ -195,13 +195,6 @@ public class AbstractTestEndToEnd {
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
-  protected <T> void assertGetNotFound(String path, Pageable pageable,
-      Class<T> responseType, String alert, String param) {
-    var result = performGet(path, pageable, responseType);
-    checkHeadersError(result.getHeaders(), alert, param);
-    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-  }
-
   protected <T> void assertGetBadRequest(String path, Class<T> responseType,
       String alert, String param) {
     var result = performGet(path, responseType);
@@ -213,12 +206,6 @@ public class AbstractTestEndToEnd {
     var result = performDelete(path);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     checkHeaders(result.getHeaders(), alert, param);
-  }
-
-  protected void assertDeleteBadRequest(String path, String alert, String param) {
-    var result = performDelete(path);
-    checkHeadersError(result.getHeaders(), alert, param);
-    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
   }
 
   protected Long getIdFormHttpHeaders(HttpHeaders headers) {

@@ -29,9 +29,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Getter
 @Setter
 @Entity
-@Table(name = "PRODUCT", schema = "STORE")
+@Table(name = "PRODUCT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@ToString(callSuper = true, includeFieldNames = true)
+@ToString(callSuper = true)
 public class Product extends AbstractDomain implements Serializable {
 
   @Serial
@@ -39,8 +39,7 @@ public class Product extends AbstractDomain implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqProduct")
-  @SequenceGenerator(name = "seqProduct", sequenceName = "SEQ_PRODUCT", schema = "STORE",
-      allocationSize = 1)
+  @SequenceGenerator(name = "seqProduct", sequenceName = "SEQ_PRODUCT", allocationSize = 1)
   private Long id;
 
   @NotNull

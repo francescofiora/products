@@ -14,7 +14,7 @@ spring:
     active: Logging
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/db_product}
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/db_company}
     username: ${DATASOURCE_USERNAME:product}
     password: ${DATASOURCE_PASSWORD:secret}
     hikari:

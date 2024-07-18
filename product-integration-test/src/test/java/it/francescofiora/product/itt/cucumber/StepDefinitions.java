@@ -25,8 +25,10 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 @Slf4j
 public class StepDefinitions extends SpringGlue {
 
-  private static final String DATASOURCE_URL =
+  private static final String DATASOURCE_PRODUCT_URL =
       "jdbc:postgresql://product-postgresql:5432/db_product";
+  private static final String DATASOURCE_COMPANY_URL =
+      "jdbc:postgresql://product-postgresql:5432/db_company";
 
   private static final StartStopContainers containers = new StartStopContainers();
   private static final ContainerGenerator containerGenerator = new ContainerGenerator();
@@ -48,8 +50,7 @@ public class StepDefinitions extends SpringGlue {
     containers.add(postgreContainer);
 
     try (var ds = DataSourceUtils.createHikariDataSource(postgreContainer)) {
-      DataSourceUtils.executeQuery(ds, "CREATE SCHEMA IF NOT EXISTS STORE");
-      DataSourceUtils.executeQuery(ds, "CREATE SCHEMA IF NOT EXISTS COMPANY");
+      DataSourceUtils.executeQuery(ds, "CREATE DATABASE DB_COMPANY");
     }
 
     eureka = containerGenerator.createEurekaServerContainer();
@@ -61,7 +62,7 @@ public class StepDefinitions extends SpringGlue {
     // @formatter:off
     var product = containerGenerator.createContainer("francescofiora-product")
         .withEnv(Map.of(
-            "DATASOURCE_URL", DATASOURCE_URL,
+            "DATASOURCE_URL", DATASOURCE_PRODUCT_URL,
             "EUREKA_URI", eurekaHttp,
             "eureka.instance.prefer-ip-address", "true"))
         .withLogConsumer(new Slf4jLogConsumer(log))
@@ -73,7 +74,7 @@ public class StepDefinitions extends SpringGlue {
     // @formatter:off
     var company = containerGenerator.createContainer("francescofiora-company")
         .withEnv(Map.of(
-            "DATASOURCE_URL", DATASOURCE_URL,
+            "DATASOURCE_URL", DATASOURCE_COMPANY_URL,
             "EUREKA_URI", eurekaHttp,
             "eureka.instance.prefer-ip-address", "true"))
         .withLogConsumer(new Slf4jLogConsumer(log))

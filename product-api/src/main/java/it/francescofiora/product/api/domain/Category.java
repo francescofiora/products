@@ -22,9 +22,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Getter
 @Setter
 @Entity
-@Table(name = "CATEGORY", schema = "STORE")
+@Table(name = "CATEGORY")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@ToString(callSuper = true, includeFieldNames = true)
+@ToString(callSuper = true)
 public class Category extends AbstractDomain implements Serializable {
 
   @Serial
@@ -32,8 +32,7 @@ public class Category extends AbstractDomain implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqCategory")
-  @SequenceGenerator(name = "seqCategory", sequenceName = "SEQ_CATEGORY",
-      schema = "STORE", allocationSize = 1)
+  @SequenceGenerator(name = "seqCategory", sequenceName = "SEQ_CATEGORY", allocationSize = 1)
   private Long id;
 
   @NotNull

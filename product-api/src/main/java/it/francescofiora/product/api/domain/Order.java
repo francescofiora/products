@@ -29,18 +29,17 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Getter
 @Setter
 @Entity
-@Table(name = "ORDER", schema = "STORE")
+@Table(name = "MAIN_ORDER")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@ToString(callSuper = true, includeFieldNames = true)
+@ToString(callSuper = true)
 public class Order extends AbstractDomain implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqOrder")
-  @SequenceGenerator(name = "seqOrder", sequenceName = "SEQ_ORDER", schema = "STORE",
-      allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqMainOrder")
+  @SequenceGenerator(name = "seqMainOrder", sequenceName = "SEQ_MAIN_ORDER", allocationSize = 1)
   private Long id;
 
   @NotNull
