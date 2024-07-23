@@ -25,3 +25,10 @@ services:
       - "EUREKA_SERVER=product-eureka"
     ports:
       - "8761:8761"
+
+  product-gateway:
+    image: francescofiora-product-gateway
+    environment:
+      - "EUREKA_URI=http://eurekaUser:eurekaPassword@product-eureka:8761/eureka"
+    ports:
+      - "3007:8080"

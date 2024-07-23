@@ -9,6 +9,7 @@ SpringBoot Rest Api tutorial with OpenApi 3.0 and PostgreSql.
 - Mapper for POJO<->DTO
 - Actuator
 - Eureka server and Open Feign
+- Gateway
 - Logging
 - Testing
     - Repositories using DataJpaTest
@@ -85,6 +86,15 @@ Scan project
     product-eureka/build/reports/jacoco/test/index.html
     product-eureka/build/reports/dependency-check-report.html
 
+    product-gateway/build/reports/checkstyle/main.html
+    product-gateway/build/reports/checkstyle/test.html
+    product-gateway/build/reports/tests/test/index.html
+    product-gateway/build/reports/jacoco/test/index.html
+    product-gateway/build/reports/dependency-check-report.html
+
+### Create docker image
+    ./gradlew jibDockerBuild
+
 ### How to execute
     docker-compose -f docker/docker-compose.yml up
     java -jar ./product-api/build/libs/product-api-1.0-SNAPSHOT.jar
@@ -110,9 +120,6 @@ Scan project
     curl -u productUser:productPassword 'http://localhost:8081/actuator/info' -i -X GET
     curl -u productUser:productPassword 'http://localhost:8081/actuator/health' -i -X GET
     curl -u productUser:productPassword 'http://localhost:8081/actuator/prometheus' -i -X GET
-
-### Create docker image
-    ./gradlew jibDockerBuild
 
 ### Integration test
 

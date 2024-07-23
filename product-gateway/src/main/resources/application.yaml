@@ -1,0 +1,43 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: gateway-server
+
+  security:
+    user:
+      name: ${GATEWAY_USER:gatewayUser}
+      password: ${GATEWAY_PASSWORD:gatewayPassword}
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: info,health,prometheus
+  health:
+    probes:
+      enabled: true
+
+eureka:
+  password: password
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://eurekaUser:eurekaPassword@localhost:8761/eureka}
+    healthcheck:
+      enabled: false
+  instance:
+    secure-port-enabled: ${EUREKA_SECURE:false}
+    non-secure-port-enabled: ${EUREKA_NOSECURE:true}
+
+product:
+  userName: productUser
+  password: productPassword
+  uri: lb://PRODUCT-API
+company:
+  userName: companyUser
+  password: companyPassword
+  uri: lb://COMPANY-API
