@@ -14,7 +14,10 @@ management:
     web:
      base-path: /actuator
      exposure:
-       include: info,health,metrics,prometheus
+       include: info,health,prometheus
+  health:
+    probes:
+      enabled: true
 
 eureka:
   instance:

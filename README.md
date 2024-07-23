@@ -104,12 +104,12 @@ Scan project
    - phpPgAdmin: (product/secret)
 
 ## Actuator
-    curl -u user:password 'http://localhost:8082/actuator/info' -i -X GET
-    curl -u user:password 'http://localhost:8082/actuator/health' -i -X GET
-    curl -u user:password 'http://localhost:8082/actuator/prometheus' -i -X GET
-    curl -u user:password 'http://localhost:8081/actuator/info' -i -X GET
-    curl -u user:password 'http://localhost:8081/actuator/health' -i -X GET
-    curl -u user:password 'http://localhost:8081/actuator/prometheus' -i -X GET
+    curl -u companyUser:companyPassword 'http://localhost:8082/actuator/info' -i -X GET
+    curl -u companyUser:companyPassword 'http://localhost:8082/actuator/health' -i -X GET
+    curl -u companyUser:companyPassword 'http://localhost:8082/actuator/prometheus' -i -X GET
+    curl -u productUser:productPassword 'http://localhost:8081/actuator/info' -i -X GET
+    curl -u productUser:productPassword 'http://localhost:8081/actuator/health' -i -X GET
+    curl -u productUser:productPassword 'http://localhost:8081/actuator/prometheus' -i -X GET
 
 ### Create docker image
     ./gradlew jibDockerBuild

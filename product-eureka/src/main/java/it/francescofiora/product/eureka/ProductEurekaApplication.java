@@ -9,9 +9,9 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  */
 @EnableEurekaServer
 @SpringBootApplication
-public class TaskEurekaApplication {
+public class ProductEurekaApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(TaskEurekaApplication.class, args);
+    SpringApplication.run(ProductEurekaApplication.class, args);
   }
 }
