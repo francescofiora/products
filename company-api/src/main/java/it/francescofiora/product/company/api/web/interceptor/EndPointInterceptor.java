@@ -16,9 +16,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class EndPointInterceptor implements HandlerInterceptor {
 
   @Override
-  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-      throws Exception {
-    log.debug(request.getMethod() + " " + request.getRequestURI());
+  public boolean preHandle(
+      HttpServletRequest request, HttpServletResponse response, Object handler) {
+    log.debug("{} {}", request.getMethod(), request.getRequestURI());
     return true;
   }
 }

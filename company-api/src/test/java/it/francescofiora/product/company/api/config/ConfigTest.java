@@ -17,7 +17,7 @@ class ConfigTest {
 
   @Test
   void testJpaConfiguration() {
-    assertDoesNotThrow(() -> new JpaConfiguration());
+    assertDoesNotThrow(JpaConfiguration::new);
   }
 
   @Test
