@@ -101,10 +101,9 @@ Scan project
     java -jar ./company-api/build/libs/company-api-1.0-SNAPSHOT.jar
 
 **Links**
- - http://localhost:8082/swagger-ui.html (Company Api Swagger)
- - http://localhost:8081/swagger-ui.html (Product Api Swagger)
- - https://localhost/ (phpPgAdmin)
- - http://localhost:8761/ (Eureka)
+ - https://localhost (phpPgAdmin)
+ - http://localhost:8761 (Eureka)
+ - http://localhost:3007/swagger-ui.html (Gateway)
 
 ## Security
  - Basic Authentication
@@ -112,6 +111,7 @@ Scan project
    - Product Api: (productUser/productPassword)
    - Eureka: (eurekaUser/eurekaPassword)
    - phpPgAdmin: (product/secret)
+   - Gatway: (gatewayUser/gatewayPassword)
 
 ## Actuator
     curl -u companyUser:companyPassword 'http://localhost:8082/actuator/info' -i -X GET

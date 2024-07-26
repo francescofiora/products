@@ -6,8 +6,11 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.servers.Server;
 import it.francescofiora.product.company.api.web.filter.EndPointFilter;
+import java.util.List;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,12 +23,15 @@ public class OpenApiConfig {
   /**
    * Custom OpenAPI component.
    *
+   * @param serverUrl the url of the server
    * @return OpenAPI Bean
    */
   @Bean
-  public OpenAPI customOpenApi() {
+  public OpenAPI customOpenApi(
+      @Value("${openapi.server.url:http://localhost:8082}") String serverUrl) {
     // @formatter:off
     return new OpenAPI()
+        .servers(List.of(new Server().url(serverUrl)))
         .components(new Components())
         .info(new Info()
             .title("Company Demo App")

@@ -22,7 +22,7 @@ class ConfigTest {
 
   @Test
   void testOpenApiConfig() {
-    var openApi = new OpenApiConfig().customOpenApi();
+    var openApi = new OpenApiConfig().customOpenApi("http://localhost:8082");
 
     assertThat(openApi.getInfo().getTitle()).isEqualTo("Company Demo App");
     assertThat(openApi.getInfo().getDescription())

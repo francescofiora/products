@@ -38,11 +38,11 @@ class ApplicationTest {
 
   private static final String JSON_PATH = "$.myText.key";
   private static final String BODY = """
-   {
-      "myText": {
-          "key": "%s"
+      {
+         "myText": {
+             "key": "%s"
+         }
       }
-   }
       """;
 
   @Autowired
@@ -74,10 +74,10 @@ class ApplicationTest {
     configStub(PRODUCT_URL, PRODUCT_KEY, productUser, productPassword);
   }
 
-  private void testUrl(String url, String value, String user, String password) {
+  private void testUrl(String url, String value) {
     webClient
         .get().uri(url)
-        .headers(headers -> headers.setBasicAuth(user, password))
+        .headers(headers -> headers.setBasicAuth(gatewayUser, gatewayPassword))
         .exchange()
         .expectStatus().isOk()
         .expectBody()
@@ -88,9 +88,9 @@ class ApplicationTest {
   void testProduct() {
     productConfig();
 
-    testUrl(CATEGORY_URL, CATEGORY_KEY, gatewayUser, gatewayPassword);
-    testUrl(ORDER_URL, ORDER_KEY, gatewayUser, gatewayPassword);
-    testUrl(PRODUCT_URL, PRODUCT_KEY, gatewayUser, gatewayPassword);
+    testUrl(CATEGORY_URL, CATEGORY_KEY);
+    testUrl(ORDER_URL, ORDER_KEY);
+    testUrl(PRODUCT_URL, PRODUCT_KEY);
   }
 
   private void companyConfig() {
@@ -105,7 +105,7 @@ class ApplicationTest {
   void testCompany() {
     companyConfig();
 
-    testUrl(COMPANY_URL, COMPANY_KEY, gatewayUser, gatewayPassword);
-    testUrl(CONTACT_URL, CONTACT_KEY, gatewayUser, gatewayPassword);
+    testUrl(COMPANY_URL, COMPANY_KEY);
+    testUrl(CONTACT_URL, CONTACT_KEY);
   }
 }

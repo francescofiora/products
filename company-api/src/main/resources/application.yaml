@@ -63,3 +63,7 @@ eureka:
       metrics.path: /actuator/prometheus
       health.path: /actuator/health
       management.context-path: /actuator
+
+openapi:
+  server:
+    url: http://localhost:3007
