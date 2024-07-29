@@ -1,6 +1,6 @@
 plugins {
   id 'java-library'
-  id 'org.owasp.dependencycheck' version '7.4.4'
+  id 'org.owasp.dependencycheck' version '8.4.3'
   id 'maven-publish'
 }
 
@@ -9,14 +9,15 @@ def lombok_version = parent.property('lombok.version')
 def jakarta_validation_version = parent.property('jakarta-validation.version')
 def openfeign_version = parent.property('openfeign.version')
 def feign_hc5_version = parent.property('feign-hc5.version')
+def springboot_version = parent.property('springboot.version')
 
 ext {
-  set('springCloudVersion', "2023.0.1")
+  set('springCloudVersion', "2023.0.3")
 }
 
 dependencies {
   implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc_openapi_version}"
-  implementation "org.springframework.data:spring-data-commons:3.2.3"
+  implementation "org.springframework.data:spring-data-commons:${springboot_version}"
   implementation "jakarta.validation:jakarta.validation-api:${jakarta_validation_version}"
 
   implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${openfeign_version}"

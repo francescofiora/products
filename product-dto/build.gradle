@@ -1,7 +1,7 @@
 plugins {
   id 'java-library'
   id 'info.solidsoft.pitest' version '1.15.0'
-  id 'org.owasp.dependencycheck' version '7.4.4'
+  id 'org.owasp.dependencycheck' version '8.4.3'
   id 'maven-publish'
 }
 
@@ -11,11 +11,12 @@ def openpojo_version = parent.property('openpojo.version')
 def jakarta_validation_version = parent.property('jakarta-validation.version')
 def unit_test_version = parent.property('unit-test.version')
 def assertj_version = parent.property('assertj.version')
+def springboot_version = parent.property('springboot.version')
 
 dependencies {
   implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc_openapi_version}"
   implementation "jakarta.validation:jakarta.validation-api:${jakarta_validation_version}"
-  implementation "org.springframework.data:spring-data-commons:3.2.3"
+  implementation "org.springframework.data:spring-data-commons:${springboot_version}"
 
   implementation project(':product-common')
 

@@ -16,6 +16,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfig {
 
   /**
+   * Configure Basic authentication.
    *
    * @param http HttpSecurity
    * @return SecurityWebFilterChain
