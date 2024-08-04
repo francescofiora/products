@@ -136,17 +136,12 @@ public abstract class AbstractApiTest {
     // @formatter:on
   }
 
-  protected ResultActions performGet(String path, Long id, Pageable pageable) throws Exception {
-    // @formatter:off
-    return mvc.perform(get(path, id)
-        .headers(createHttpHeaders())
-        .contentType(APPLICATION_JSON)
-        .content(writeValueAsString(pageable)));
-    // @formatter:on
-  }
-
   protected ResultActions performGet(String path) throws Exception {
     return mvc.perform(get(new URI(path)).headers(createHttpHeaders()));
+  }
+
+  protected ResultActions performGetWithNoUser(String path) throws Exception {
+    return mvc.perform(get(new URI(path)).headers(createHttpHeadersWithNoUser()));
   }
 
   protected ResultActions performGetForbidden(String path, Long id) throws Exception {
@@ -170,15 +165,23 @@ public abstract class AbstractApiTest {
     return mvc.perform(delete(path, uriVars).headers(createHttpHeadersWithWrongUser()));
   }
 
-  private HttpHeaders createHttpHeaders() {
-    var headers = new HttpHeaders();
-    headers.setBasicAuth(user, password);
-    return headers;
+  private HttpHeaders createHttpHeadersWithWrongUser() {
+    return createHttpHeaders("WRONG");
   }
 
-  private HttpHeaders createHttpHeadersWithWrongUser() {
+  private HttpHeaders createHttpHeadersWithNoUser() {
+    return createHttpHeaders(null);
+  }
+
+  private HttpHeaders createHttpHeaders() {
+    return createHttpHeaders(user);
+  }
+
+  private HttpHeaders createHttpHeaders(String httpUser) {
     var headers = new HttpHeaders();
-    headers.setBasicAuth("WRONG", password);
+    if (httpUser != null) {
+      headers.setBasicAuth(httpUser, password);
+    }
     return headers;
   }
 }

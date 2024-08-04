@@ -114,12 +114,12 @@ Scan project
    - Gatway: (gatewayUser/gatewayPassword)
 
 ## Actuator
-    curl -u companyUser:companyPassword 'http://localhost:8082/actuator/info' -i -X GET
-    curl -u companyUser:companyPassword 'http://localhost:8082/actuator/health' -i -X GET
-    curl -u companyUser:companyPassword 'http://localhost:8082/actuator/prometheus' -i -X GET
-    curl -u productUser:productPassword 'http://localhost:8081/actuator/info' -i -X GET
-    curl -u productUser:productPassword 'http://localhost:8081/actuator/health' -i -X GET
-    curl -u productUser:productPassword 'http://localhost:8081/actuator/prometheus' -i -X GET
+    curl 'http://localhost:8082/actuator/info' -i -X GET
+    curl 'http://localhost:8082/actuator/health' -i -X GET
+    curl 'http://localhost:8082/actuator/prometheus' -i -X GET
+    curl 'http://localhost:8081/actuator/info' -i -X GET
+    curl 'http://localhost:8081/actuator/health' -i -X GET
+    curl 'http://localhost:8081/actuator/prometheus' -i -X GET
 
 ### Integration test
 

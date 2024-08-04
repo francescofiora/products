@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity.CsrfSpec;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 
 /**
  * Security Configuration.
@@ -24,8 +25,11 @@ public class SecurityConfig {
   @Bean
   public SecurityWebFilterChain filterChain(ServerHttpSecurity http) {
     http
+        .authorizeExchange(authorize -> authorize
+            .matchers(ServerWebExchangeMatchers.pathMatchers("/actuator/**"))
+            .permitAll()
+            .anyExchange().authenticated())
         .httpBasic(Customizer.withDefaults())
-        .authorizeExchange(authorize -> authorize.anyExchange().authenticated())
         .csrf(CsrfSpec::disable);
     return http.build();
   }

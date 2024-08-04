@@ -1,4 +1,4 @@
-package it.francescofiora.product.gateway;
+package it.francescofiora.product.gateway.web;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

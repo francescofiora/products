@@ -114,14 +114,28 @@ public abstract class AbstractApiTest {
     return mvc.perform(get(new URI(path)).headers(createHttpHeaders()));
   }
 
+  protected ResultActions performGetWithNoUser(String path) throws Exception {
+    return mvc.perform(get(new URI(path)).headers(createHttpHeadersWithNoUser()));
+  }
+
   protected ResultActions performDelete(String path, Object... uriVars)
       throws Exception {
     return mvc.perform(delete(path, uriVars).headers(createHttpHeaders()));
   }
 
+  private HttpHeaders createHttpHeadersWithNoUser() {
+    return createHttpHeaders(null);
+  }
+
   private HttpHeaders createHttpHeaders() {
+    return createHttpHeaders(user);
+  }
+
+  private HttpHeaders createHttpHeaders(String httpUser) {
     var headers = new HttpHeaders();
-    headers.setBasicAuth(user, password);
+    if (httpUser != null) {
+      headers.setBasicAuth(httpUser, password);
+    }
     return headers;
   }
 }

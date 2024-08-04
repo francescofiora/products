@@ -1,10 +1,9 @@
-package it.francescofiora.product.company.api.endtoend;
+package it.francescofiora.product.api.web.api;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import it.francescofiora.product.company.api.web.api.AbstractApiTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,23 +13,20 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
- * Swagger UI Page and JSON Test.
+ * Prometheus Test.
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = {"classpath:application_test.properties"})
-class SwaggerTest extends AbstractApiTest {
+class ActuatorTest extends AbstractApiTest {
 
   @Test
-  void testSwaggerUiPage() throws Exception {
-    performGet("/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config")
-        .andExpect(status().isOk()).andExpect(content().string(containsString("Swagger UI")));
-  }
+  void testEndPoint() throws Exception {
+    performGetWithNoUser("/actuator/info")
+        .andExpect(status().isOk()).andExpect(content().string(containsString("product-api")));
 
-  @Test
-  void testJsonSwagger() throws Exception {
-    performGet("/v3/api-docs").andExpect(status().isOk())
-        .andExpect(content().string(containsString("Company Demo App")));
+    performGetWithNoUser("/actuator/health")
+        .andExpect(status().isOk()).andExpect(content().string(containsString("UP")));
   }
 }

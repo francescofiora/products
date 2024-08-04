@@ -27,6 +27,7 @@ dependencies {
   implementation "io.micrometer:micrometer-registry-prometheus:${micrometer_prometheus_version}"
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework:spring-webflux'
 }
 
 springBoot {
