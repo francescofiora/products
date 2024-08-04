@@ -19,7 +19,7 @@ SpringBoot Rest Api tutorial with OpenApi 3.0 and PostgreSql.
     - End to End Test with TestRestTemplate
     - Integration test using TestContainers and Cucumber
 
-# Getting Started
+## Getting Started
 ### Compile
     ./gradlew clean build
 
@@ -96,24 +96,30 @@ Scan project
     ./gradlew jibDockerBuild
 
 ### How to execute
+* Applications in java command:
+
     docker-compose -f docker/docker-compose.yml up
     java -jar ./product-api/build/libs/product-api-1.0-SNAPSHOT.jar
     java -jar ./company-api/build/libs/company-api-1.0-SNAPSHOT.jar
 
+* All components in docker:
+
+    docker compose -f docker/docker-compose.yml -f docker/docker-product.yml up
+
 **Links**
- - https://localhost (phpPgAdmin)
+ - http://localhost:8080 (pgAdmin)
  - http://localhost:8761 (Eureka)
  - http://localhost:3007/swagger-ui.html (Gateway)
 
-## Security
+### Security
  - Basic Authentication
    - Company Api: (companyUser/companyPassword)
    - Product Api: (productUser/productPassword)
    - Eureka: (eurekaUser/eurekaPassword)
-   - phpPgAdmin: (product/secret)
+   - pgAdmin: (product@domain-name.com/secret)
    - Gatway: (gatewayUser/gatewayPassword)
 
-## Actuator
+### Actuator
     curl 'http://localhost:8082/actuator/info' -i -X GET
     curl 'http://localhost:8082/actuator/health' -i -X GET
     curl 'http://localhost:8082/actuator/prometheus' -i -X GET
@@ -121,7 +127,7 @@ Scan project
     curl 'http://localhost:8081/actuator/health' -i -X GET
     curl 'http://localhost:8081/actuator/prometheus' -i -X GET
 
-### Integration test
+## Integration test
 
 ### Publish client and dto jars
     ./gradlew publishToMavenLocal
@@ -131,7 +137,7 @@ Scan project
     ./gradlew clean build
 
 
-# Technologies used
+## Technologies used
 - [Gradle 8.5](https://gradle.org)
 - [Java 17](https://openjdk.java.net/projects/jdk/17)
 - [Spring Boot 3.3](https://spring.io/projects/spring-boot)

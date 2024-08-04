@@ -1,0 +1,16 @@
+services:
+  company-api:
+    image: francescofiora-company
+    environment:
+      - EUREKA_URI=http://eurekaUser:eurekaPassword@product-eureka:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://product-postgresql:5432/db_company
+    ports:
+      - '8081:8081'
+
+  product-api:
+    image: francescofiora-product
+    environment:
+      - EUREKA_URI=http://eurekaUser:eurekaPassword@product-eureka:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://product-postgresql:5432/db_product
+    ports:
+      - '8082:8082'

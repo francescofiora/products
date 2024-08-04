@@ -7,28 +7,28 @@ services:
       - POSTGRES_USER=product
       - POSTGRES_PASSWORD=secret
     ports:
-      - 5432:5432
+      - '5432:5432'
     volumes:
       - "./postgresql:/docker-entrypoint-initdb.d"
 
   product-myadmin:
-    image:  bitnami/phppgadmin-archived
+    image:  dpage/pgadmin4:8.10
     environment:
-      - DATABASE_HOST=product-postgresql
+      - PGADMIN_DEFAULT_EMAIL=product@domain-name.com
+      - PGADMIN_DEFAULT_PASSWORD=secret
     ports:
       - '8080:80'
-      - '443:8443'
 
   product-eureka:
     image: francescofiora-product-eureka
     environment:
       - "EUREKA_SERVER=product-eureka"
     ports:
-      - "8761:8761"
+      - '8761:8761'
 
   product-gateway:
     image: francescofiora-product-gateway
     environment:
       - "EUREKA_URI=http://eurekaUser:eurekaPassword@product-eureka:8761/eureka"
     ports:
-      - "3007:8080"
+      - '3007:8080'
