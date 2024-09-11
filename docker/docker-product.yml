@@ -6,6 +6,10 @@ services:
       - DATASOURCE_URL=jdbc:postgresql://product-postgresql:5432/db_company
     ports:
       - '8081:8081'
+    depends_on:
+      - product-postgresql
+      - product-eureka
+      - product-gateway
 
   product-api:
     image: francescofiora-product
@@ -14,3 +18,7 @@ services:
       - DATASOURCE_URL=jdbc:postgresql://product-postgresql:5432/db_product
     ports:
       - '8082:8082'
+    depends_on:
+      - product-postgresql
+      - product-eureka
+      - product-gateway

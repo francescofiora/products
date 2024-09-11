@@ -102,9 +102,13 @@ Scan project
     java -jar ./product-api/build/libs/product-api-1.0-SNAPSHOT.jar
     java -jar ./company-api/build/libs/company-api-1.0-SNAPSHOT.jar
 
-* All components in docker:
+* All applications in docker:
 
     docker compose -f docker/docker-compose.yml -f docker/docker-product.yml up
+
+* All applications and prometheus in docker:
+
+    docker compose -f docker/docker-compose.yml -f docker/docker-product.yml -f docker/docker-extension.yaml up
 
 **Links**
  - http://localhost:8080 (pgAdmin)

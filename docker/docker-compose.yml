@@ -18,6 +18,8 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=secret
     ports:
       - '8080:80'
+    depends_on:
+      - product-postgresql
 
   product-eureka:
     image: francescofiora-product-eureka
@@ -32,3 +34,5 @@ services:
       - "EUREKA_URI=http://eurekaUser:eurekaPassword@product-eureka:8761/eureka"
     ports:
       - '3007:8080'
+    depends_on:
+      - product-eureka
