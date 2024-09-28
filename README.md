@@ -106,7 +106,7 @@ Scan project
 
     docker compose -f docker/docker-compose.yml -f docker/docker-product.yml up
 
-* All applications and prometheus in docker:
+* All applications in docker with Prometheus and Grafana:
 
     docker compose -f docker/docker-compose.yml -f docker/docker-product.yml -f docker/docker-extension.yaml up
 
@@ -114,6 +114,7 @@ Scan project
  - http://localhost:8080 (pgAdmin)
  - http://localhost:8761 (Eureka)
  - http://localhost:3007/swagger-ui.html (Gateway)
+ - http://localhost:3080 (Grafana)
 
 ### Security
  - Basic Authentication
@@ -121,7 +122,8 @@ Scan project
    - Product Api: (productUser/productPassword)
    - Eureka: (eurekaUser/eurekaPassword)
    - pgAdmin: (product@domain-name.com/secret)
-   - Gatway: (gatewayUser/gatewayPassword)
+   - Gateway: (gatewayUser/gatewayPassword)
+   - Grafana: (admin/grafana)
 
 ### Actuator
     curl 'http://localhost:8082/actuator/info' -i -X GET
