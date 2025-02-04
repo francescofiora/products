@@ -1,7 +1,7 @@
 plugins {
   id 'java'
-  id 'org.springframework.boot' version '3.3.2'
-  id 'io.spring.dependency-management' version '1.1.6'
+  id 'org.springframework.boot' version '3.4.2'
+  id 'io.spring.dependency-management' version '1.1.7'
   id 'checkstyle'
   id 'jacoco'
   id 'org.owasp.dependencycheck' version '8.4.3'
@@ -31,7 +31,7 @@ def cucumber_version = property('cucumber.version')
 def feign_hc5_version = property('feign-hc5.version')
 
 ext {
-  set('springCloudVersion', "2023.0.3")
+  set('springCloudVersion', "2024.0.0")
 }
 
 dependencyManagement {

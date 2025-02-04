@@ -12,7 +12,7 @@ def feign_hc5_version = parent.property('feign-hc5.version')
 def springboot_version = parent.property('springboot.version')
 
 ext {
-  set('springCloudVersion', "2023.0.3")
+  set('springCloudVersion', "2024.0.0")
 }
 
 dependencies {

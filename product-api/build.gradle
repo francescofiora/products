@@ -1,9 +1,9 @@
 plugins {
-  id 'org.springframework.boot' version '3.3.2'
-  id 'io.spring.dependency-management' version '1.1.6'
+  id 'org.springframework.boot' version '3.4.2'
+  id 'io.spring.dependency-management' version '1.1.7'
   id 'info.solidsoft.pitest' version '1.15.0'
   id 'org.owasp.dependencycheck' version '8.4.3'
-  id 'com.google.cloud.tools.jib' version '3.4.3'
+  id 'com.google.cloud.tools.jib' version '3.4.4'
 }
 
 def main_class = 'it.francescofiora.product.api.Application'
@@ -18,7 +18,7 @@ def apache_httpclient_version = parent.property('apache-httpclient.version')
 def micrometer_prometheus_version = parent.property('micrometer-prometheus.version')
 
 ext {
-  set('springCloudVersion', "2023.0.3")
+  set('springCloudVersion', "2024.0.0")
 }
 
 dependencyManagement {
