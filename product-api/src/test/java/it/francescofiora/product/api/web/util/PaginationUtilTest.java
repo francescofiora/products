@@ -27,13 +27,13 @@ class PaginationUtilTest {
   private static final int TOTAL_COUNTS = 100;
 
   @Test
-  void testgetHttpHeadersfromPagination1() {
-    testgetHttpHeadersfromPagination(0, 1, HEADER_LINK_0_1);
+  void testGetHttpHeadersFromPagination1() {
+    testGetHttpHeadersFromPagination(0, 1, HEADER_LINK_0_1);
   }
 
   @Test
-  void testgetHttpHeadersfromPagination2() {
-    testgetHttpHeadersfromPagination(9, 10, HEADER_LINK_9_10);
+  void testGetHttpHeadersFromPagination2() {
+    testGetHttpHeadersFromPagination(9, 10, HEADER_LINK_9_10);
   }
 
   @Test
@@ -45,7 +45,7 @@ class PaginationUtilTest {
     constructor.newInstance();
   }
 
-  private void testgetHttpHeadersfromPagination(int page, int size, String headerLink) {
+  private void testGetHttpHeadersFromPagination(int page, int size, String headerLink) {
     var attributes = new ServletRequestAttributes(mock(HttpServletRequest.class));
     RequestContextHolder.setRequestAttributes(attributes);
 

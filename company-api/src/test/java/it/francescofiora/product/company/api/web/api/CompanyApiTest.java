@@ -19,12 +19,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -39,7 +39,7 @@ class CompanyApiTest extends AbstractApiTest {
   private static final String ADDRESS_URI = "/api/v1/companies/{id}/addresses";
   private static final String ADDRESS_ID_URI = "/api/v1/companies/%d/addresses/%d";
 
-  @MockBean
+  @MockitoBean
   private CompanyService companyService;
 
   @Test

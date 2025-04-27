@@ -17,7 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 class CustomErrorControllerTest {
 
   @Test
-  void testgetStatus() {
+  void testGetStatus() {
     var ex = new CustomErrorController((x) -> null);
 
     var request = mock(HttpServletRequest.class);

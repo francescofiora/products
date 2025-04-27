@@ -1,5 +1,7 @@
 package it.francescofiora.product.company.api.web.errors;
 
+import java.io.Serial;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -8,30 +10,25 @@ import org.springframework.web.server.ResponseStatusException;
  */
 public class BadRequestAlertException extends ResponseStatusException {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
+  @Getter
   private final String entityName;
 
-  private final String param;
+  @Getter
+  private final String errorKey;
 
   /**
    * Constructor.
    *
    * @param entityName entity name
-   * @param param the parameter
+   * @param errorKey the errorKey
    * @param errorMessage message
    */
-  public BadRequestAlertException(String entityName, String param, String errorMessage) {
+  public BadRequestAlertException(String entityName, String errorKey, String errorMessage) {
     super(HttpStatus.BAD_REQUEST, errorMessage);
     this.entityName = entityName;
-    this.param = param;
-  }
-
-  public String getEntityName() {
-    return entityName;
-  }
-
-  public String getParam() {
-    return param;
+    this.errorKey = errorKey;
   }
 }

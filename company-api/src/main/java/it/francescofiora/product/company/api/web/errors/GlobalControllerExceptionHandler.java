@@ -30,7 +30,7 @@ public class GlobalControllerExceptionHandler {
   public ResponseEntity<Void> handleBadRequest(BadRequestAlertException ex) {
 
     return createBadRequest(HeaderUtil.createAlert(ex.getEntityName() + ALERT_BAD_REQUEST,
-        ex.getParam(), ex.getMessage()));
+        ex.getErrorKey(), ex.getMessage()));
   }
 
   private ResponseEntity<Void> createBadRequest(HttpHeaders httpHeaders) {

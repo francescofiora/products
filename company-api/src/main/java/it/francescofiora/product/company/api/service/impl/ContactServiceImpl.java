@@ -47,7 +47,7 @@ public class ContactServiceImpl implements ContactService {
   public void update(UpdatebleContactDto contactDto) {
     log.debug("Request to save Contact : {}", contactDto);
     var contactOpt = contactRepository.findById(contactDto.getId());
-    if (!contactOpt.isPresent()) {
+    if (contactOpt.isEmpty()) {
       var id = String.valueOf(contactDto.getId());
       throw new NotFoundAlertException(ENTITY_NAME, id, ENTITY_NAME + " not found with id " + id);
     }
