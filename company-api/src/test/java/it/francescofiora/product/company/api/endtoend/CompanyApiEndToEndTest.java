@@ -48,7 +48,7 @@ class CompanyApiEndToEndTest extends AbstractTestEndToEnd {
   private static final String PARAM_ADDRESS_NOT_BLANK =
       "[newCompanyDto.addresses[0].address - NotBlank]";
 
-  private static final String PARAM_PAGE_20 = "0 20";
+  private static final String PARAM_PAGE_1 = "0 1";
   private static final String PARAM_NOT_VALID_LONG =
       "'id' should be a valid 'Long' and '999999999999999999999999' isn't";
 
@@ -85,7 +85,7 @@ class CompanyApiEndToEndTest extends AbstractTestEndToEnd {
         String.valueOf(addressDto.getId()));
 
     var companies =
-        get(COMPANIES_URI, PageRequest.of(1, 1), CompanyDto[].class, ALERT_GET, PARAM_PAGE_20);
+        get(COMPANIES_URI, PageRequest.of(0, 1), CompanyDto[].class, ALERT_GET, PARAM_PAGE_1);
     assertThat(companies).isNotEmpty();
     var option =
         Stream.of(companies).filter(company -> company.getId().equals(companyId)).findAny();

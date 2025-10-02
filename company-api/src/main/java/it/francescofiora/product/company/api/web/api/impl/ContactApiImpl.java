@@ -33,7 +33,7 @@ public class ContactApiImpl extends AbstractApi implements ContactApi {
   }
 
   @Override
-  public ResponseEntity<Void> updateContact(UpdatebleContactDto contactDto, Long id) {
+  public ResponseEntity<Void> updateContact(Long id, UpdatebleContactDto contactDto) {
     if (!id.equals(contactDto.getId())) {
       throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(contactDto.getId()),
           "Invalid id");

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -41,10 +42,13 @@ public class AbstractTestEndToEnd {
     return restTemplate.exchange(getPath(path), HttpMethod.GET, request, responseType);
   }
 
-  protected <T> ResponseEntity<T> performGet(String path, Pageable pageable,
+  protected <T> ResponseEntity<T> performGet(String path, PageRequest pageable,
       Class<T> responseType) {
-    var request = new HttpEntity<>(pageable, createHttpHeaders());
-    return restTemplate.exchange(getPath(path), HttpMethod.GET, request, responseType);
+    var url = getPath(path)
+        + "?page=" + pageable.getPageNumber()
+        + "&size=" + pageable.getPageSize();
+    var request = new HttpEntity<>(createHttpHeaders());
+    return restTemplate.exchange(url, HttpMethod.GET, request, responseType);
   }
 
   protected ResponseEntity<Void> performDelete(String path) {
@@ -125,7 +129,7 @@ public class AbstractTestEndToEnd {
     return value;
   }
 
-  protected <T> T get(String path, Pageable pageable, Class<T> responseType, String alert,
+  protected <T> T get(String path, PageRequest pageable, Class<T> responseType, String alert,
       String param) {
     var result = performGet(path, pageable, responseType);
     checkHeaders(result.getHeaders(), alert, param);
@@ -142,7 +146,7 @@ public class AbstractTestEndToEnd {
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
-  protected <T> void assertGetNotFound(String path, Pageable pageable, Class<T> responseType,
+  protected <T> void assertGetNotFound(String path, PageRequest pageable, Class<T> responseType,
       String alert, String param) {
     var result = performGet(path, pageable, responseType);
     checkHeadersError(result.getHeaders(), alert, param);

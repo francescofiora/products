@@ -98,7 +98,7 @@ Scan project
 ### How to execute
 * Applications in java command:
 
-    docker-compose -f docker/docker-compose.yml up
+    docker compose -f docker/docker-compose.yml up
     java -jar ./product-api/build/libs/product-api-1.0-SNAPSHOT.jar
     java -jar ./company-api/build/libs/company-api-1.0-SNAPSHOT.jar
 

@@ -1,0 +1,439 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: REST controller for managing Company
+paths:
+
+  /api/v1/companies:
+    get:
+      summary: Searches Companies
+      description: By passing in the appropriate options you can search for available Companies in the system
+      operationId: findCompanies
+      x-spring-paginated: true
+      tags:
+        - company
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: Company name
+          example: Groupon
+      responses:
+        "200":
+          description: Search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompanyDto'
+        "400":
+          description: Bad input parameter
+        "404":
+          description: Not found
+    post:
+      summary: Add new Company
+      description: Add a new Company to the system
+      operationId: createCompany
+      tags:
+        - company
+      requestBody:
+        description: Add new Company
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewCompanyDto"
+      responses:
+        "201":
+          description: Company created
+        "400":
+          description: Invalid input, object invalid
+
+  /api/v1/companies/{id}:
+    get:
+      summary: Searches Company by 'id'
+      description: Searches Company by 'id'
+      operationId: getCompanyById
+      tags:
+        - company
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the company to get
+      responses:
+        "200":
+          description: Search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyDto"
+        "400":
+          description: Bad input parameter
+        "404":
+          description: Not found
+    put:
+      summary: Update Company
+      description: Update a Company to the system
+      operationId: updateCompany
+      tags:
+        - company
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the company to update
+      requestBody:
+        description: Company to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatebleCompanyDto"
+      responses:
+        "200":
+          description: Company updated
+        "400":
+          description: Invalid input, object invalid
+        "404":
+          description: Not found
+    delete:
+      summary: Delete Company
+      description: Delete an Company to the system
+      operationId: deleteCompanyById
+      tags:
+        - company
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the company to delete
+      responses:
+        "204":
+          description: Company deleted
+        "400":
+          description: Bad input parameter
+        "404":
+          description: Not found
+
+  /api/v1/companies/{id}/addresses:
+    get:
+      summary: Searches Address
+      description: By passing in the appropriate options, you can search for available Address in the system
+      operationId: findAddresses
+      x-spring-paginated: true
+      tags:
+        - company
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: Company id
+      responses:
+        "200":
+          description: Search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressDto'
+        "400":
+          description: Bad input parameter
+        "404":
+          description: Not found
+    post:
+      summary: Add Address
+      description: Add a new address to an Company
+      operationId: addAddress
+      tags:
+        - company
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          description: Company id
+          example: "1"
+      requestBody:
+        description: Address to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewAddressDto"
+      responses:
+        "201":
+          description: Address added
+        "400":
+          description: Invalid input, object invalid
+        "404":
+          description: Not found
+
+  /api/v1/companies/{company_id}/addresses/{address_id}:
+    get:
+      summary: Searches Address by 'id'
+      description: Searches Address by 'id'
+      operationId: getAddressById
+      tags:
+        - company
+      parameters:
+        - in: path
+          name: company_id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the Company
+        - in: path
+          name: address_id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the Address to get
+      responses:
+        "200":
+          description: Search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AddressDto"
+        "400":
+          description: Bad input parameter
+        "404":
+          description: Not found
+    put:
+      summary: Update Address
+      description: Update an Address to the system
+      operationId: updateAddress
+      tags:
+        - company
+      parameters:
+        - in: path
+          name: company_id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the Company
+        - in: path
+          name: address_id
+          schema:
+            type: long
+          example: "1"
+          required: true
+          description: ID of the Address to get
+      requestBody:
+        description: Address to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatebleAddressDto"
+      responses:
+        "200":
+          description: Address updated
+        "400":
+          description: Invalid input, object invalid
+        "404":
+          description: Not found
+    delete:
+      summary: Delete address of a Company
+      description: Delete an address of a Company
+      operationId: deleteAddressById
+      tags:
+        - company
+      parameters:
+        - in: path
+          name: company_id
+          schema:
+            type: long
+          example: "1"
+          required: true
+          description: ID of the Company
+        - in: path
+          name: address_id
+          schema:
+            type: long
+          example: "1"
+          required: true
+          description: ID of the Address to delete
+      responses:
+        "204":
+          description: Address deleted
+        "400":
+          description: Bad input parameter
+        "404":
+          description: Not found
+
+  /api/v1/contacts:
+    get:
+      summary: Searches Contacts
+      description: By passing in the appropriate options, you can search for available Contacts in the system
+      operationId: findContacts
+      x-spring-paginated: true
+      tags:
+        - contact
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: Contact name
+          example: John
+      responses:
+        "200":
+          description: Search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContactDto'
+        "400":
+          description: Bad input parameter
+        "404":
+          description: Not found
+    post:
+      summary: Add new Contact
+      description: Add a new Contact to the system
+      operationId: createContact
+      tags:
+        - contact
+      requestBody:
+        description: Add new Contact
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewContactDto"
+      responses:
+        "201":
+          description: Contact created
+        "400":
+          description: Invalid input, object invalid
+
+
+  /api/v1/contacts/{id}:
+    get:
+      summary: Searches Contact by 'id'
+      description: Searches Contact by 'id'
+      operationId: getContactById
+      tags:
+        - contact
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: Id of the Contact to get
+      responses:
+        "200":
+          description: Search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactDto"
+        "400":
+          description: Bad input parameter
+        "404":
+          description: Not found
+    put:
+      summary: Update Contact
+      description: Update a Contact to the system
+      operationId: updateContact
+      tags:
+        - contact
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the contact to update
+      requestBody:
+        description: Contact to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatebleContactDto"
+      responses:
+        "200":
+          description: Contact updated
+        "400":
+          description: Invalid input, object invalid
+        "404":
+          description: Not found
+    delete:
+      summary: Delete Contact
+      description: Delete an Contact to the system
+      operationId: deleteContactById
+      tags:
+        - contact
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the Contact to delete
+      responses:
+        "204":
+          description: Contact deleted
+        "400":
+          description: Bad input parameter
+        "404":
+          description: Not found
+
+components:
+  schemas:
+    CompanyDto:
+      title: CompanyDto
+      type: CompanyDto
+    NewCompanyDto:
+      title: NewCompanyDto
+      type: NewCompanyDto
+    UpdatebleCompanyDto:
+      title: UpdatebleCompanyDto
+      type: UpdatebleCompanyDto
+    AddressDto:
+      title: AddressDto
+      type: AddressDto
+    NewAddressDto:
+      title: NewAddressDto
+      type: NewAddressDto
+    UpdatebleAddressDto:
+      title: UpdatebleAddressDto
+      type: UpdatebleAddressDto
+    ContactDto:
+      title: ContactDto
+      type: ContactDto
+    NewContactDto:
+      title: NewContactDto
+      type: NewContactDto
+    UpdatebleContactDto:
+      title: UpdatebleContactDto
+      type: UpdatebleContactDto

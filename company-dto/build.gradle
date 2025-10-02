@@ -1,5 +1,6 @@
 plugins {
   id 'java-library'
+  id 'org.openapi.generator' version "7.15.0"
   id 'info.solidsoft.pitest' version '1.15.0'
   id 'org.owasp.dependencycheck' version '8.4.3'
   id 'maven-publish'
@@ -16,6 +17,7 @@ def springboot_version = parent.property('springboot.version')
 dependencies {
   implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc_openapi_version}"
   implementation "jakarta.validation:jakarta.validation-api:${jakarta_validation_version}"
+  implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
   implementation "org.springframework.data:spring-data-commons:${springboot_version}"
 
   implementation "org.projectlombok:lombok:${lombok_version}"
@@ -31,9 +33,43 @@ dependencies {
   testAnnotationProcessor "org.projectlombok:lombok:${lombok_version}"
 }
 
+sourceSets {
+  main {
+    java {
+      srcDir(tasks.openApiGenerate)
+    }
+  }
+}
+
 java {
+    compileJava.dependsOn tasks.named("openApiGenerate")
     withJavadocJar()
     withSourcesJar()
+}
+
+openApiValidate {
+  inputSpec = "$projectDir/specs/company-api.yaml"
+  recommend = true
+}
+
+openApiGenerate {
+  generatorName.set("spring")
+  inputSpec.set("$projectDir/specs/company-api.yaml")
+  apiPackage.set("it.francescofiora.product.company.api.web.api")
+  modelPackage.set("it.francescofiora.product.company.dto")
+  configOptions.set([
+          library            : "spring-boot",
+          useOneOfInterfaces : "false",
+          interfaceOnly      : "true",
+          useTags            : "true",
+          useSpringBoot3     : "true",
+          skipDefaultInterface : "true",
+          hideGenerationTimestamp: "true"
+  ])
+  globalProperties.set([
+          apis   : "",
+          models : ""
+  ])
 }
 
 pitest {

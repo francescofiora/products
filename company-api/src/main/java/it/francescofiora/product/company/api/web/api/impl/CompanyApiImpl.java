@@ -37,7 +37,7 @@ public class CompanyApiImpl extends AbstractApi implements CompanyApi {
   }
 
   @Override
-  public ResponseEntity<Void> updateCompany(UpdatebleCompanyDto companyDto, Long id) {
+  public ResponseEntity<Void> updateCompany(Long id, UpdatebleCompanyDto companyDto) {
     if (!id.equals(companyDto.getId())) {
       throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(companyDto.getId()),
           "Invalid id");
@@ -77,7 +77,7 @@ public class CompanyApiImpl extends AbstractApi implements CompanyApi {
 
   @Override
   public ResponseEntity<Void> updateAddress(
-      UpdatebleAddressDto addressDto, Long companyId, Long addressId) {
+      Long companyId, Long addressId, UpdatebleAddressDto addressDto) {
     if (!addressId.equals(addressDto.getId())) {
       throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(addressDto.getId()),
           "Invalid id");

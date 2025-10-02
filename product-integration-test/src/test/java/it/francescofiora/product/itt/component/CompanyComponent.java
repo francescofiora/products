@@ -141,7 +141,7 @@ public class CompanyComponent extends AbstractComponent {
     companyContext.setUpdatebleCompanyDto(TestCompanyUtils
         .createUpdatebleCompanyDto(companyId, companyName, companyEmail, companyWeb));
     var result = companyApiService
-        .updateCompany(companyContext.getUpdatebleCompanyDto(), companyContext.getCompanyId());
+        .updateCompany(companyContext.getCompanyId(), companyContext.getUpdatebleCompanyDto());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
@@ -164,8 +164,8 @@ public class CompanyComponent extends AbstractComponent {
     companyContext.setUpdatebleAddressDto(TestCompanyUtils.createUpdatebleAddressDto(addressId,
         addressType, addressName, addressZipcode, addressCountry, addressCurrency, addressTaxNumber,
         addressPhone, addressEmail));
-    var result = companyApiService.updateAddress(companyContext.getUpdatebleAddressDto(),
-        companyContext.getCompanyId(), addressId);
+    var result = companyApiService.updateAddress(companyContext.getCompanyId(), addressId,
+        companyContext.getUpdatebleAddressDto());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 

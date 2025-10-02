@@ -46,7 +46,7 @@ class ContactApiEndToEndTest extends AbstractTestEndToEnd {
   private static final String UP_EMAIL_NOT_BLANK = "[updatebleContactDto.email - NotBlank]";
   private static final String UP_PHONE_NOT_BLANK = "[updatebleContactDto.phone - NotBlank]";
 
-  private static final String PARAM_PAGE_20 = "0 20";
+  private static final String PARAM_PAGE_1 = "0 1";
   private static final String PARAM_NOT_VALID_LONG =
       "'id' should be a valid 'Long' and '999999999999999999999999' isn't";
 
@@ -78,7 +78,7 @@ class ContactApiEndToEndTest extends AbstractTestEndToEnd {
     assertThat(actual.getPhone()).isEqualTo(contactDto.getPhone());
 
     var contacts =
-        get(CONTACTS_URI, PageRequest.of(1, 1), ContactDto[].class, ALERT_GET, PARAM_PAGE_20);
+        get(CONTACTS_URI, PageRequest.of(0, 1), ContactDto[].class, ALERT_GET, PARAM_PAGE_1);
     assertThat(contacts).isNotEmpty();
     var option = Stream.of(contacts).filter(contact -> contact.getId().equals(contactId)).findAny();
     assertThat(option).isPresent().contains(actual);
