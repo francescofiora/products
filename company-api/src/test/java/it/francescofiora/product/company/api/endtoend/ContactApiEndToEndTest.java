@@ -91,9 +91,8 @@ class ContactApiEndToEndTest extends AbstractTestEndToEnd {
   private Long createCompany() {
     var newCompanyDto = TestUtils.createNewCompanyDto();
     newCompanyDto.getAddresses().add(TestUtils.createNewAddressDto());
-    var companyId = createAndReturnId(CompanyApiEndToEndTest.COMPANIES_URI, newCompanyDto,
+    return createAndReturnId(CompanyApiEndToEndTest.COMPANIES_URI, newCompanyDto,
         CompanyApiEndToEndTest.ALERT_CREATED);
-    return companyId;
   }
 
   private Long getAdressFromCompanyId(Long companyId) {

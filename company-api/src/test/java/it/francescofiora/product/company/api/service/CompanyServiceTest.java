@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -115,8 +114,8 @@ class CompanyServiceTest {
   void testFindAll() {
     var company = TestUtils.createCompany(ID);
     var companyRepository = mock(CompanyRepository.class);
-    when(companyRepository.findAll(ArgumentMatchers.<Example<Company>>any(), any(Pageable.class)))
-        .thenReturn(new PageImpl<Company>(List.of(company)));
+    when(companyRepository.findAll(ArgumentMatchers.any(), any(Pageable.class)))
+        .thenReturn(new PageImpl<>(List.of(company)));
     var expected = new CompanyDto();
     var companyMapper = mock(CompanyMapper.class);
     when(companyMapper.toDto(any(Company.class))).thenReturn(expected);
@@ -205,7 +204,7 @@ class CompanyServiceTest {
     var addressRepository = mock(AddressRepository.class);
     var address = TestUtils.createAddress(ADDRESS_ID);
     address.setCompany(TestUtils.createCompany(ID));
-    when(addressRepository.findAll(ArgumentMatchers.<Example<Address>>any(), any(Pageable.class)))
+    when(addressRepository.findAll(ArgumentMatchers.any(), any(Pageable.class)))
         .thenReturn(new PageImpl<>(List.of(address)));
     var addressMapper = mock(AddressMapper.class);
     var expected = new AddressDto();

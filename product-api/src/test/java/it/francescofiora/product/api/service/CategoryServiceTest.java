@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -72,8 +71,8 @@ class CategoryServiceTest {
   void testFindAll() {
     var category = new Category();
     var categoryRepository = mock(CategoryRepository.class);
-    when(categoryRepository.findAll(ArgumentMatchers.<Example<Category>>any(), any(Pageable.class)))
-        .thenReturn(new PageImpl<Category>(List.of(category)));
+    when(categoryRepository.findAll(ArgumentMatchers.any(), any(Pageable.class)))
+        .thenReturn(new PageImpl<>(List.of(category)));
     var expected = new CategoryDto();
     var categoryMapper = mock(CategoryMapper.class);
     when(categoryMapper.toDto(any(Category.class))).thenReturn(expected);

@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -108,8 +107,8 @@ class OrderServiceTest {
     var order = new Order();
     order.setId(ID);
     var orderRepository = mock(OrderRepository.class);
-    when(orderRepository.findAll(ArgumentMatchers.<Example<Order>>any(), any(Pageable.class)))
-        .thenReturn(new PageImpl<Order>(List.of(order)));
+    when(orderRepository.findAll(ArgumentMatchers.any(), any(Pageable.class)))
+        .thenReturn(new PageImpl<>(List.of(order)));
 
     var expected = new OrderDto();
     var orderMapper = mock(OrderMapper.class);

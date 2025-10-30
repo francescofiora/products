@@ -73,8 +73,8 @@ class ContactServiceTest {
   void testFindAll() {
     var contact = new Contact();
     var contactRepository = mock(ContactRepository.class);
-    when(contactRepository.findAll(ArgumentMatchers.<Example<Contact>>any(), any(Pageable.class)))
-        .thenReturn(new PageImpl<Contact>(List.of(contact)));
+    when(contactRepository.findAll(ArgumentMatchers.any(), any(Pageable.class)))
+        .thenReturn(new PageImpl<>(List.of(contact)));
     var expected = new ContactDto();
     var contactMapper = mock(ContactMapper.class);
     when(contactMapper.toDto(any(Contact.class))).thenReturn(expected);

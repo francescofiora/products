@@ -2,7 +2,7 @@ plugins {
   id 'java-library'
   id 'org.openapi.generator' version "7.15.0"
   id 'info.solidsoft.pitest' version '1.15.0'
-  id 'org.owasp.dependencycheck' version '8.4.3'
+  id 'org.owasp.dependencycheck' version '12.1.8'
   id 'maven-publish'
 }
 
