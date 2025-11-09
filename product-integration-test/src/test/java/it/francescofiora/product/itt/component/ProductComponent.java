@@ -72,13 +72,13 @@ public class ProductComponent extends AbstractComponent {
     var productId = productContext.getProductId();
     productContext.setUpdatebleProductDto(TestProductUtils.createUpdatebleProductDto(productId,
         name, description, image, imageType, price, size, categoryContext.getCategoryId()));
-    var result = productApiService.updateProduct(
-        productContext.getUpdatebleProductDto(), productId);
+    var result = productApiService.updateProduct(productId,
+        productContext.getUpdatebleProductDto());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   public void deleteProduct() {
-    var result = productApiService.deleteProductById(productContext.getProductId());
+    var result = productApiService.deleteProduct(productContext.getProductId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
   }
 

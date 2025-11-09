@@ -1,7 +1,7 @@
 package it.francescofiora.product.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import it.francescofiora.product.api.service.dto.enumeration.Size;
+import it.francescofiora.product.api.service.dto.Size;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

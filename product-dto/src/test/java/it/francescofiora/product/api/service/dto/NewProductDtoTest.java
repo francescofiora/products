@@ -2,7 +2,6 @@ package it.francescofiora.product.api.service.dto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import it.francescofiora.product.api.service.dto.enumeration.Size;
 import it.francescofiora.product.api.service.util.TestUtils;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;

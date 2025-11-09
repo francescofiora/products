@@ -33,7 +33,7 @@ public class ProductApiImpl extends AbstractApi implements ProductApi {
   }
 
   @Override
-  public ResponseEntity<Void> updateProduct(UpdatebleProductDto productDto, Long id) {
+  public ResponseEntity<Void> updateProduct(Long id, UpdatebleProductDto productDto) {
     if (!id.equals(productDto.getId())) {
       throw new BadRequestAlertException("UpdatebleProductDto", String.valueOf(productDto.getId()),
           "Invalid id");
@@ -54,7 +54,7 @@ public class ProductApiImpl extends AbstractApi implements ProductApi {
   }
 
   @Override
-  public ResponseEntity<Void> deleteProductById(Long id) {
+  public ResponseEntity<Void> deleteProduct(Long id) {
     productService.delete(id);
     return deleteResponse(id);
   }

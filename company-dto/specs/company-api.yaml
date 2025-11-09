@@ -1,9 +1,15 @@
 openapi: "3.0.0"
 info:
-  version: 1.0.0
   title: REST controller for managing Company
-paths:
+  description: API for managing companies and contacts.
+  version: 1.0.0
+tags:
+  - name: company
+    description: Operations related to company
+  - name: contact
+    description: Operations related to contact
 
+paths:
   /api/v1/companies:
     get:
       summary: Searches Companies

@@ -32,7 +32,7 @@ public class CategoryApiImpl extends AbstractApi implements CategoryApi {
   }
 
   @Override
-  public ResponseEntity<Void> updateCategory(CategoryDto categoryDto, Long id) {
+  public ResponseEntity<Void> updateCategory(Long id, CategoryDto categoryDto) {
     if (!id.equals(categoryDto.getId())) {
       throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(categoryDto.getId()),
           "Invalid id");
@@ -53,7 +53,7 @@ public class CategoryApiImpl extends AbstractApi implements CategoryApi {
   }
 
   @Override
-  public ResponseEntity<Void> deleteCategoryById(Long id) {
+  public ResponseEntity<Void> deleteCategory(Long id) {
     categoryService.delete(id);
     return deleteResponse(id);
   }

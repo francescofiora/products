@@ -5,7 +5,7 @@ import it.francescofiora.product.api.service.dto.NewOrderDto;
 import it.francescofiora.product.api.service.dto.NewOrderItemDto;
 import it.francescofiora.product.api.service.dto.OrderDto;
 import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;
-import it.francescofiora.product.api.service.dto.enumeration.OrderStatus;
+import it.francescofiora.product.api.service.dto.OrderStatus;
 import it.francescofiora.product.api.web.api.OrderApi;
 import it.francescofiora.product.api.web.errors.BadRequestAlertException;
 import java.util.List;
@@ -36,7 +36,7 @@ public class OrderApiImpl extends AbstractApi implements OrderApi {
   }
 
   @Override
-  public ResponseEntity<Void> patchOrder(UpdatebleOrderDto orderDto, Long id) {
+  public ResponseEntity<Void> updateOrder(Long id, UpdatebleOrderDto orderDto) {
     if (!id.equals(orderDto.getId())) {
       throw new BadRequestAlertException(ENTITY_NAME, String.valueOf(orderDto.getId()),
           "Invalid id");
@@ -57,7 +57,7 @@ public class OrderApiImpl extends AbstractApi implements OrderApi {
   }
 
   @Override
-  public ResponseEntity<Void> deleteOrderById(Long id) {
+  public ResponseEntity<Void> deleteOrder(Long id) {
     orderService.delete(id);
     return deleteResponse(id);
   }
@@ -70,7 +70,7 @@ public class OrderApiImpl extends AbstractApi implements OrderApi {
   }
 
   @Override
-  public ResponseEntity<Void> deleteOrderItemById(Long orderId, Long orderItemId) {
+  public ResponseEntity<Void> deleteOrderItem(Long orderId, Long orderItemId) {
     orderService.deleteOrderItem(orderId, orderItemId);
     return deleteResponse(ENTITY_ORDER_ITEM, orderItemId);
   }

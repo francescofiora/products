@@ -10,7 +10,7 @@ import it.francescofiora.product.api.service.dto.RefCustomerDto;
 import it.francescofiora.product.api.service.dto.RefProductDto;
 import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;
 import it.francescofiora.product.api.service.dto.UpdatebleProductDto;
-import it.francescofiora.product.api.service.dto.enumeration.Size;
+import it.francescofiora.product.api.service.dto.Size;
 import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.AccessLevel;

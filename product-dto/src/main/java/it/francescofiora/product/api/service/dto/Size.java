@@ -1,4 +1,4 @@
-package it.francescofiora.product.api.service.dto.enumeration;
+package it.francescofiora.product.api.service.dto;
 
 /**
  * The Size enumeration.

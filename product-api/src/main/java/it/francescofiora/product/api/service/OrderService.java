@@ -5,7 +5,7 @@ import it.francescofiora.product.api.service.dto.NewOrderItemDto;
 import it.francescofiora.product.api.service.dto.OrderDto;
 import it.francescofiora.product.api.service.dto.OrderItemDto;
 import it.francescofiora.product.api.service.dto.UpdatebleOrderDto;
-import it.francescofiora.product.api.service.dto.enumeration.OrderStatus;
+import it.francescofiora.product.api.service.dto.OrderStatus;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

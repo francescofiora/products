@@ -1,0 +1,500 @@
+openapi: 3.0.0
+info:
+  title: Product Management API
+  description: API for managing categories, products and orders.
+  version: "1.0.0"
+tags:
+  - name: category
+    description: Operations related to categories
+  - name: product
+    description: Operations related to products
+  - name: order
+    description: Operations related to orders
+
+paths:
+  /api/v1/categories:
+    get:
+      summary: List categories
+      description: Retrieve a paginated list of categories.
+      operationId: findCategories
+      x-spring-paginated: true
+      tags:
+        - category
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: Category name
+          example: Shirt
+        - in: query
+          name: description
+          schema:
+            type: string
+          required: false
+          description: Category description
+          example: Shirt
+      responses:
+        '200':
+          description: A paginated array of categories.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryDto'
+        '400':
+          description: Invalid request
+    post:
+      summary: Create a new category
+      operationId: createCategory
+      tags:
+        - category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCategoryDto'
+      responses:
+        '201':
+          description: Category created
+          headers:
+            Location:
+              description: URL of the created resource
+              schema:
+                type: string
+        '400':
+          description: Invalid input
+
+  /api/v1/categories/{id}:
+    get:
+      summary: Get category by id
+      operationId: getCategoryById
+      tags:
+        - category
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the category to get
+      responses:
+        '200':
+          description: Category found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+        '404':
+          description: Category not found
+    put:
+      summary: Update category by id
+      operationId: updateCategory
+      tags:
+        - category
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the category to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryDto'
+      responses:
+        '200':
+          description: Category updated
+        '400':
+          description: Invalid input
+        '404':
+          description: Category not found
+    delete:
+      summary: Delete category by id
+      operationId: deleteCategory
+      tags:
+        - category
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the category to delete
+      responses:
+        '204':
+          description: Category deleted (no content)
+        '404':
+          description: Category not found
+
+  /api/v1/products:
+    get:
+      summary: List products
+      description: Retrieve a paginated list of products. Supports optional `name` filter.
+      operationId: findProducts
+      x-spring-paginated: true
+      tags:
+        - product
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: Product name
+          example: SHIRTM01
+        - in: query
+          name: description
+          schema:
+            type: string
+          required: false
+          description: Product description
+          example: Shirt for Men
+        - in: query
+          name: categoryId
+          schema:
+            type: long
+          required: false
+          description: ID of the Category
+          example: 1
+      responses:
+        '200':
+          description: A paginated array of products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductDto'
+        '400':
+          description: Invalid request
+    post:
+      summary: Create a new product
+      operationId: createProduct
+      tags:
+        - product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewProductDto'
+      responses:
+        '201':
+          description: Product created
+          headers:
+            Location:
+              description: URL of the created resource
+              schema:
+                type: string
+        '400':
+          description: Invalid input
+
+  /api/v1/products/{id}:
+    get:
+      summary: Get product by id
+      operationId: getProductById
+      tags:
+        - product
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the product to get
+      responses:
+        '200':
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+        '404':
+          description: Product not found
+    put:
+      summary: Update product by id
+      operationId: updateProduct
+      tags:
+        - product
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the category to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatebleProductDto'
+      responses:
+        '200':
+          description: Product updated
+        '400':
+          description: Invalid input
+        '404':
+          description: Product not found
+    delete:
+      summary: Delete product by id
+      operationId: deleteProduct
+      tags:
+        - product
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the category to delete
+      responses:
+        '204':
+          description: Product deleted (no content)
+        '404':
+          description: Product not found
+
+  /api/v1/orders:
+    get:
+      summary: List orders
+      description: Retrieve a paginated list of orders.
+      operationId: findOrders
+      x-spring-paginated: true
+      tags:
+        - order
+      parameters:
+        - in: query
+          name: code
+          schema:
+            type: string
+          required: false
+          description: Order code
+          example: ORD_1
+        - in: query
+          name: customerId
+          schema:
+            type: long
+          required: false
+          description: Customer Id
+          example: 1
+        - in: query
+          name: status
+          schema:
+            type: OrderStatus
+          required: false
+          description: Status
+          example: PENDING
+      responses:
+        '200':
+          description: A paginated array of orders.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDto'
+        '400':
+          description: Invalid request
+    post:
+      summary: Create a new order
+      operationId: createOrder
+      tags:
+        - order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewOrderDto'
+      responses:
+        '201':
+          description: Order created
+          headers:
+            Location:
+              description: URL of the created resource
+              schema:
+                type: string
+        '400':
+          description: Invalid input
+
+  /api/v1/orders/{id}:
+    get:
+      summary: Get order by id
+      operationId: getOrderById
+      tags:
+        - order
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the category to get
+      responses:
+        '200':
+          description: Order found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDto'
+        '404':
+          description: Order not found
+    patch:
+      tags:
+        - order
+      summary: Update order by id
+      operationId: updateOrder
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the category to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatebleOrderDto'
+      responses:
+        '200':
+          description: Order updated
+        '400':
+          description: Invalid input
+        '404':
+          description: Order not found
+    delete:
+      summary: Delete order by id
+      operationId: deleteOrder
+      tags:
+        - order
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the order to delete
+      responses:
+        '204':
+          description: Order deleted (no content)
+        '404':
+          description: Order not found
+
+  /api/v1/orders/{id}/items:
+    post:
+      summary: Create a new order item
+      operationId: addOrderItem
+      tags:
+        - order
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: ID of the order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewOrderItemDto'
+      responses:
+        '201':
+          description: Order Item created
+          headers:
+            Location:
+              description: URL of the created resource
+              schema:
+                type: string
+        '400':
+          description: Invalid input
+
+  /api/v1/orders/{orderId}/items/{orderItemId}:
+    delete:
+      summary: Delete item of a Order
+      operationId: deleteOrderItem
+      tags:
+        - order
+      parameters:
+        - in: path
+          name: orderId
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: Id of the Order
+        - in: path
+          name: orderItemId
+          schema:
+            type: long
+          required: true
+          example: "1"
+          description: Id of the Item to delete
+      responses:
+        '204':
+          description: Item Order deleted (no content)
+        '404':
+          description: Item Order not found
+
+components:
+  schemas:
+    NewCategoryDto:
+      title: NewCategoryDto
+      type: NewCategoryDto
+      description: DTO for creating a category (fields intentionally omitted)
+    CategoryDto:
+      title: CategoryDto
+      type: CategoryDto
+      description: Category DTO (fields intentionally omitted)
+
+    NewProductDto:
+      title: NewProductDto
+      type: NewProductDto
+      description: DTO for creating a product (fields intentionally omitted)
+    UpdatebleProductDto:
+      title: UpdatebleProductDto
+      type: UpdatebleProductDto
+      description: DTO for updating a product (fields intentionally omitted)
+    ProductDto:
+      title: ProductDto
+      type: ProductDto
+      description: Product DTO (fields intentionally omitted)
+
+    NewOrderDto:
+      title: NewOrderDto
+      type: NewOrderDto
+      description: DTO for creating an order (fields intentionally omitted)
+    UpdatebleOrderDto:
+      title: UpdatebleOrderDto
+      type: UpdatebleOrderDto
+      description: DTO for updating an order (fields intentionally omitted)
+    OrderDto:
+      title: OrderDto
+      type: OrderDto
+      description: Order DTO (fields intentionally omitted)
+    OrderStatus:
+      title: OrderStatus
+      type: OrderStatus
+    NewOrderItemDto:
+      title: NewOrderItemDto
+      type: NewOrderItemDto

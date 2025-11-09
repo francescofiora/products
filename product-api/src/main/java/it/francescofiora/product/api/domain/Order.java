@@ -1,6 +1,6 @@
 package it.francescofiora.product.api.domain;
 
-import it.francescofiora.product.api.service.dto.enumeration.OrderStatus;
+import it.francescofiora.product.api.service.dto.OrderStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

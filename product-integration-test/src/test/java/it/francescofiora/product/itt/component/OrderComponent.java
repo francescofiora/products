@@ -74,13 +74,13 @@ public class OrderComponent extends AbstractComponent {
   public void updateOrder(String code, String customerId) {
     orderContext.setUpdatebleOrderDto(
         TestProductUtils.createUpdatebleOrderDto(orderContext.getOrderId(), code, customerId));
-    var result = orderApiService.patchOrder(orderContext.getUpdatebleOrderDto(),
-        orderContext.getOrderId());
+    var result = orderApiService.updateOrder(orderContext.getOrderId(),
+        orderContext.getUpdatebleOrderDto());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   public void deleteOrder() {
-    var result = orderApiService.deleteOrderById(orderContext.getOrderId());
+    var result = orderApiService.deleteOrder(orderContext.getOrderId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
   }
 
@@ -89,7 +89,7 @@ public class OrderComponent extends AbstractComponent {
    */
   public void deleteItem() {
     var result = orderApiService
-        .deleteOrderItemById(orderContext.getOrderId(), orderContext.getItemId());
+        .deleteOrderItem(orderContext.getOrderId(), orderContext.getItemId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
   }
 

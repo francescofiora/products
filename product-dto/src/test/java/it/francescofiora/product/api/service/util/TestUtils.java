@@ -9,7 +9,7 @@ import it.francescofiora.product.api.service.dto.NewProductDto;
 import it.francescofiora.product.api.service.dto.RefCategoryDto;
 import it.francescofiora.product.api.service.dto.RefCustomerDto;
 import it.francescofiora.product.api.service.dto.RefProductDto;
-import it.francescofiora.product.api.service.dto.enumeration.Size;
+import it.francescofiora.product.api.service.dto.Size;
 import it.francescofiora.product.common.dto.DtoIdentifier;
 import java.math.BigDecimal;
 import java.time.Instant;

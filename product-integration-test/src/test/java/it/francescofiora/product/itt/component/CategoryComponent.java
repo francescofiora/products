@@ -50,12 +50,12 @@ public class CategoryComponent extends AbstractComponent {
     categoryContext.setUpdatebleCategoryDto(
         TestProductUtils.createCategoryDto(categoryId, name, description));
     var result = categoryApiService
-        .updateCategory(categoryContext.getUpdatebleCategoryDto(), categoryId);
+        .updateCategory(categoryId, categoryContext.getUpdatebleCategoryDto());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   public void deleteCategory() {
-    var result = categoryApiService.deleteCategoryById(categoryContext.getCategoryId());
+    var result = categoryApiService.deleteCategory(categoryContext.getCategoryId());
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
   }
 
